@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class RecommendationService {
     private final MovieSimilarityScorer movieSimilarityScorer;
     private final UserPreferenceProfileRepository userPreferenceProfileRepository;
     private final RecommendationProfileProjector recommendationProfileProjector;
+    private final RecommendationCacheService recommendationCacheService;
 
     public RecommendationService(
             MovieRepository movieRepository,
@@ -29,7 +31,8 @@ public class RecommendationService {
             RecommendationSnapshotService recommendationSnapshotService,
             MovieSimilarityScorer movieSimilarityScorer,
             UserPreferenceProfileRepository userPreferenceProfileRepository,
-            RecommendationProfileProjector recommendationProfileProjector
+            RecommendationProfileProjector recommendationProfileProjector,
+            RecommendationCacheService recommendationCacheService
     ) {
         this.movieRepository = movieRepository;
         this.authService = authService;
@@ -37,28 +40,44 @@ public class RecommendationService {
         this.movieSimilarityScorer = movieSimilarityScorer;
         this.userPreferenceProfileRepository = userPreferenceProfileRepository;
         this.recommendationProfileProjector = recommendationProfileProjector;
+        this.recommendationCacheService = recommendationCacheService;
     }
 
     public List<Movie> recommendationsForMovie(String imdbId, int limit) {
+        String cacheKey = recommendationCacheService.movieRecommendationKey(imdbId, limit);
+        Optional<List<String>> cachedIds = recommendationCacheService.getRecommendationIds(cacheKey);
+        if (cachedIds.isPresent()) {
+            return hydrateMoviesInOrder(cachedIds.get());
+        }
+
         Movie targetMovie = movieRepository.findMovieByImdbId(imdbId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found"));
 
         List<Movie> precomputed = precomputedRecommendations(targetMovie, limit);
-        if (!precomputed.isEmpty()) {
-            return precomputed;
-        }
+        List<Movie> recommendations = !precomputed.isEmpty()
+                ? precomputed
+                : scoreCandidates(targetMovie, movieRepository.findAll(), limit, Set.of(targetMovie.getImdbId()));
 
-        return scoreCandidates(targetMovie, movieRepository.findAll(), limit, Set.of(targetMovie.getImdbId()));
+        recommendationCacheService.cacheRecommendationIds(cacheKey, imdbIds(recommendations), false);
+        return recommendations;
     }
 
     public List<Movie> personalizedRecommendations(String authorizationHeader, int limit) {
         AppUser user = authService.requireUser(authorizationHeader);
+        String cacheKey = recommendationCacheService.personalizedRecommendationKey(user.getId(), limit);
+        Optional<List<String>> cachedIds = recommendationCacheService.getRecommendationIds(cacheKey);
+        if (cachedIds.isPresent()) {
+            return hydrateMoviesInOrder(cachedIds.get());
+        }
+
         UserPreferenceProfile profile = userPreferenceProfileRepository.findByUserId(user.getId())
                 .orElseGet(() -> recommendationProfileProjector.rebuildProfile(user.getId()));
         Set<String> anchorImdbIds = new HashSet<>(profile.getAnchorImdbIds() == null ? List.of() : profile.getAnchorImdbIds());
 
         if (anchorImdbIds.isEmpty()) {
-            return movieRepository.searchCatalog(null, null, 0, limit).items();
+            List<Movie> popular = movieRepository.searchCatalog(null, null, 0, limit).items();
+            recommendationCacheService.cacheRecommendationIds(cacheKey, imdbIds(popular), true);
+            return popular;
         }
 
         List<Movie> anchors = movieRepository.findByImdbIdIn(new ArrayList<>(anchorImdbIds));
@@ -67,18 +86,32 @@ public class RecommendationService {
             candidatePool = movieRepository.findAll();
         }
 
-        return candidatePool.stream()
+        List<Movie> recommendations = candidatePool.stream()
                 .filter(movie -> !anchorImdbIds.contains(movie.getImdbId()))
                 .sorted(Comparator.comparingDouble((Movie movie) -> personalizedScore(profile, anchors, movie)).reversed())
                 .limit(limit)
                 .toList();
+        recommendationCacheService.cacheRecommendationIds(cacheKey, imdbIds(recommendations), true);
+        return recommendations;
     }
 
     public UserPreferenceProfileView profileView(String authorizationHeader) {
         AppUser user = authService.requireUser(authorizationHeader);
+        String cacheKey = recommendationCacheService.profileViewKey(user.getId());
+        Optional<UserPreferenceProfileView> cachedView = recommendationCacheService.getProfileView(cacheKey);
+        if (cachedView.isPresent()) {
+            return cachedView.get();
+        }
+
         UserPreferenceProfile profile = userPreferenceProfileRepository.findByUserId(user.getId())
                 .orElseGet(() -> recommendationProfileProjector.rebuildProfile(user.getId()));
-        return UserPreferenceProfileView.from(profile);
+        UserPreferenceProfileView view = UserPreferenceProfileView.from(profile);
+        recommendationCacheService.cacheProfileView(cacheKey, view);
+        return view;
+    }
+
+    public RecommendationCacheStatsView cacheStats() {
+        return recommendationCacheService.statsView();
     }
 
     private List<Movie> personalizedCandidatePool(Set<String> anchorImdbIds, int candidateLimit) {
@@ -139,5 +172,24 @@ public class RecommendationService {
                 .average()
                 .orElse(0.0);
         return anchorScore + movieSimilarityScorer.preferenceScore(profile, movie) + movieSimilarityScorer.engagementBoost(movie);
+    }
+
+    private List<Movie> hydrateMoviesInOrder(List<String> imdbIds) {
+        if (imdbIds == null || imdbIds.isEmpty()) {
+            return List.of();
+        }
+
+        Map<String, Movie> moviesByImdbId = movieRepository.findByImdbIdIn(imdbIds).stream()
+                .collect(Collectors.toMap(Movie::getImdbId, Function.identity()));
+        return imdbIds.stream()
+                .map(moviesByImdbId::get)
+                .filter(java.util.Objects::nonNull)
+                .toList();
+    }
+
+    private List<String> imdbIds(List<Movie> movies) {
+        return movies.stream()
+                .map(Movie::getImdbId)
+                .toList();
     }
 }

@@ -41,4 +41,9 @@ public class RecommendationController {
     ) {
         return ResponseEntity.ok(recommendationService.profileView(authorizationHeader));
     }
+
+    @GetMapping("/cache/stats")
+    public ResponseEntity<RecommendationCacheStatsView> cacheStats() {
+        return ResponseEntity.ok(recommendationService.cacheStats());
+    }
 }

@@ -8,9 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class InteractionEventPublisher {
     private final InteractionEventRepository interactionEventRepository;
+    private final RecommendationCacheService recommendationCacheService;
 
-    public InteractionEventPublisher(InteractionEventRepository interactionEventRepository) {
+    public InteractionEventPublisher(
+            InteractionEventRepository interactionEventRepository,
+            RecommendationCacheService recommendationCacheService
+    ) {
         this.interactionEventRepository = interactionEventRepository;
+        this.recommendationCacheService = recommendationCacheService;
     }
 
     public void publishWatchlistAdded(ObjectId userId, String imdbId) {
@@ -38,5 +43,6 @@ public class InteractionEventPublisher {
         event.setStatus(InteractionEventStatus.PENDING);
         event.setOccurredAt(Instant.now());
         interactionEventRepository.save(event);
+        recommendationCacheService.invalidateUserCaches(userId);
     }
 }

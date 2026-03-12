@@ -2,6 +2,7 @@ package com.MovieRecSys.Movie;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -15,6 +16,7 @@ class RecommendationServiceTests {
     private final MovieSimilarityScorer movieSimilarityScorer = new MovieSimilarityScorer();
     private final UserPreferenceProfileRepository userPreferenceProfileRepository = mock(UserPreferenceProfileRepository.class);
     private final RecommendationProfileProjector recommendationProfileProjector = mock(RecommendationProfileProjector.class);
+    private final RecommendationCacheService recommendationCacheService = mock(RecommendationCacheService.class);
     private final RecommendationService recommendationService =
             new RecommendationService(
                     movieRepository,
@@ -22,7 +24,8 @@ class RecommendationServiceTests {
                     recommendationSnapshotService,
                     movieSimilarityScorer,
                     userPreferenceProfileRepository,
-                    recommendationProfileProjector
+                    recommendationProfileProjector,
+                    recommendationCacheService
             );
 
     @Test
@@ -31,6 +34,8 @@ class RecommendationServiceTests {
         Movie similar = movie("tt2", "Inception", "Christopher Nolan", List.of("Sci-Fi", "Action"), List.of("mind-bending", "space"), 4.7, 95);
         Movie different = movie("tt3", "Whiplash", "Damien Chazelle", List.of("Drama", "Music"), List.of("jazz"), 4.8, 75);
 
+        when(recommendationCacheService.movieRecommendationKey("tt1", 2)).thenReturn("movie:tt1:2");
+        when(recommendationCacheService.getRecommendationIds("movie:tt1:2")).thenReturn(java.util.Optional.empty());
         when(movieRepository.findMovieByImdbId("tt1")).thenReturn(java.util.Optional.of(source));
         when(recommendationSnapshotService.topCandidatesForMovie("tt1", 4)).thenReturn(List.of("tt3", "tt2"));
         when(movieRepository.findByImdbIdIn(List.of("tt3", "tt2"))).thenReturn(List.of(different, similar));
@@ -39,6 +44,7 @@ class RecommendationServiceTests {
 
         assertEquals("tt2", recommendations.get(0).getImdbId());
         assertEquals("tt3", recommendations.get(1).getImdbId());
+        verify(recommendationCacheService).cacheRecommendationIds("movie:tt1:2", List.of("tt2", "tt3"), false);
     }
 
     private Movie movie(
