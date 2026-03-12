@@ -22,6 +22,10 @@ public class MovieService {
                 .toList();
     }
 
+    public MovieCatalogPage catalog(String query, String genre, Integer page, Integer size) {
+        return movieRepository.searchCatalog(query, genre, page == null ? 0 : page, size == null ? 20 : size);
+    }
+
     public Movie getSingleMovie(ObjectId id) {
         return movieRepository.findById(id).orElse(null);
     }

@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Document(collection="movies")
 @Data
@@ -17,16 +18,20 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 public class Movie {
     @Id
     private ObjectId id;
+    @Indexed(unique = true)
     private String imdbId;
+    @Indexed
     private String title;
     private String releaseDate;
     private String overview;
+    @Indexed
     private String director;
     private List<String> cast;
     private List<String> keywords;
     private Integer runtimeMinutes;
     private String trailerLink;
     private String poster;
+    @Indexed
     private List<String> genres;
     private List<String> backdrops;
     private Double averageRating;

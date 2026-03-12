@@ -2,9 +2,13 @@ package com.MovieRecSys.Movie;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,79 +17,127 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class RecommendationService {
     private final MovieRepository movieRepository;
-    private final RatingRepository ratingRepository;
     private final AuthService authService;
+    private final RecommendationSnapshotService recommendationSnapshotService;
+    private final MovieSimilarityScorer movieSimilarityScorer;
+    private final UserPreferenceProfileRepository userPreferenceProfileRepository;
+    private final RecommendationProfileProjector recommendationProfileProjector;
 
-    public RecommendationService(MovieRepository movieRepository, RatingRepository ratingRepository, AuthService authService) {
+    public RecommendationService(
+            MovieRepository movieRepository,
+            AuthService authService,
+            RecommendationSnapshotService recommendationSnapshotService,
+            MovieSimilarityScorer movieSimilarityScorer,
+            UserPreferenceProfileRepository userPreferenceProfileRepository,
+            RecommendationProfileProjector recommendationProfileProjector
+    ) {
         this.movieRepository = movieRepository;
-        this.ratingRepository = ratingRepository;
         this.authService = authService;
+        this.recommendationSnapshotService = recommendationSnapshotService;
+        this.movieSimilarityScorer = movieSimilarityScorer;
+        this.userPreferenceProfileRepository = userPreferenceProfileRepository;
+        this.recommendationProfileProjector = recommendationProfileProjector;
     }
 
     public List<Movie> recommendationsForMovie(String imdbId, int limit) {
         Movie targetMovie = movieRepository.findMovieByImdbId(imdbId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found"));
 
-        return movieRepository.findAll().stream()
-                .filter(movie -> !movie.getImdbId().equals(targetMovie.getImdbId()))
-                .sorted(Comparator.comparingDouble((Movie movie) -> score(targetMovie, movie)).reversed())
-                .limit(limit)
-                .toList();
+        List<Movie> precomputed = precomputedRecommendations(targetMovie, limit);
+        if (!precomputed.isEmpty()) {
+            return precomputed;
+        }
+
+        return scoreCandidates(targetMovie, movieRepository.findAll(), limit, Set.of(targetMovie.getImdbId()));
     }
 
     public List<Movie> personalizedRecommendations(String authorizationHeader, int limit) {
         AppUser user = authService.requireUser(authorizationHeader);
-        Set<String> anchorImdbIds = new HashSet<>(user.getWatchlistImdbIds() == null ? List.of() : user.getWatchlistImdbIds());
-        ratingRepository.findByUserId(user.getId()).stream()
-                .filter(rating -> rating.getValue() >= 4)
-                .map(Rating::getImdbId)
-                .forEach(anchorImdbIds::add);
+        UserPreferenceProfile profile = userPreferenceProfileRepository.findByUserId(user.getId())
+                .orElseGet(() -> recommendationProfileProjector.rebuildProfile(user.getId()));
+        Set<String> anchorImdbIds = new HashSet<>(profile.getAnchorImdbIds() == null ? List.of() : profile.getAnchorImdbIds());
 
         if (anchorImdbIds.isEmpty()) {
-            return movieRepository.findAll().stream()
-                    .sorted(Comparator.comparing(Movie::getAverageRating, Comparator.nullsLast(Comparator.reverseOrder()))
-                            .thenComparing(Movie::getRatingCount, Comparator.nullsLast(Comparator.reverseOrder())))
-                    .limit(limit)
-                    .toList();
+            return movieRepository.searchCatalog(null, null, 0, limit).items();
         }
 
         List<Movie> anchors = movieRepository.findByImdbIdIn(new ArrayList<>(anchorImdbIds));
-        return movieRepository.findAll().stream()
+        List<Movie> candidatePool = personalizedCandidatePool(anchorImdbIds, Math.max(limit * 4, 24));
+        if (candidatePool.isEmpty()) {
+            candidatePool = movieRepository.findAll();
+        }
+
+        return candidatePool.stream()
                 .filter(movie -> !anchorImdbIds.contains(movie.getImdbId()))
-                .sorted(Comparator.comparingDouble((Movie movie) -> anchors.stream()
-                        .mapToDouble(anchor -> score(anchor, movie))
-                        .average()
-                        .orElse(0.0)).reversed())
+                .sorted(Comparator.comparingDouble((Movie movie) -> personalizedScore(profile, anchors, movie)).reversed())
                 .limit(limit)
                 .toList();
     }
 
-    private double score(Movie source, Movie candidate) {
-        double score = 0.0;
-        score += overlap(source.getGenres(), candidate.getGenres()) * 4.5;
-        score += overlap(source.getKeywords(), candidate.getKeywords()) * 3.5;
-        score += overlap(source.getCast(), candidate.getCast()) * 2.5;
-        if (source.getDirector() != null && source.getDirector().equalsIgnoreCase(candidate.getDirector())) {
-            score += 3.0;
-        }
-        score += (candidate.getAverageRating() == null ? 0.0 : candidate.getAverageRating()) * 0.35;
-        score += Math.min(candidate.getRatingCount() == null ? 0 : candidate.getRatingCount(), 50) * 0.05;
-        return score;
+    public UserPreferenceProfileView profileView(String authorizationHeader) {
+        AppUser user = authService.requireUser(authorizationHeader);
+        UserPreferenceProfile profile = userPreferenceProfileRepository.findByUserId(user.getId())
+                .orElseGet(() -> recommendationProfileProjector.rebuildProfile(user.getId()));
+        return UserPreferenceProfileView.from(profile);
     }
 
-    private double overlap(List<String> left, List<String> right) {
-        if (left == null || right == null || left.isEmpty() || right.isEmpty()) {
-            return 0.0;
+    private List<Movie> personalizedCandidatePool(Set<String> anchorImdbIds, int candidateLimit) {
+        Map<String, Double> candidateWeights = new HashMap<>();
+        for (String anchorImdbId : anchorImdbIds) {
+            List<String> candidates = recommendationSnapshotService.topCandidatesForMovie(anchorImdbId, candidateLimit);
+            for (int index = 0; index < candidates.size(); index++) {
+                String candidateImdbId = candidates.get(index);
+                if (anchorImdbIds.contains(candidateImdbId)) {
+                    continue;
+                }
+                candidateWeights.merge(candidateImdbId, 1.0 / (index + 1), Double::sum);
+            }
         }
 
-        Set<String> leftSet = left.stream().map(String::toLowerCase).collect(HashSet::new, HashSet::add, HashSet::addAll);
-        Set<String> rightSet = right.stream().map(String::toLowerCase).collect(HashSet::new, HashSet::add, HashSet::addAll);
+        if (candidateWeights.isEmpty()) {
+            return List.of();
+        }
 
-        Set<String> intersection = new HashSet<>(leftSet);
-        intersection.retainAll(rightSet);
-        Set<String> union = new HashSet<>(leftSet);
-        union.addAll(rightSet);
+        Map<String, Movie> moviesByImdbId = movieRepository.findByImdbIdIn(new ArrayList<>(candidateWeights.keySet())).stream()
+                .collect(Collectors.toMap(Movie::getImdbId, Function.identity()));
 
-        return union.isEmpty() ? 0.0 : (double) intersection.size() / union.size();
+        return candidateWeights.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .map(entry -> moviesByImdbId.get(entry.getKey()))
+                .filter(java.util.Objects::nonNull)
+                .toList();
+    }
+
+    private List<Movie> precomputedRecommendations(Movie targetMovie, int limit) {
+        List<String> candidateIds = recommendationSnapshotService.topCandidatesForMovie(targetMovie.getImdbId(), Math.max(limit * 2, limit));
+        if (candidateIds.isEmpty()) {
+            return List.of();
+        }
+
+        Map<String, Movie> moviesByImdbId = movieRepository.findByImdbIdIn(candidateIds).stream()
+                .collect(Collectors.toMap(Movie::getImdbId, Function.identity()));
+
+        return candidateIds.stream()
+                .map(moviesByImdbId::get)
+                .filter(java.util.Objects::nonNull)
+                .sorted(Comparator.comparingDouble((Movie movie) -> movieSimilarityScorer.totalScore(targetMovie, movie)).reversed())
+                .limit(limit)
+                .toList();
+    }
+
+    private List<Movie> scoreCandidates(Movie source, List<Movie> candidates, int limit, Set<String> excludedImdbIds) {
+        return candidates.stream()
+                .filter(movie -> !excludedImdbIds.contains(movie.getImdbId()))
+                .sorted(Comparator.comparingDouble((Movie movie) -> movieSimilarityScorer.totalScore(source, movie)).reversed())
+                .limit(limit)
+                .toList();
+    }
+
+    private double personalizedScore(UserPreferenceProfile profile, List<Movie> anchors, Movie movie) {
+        double anchorScore = anchors.stream()
+                .mapToDouble(anchor -> movieSimilarityScorer.contentScore(anchor, movie))
+                .average()
+                .orElse(0.0);
+        return anchorScore + movieSimilarityScorer.preferenceScore(profile, movie) + movieSimilarityScorer.engagementBoost(movie);
     }
 }

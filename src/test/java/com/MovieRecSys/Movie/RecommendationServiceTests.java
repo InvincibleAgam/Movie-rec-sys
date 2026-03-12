@@ -10,10 +10,20 @@ import org.junit.jupiter.api.Test;
 
 class RecommendationServiceTests {
     private final MovieRepository movieRepository = mock(MovieRepository.class);
-    private final RatingRepository ratingRepository = mock(RatingRepository.class);
     private final AuthService authService = mock(AuthService.class);
+    private final RecommendationSnapshotService recommendationSnapshotService = mock(RecommendationSnapshotService.class);
+    private final MovieSimilarityScorer movieSimilarityScorer = new MovieSimilarityScorer();
+    private final UserPreferenceProfileRepository userPreferenceProfileRepository = mock(UserPreferenceProfileRepository.class);
+    private final RecommendationProfileProjector recommendationProfileProjector = mock(RecommendationProfileProjector.class);
     private final RecommendationService recommendationService =
-            new RecommendationService(movieRepository, ratingRepository, authService);
+            new RecommendationService(
+                    movieRepository,
+                    authService,
+                    recommendationSnapshotService,
+                    movieSimilarityScorer,
+                    userPreferenceProfileRepository,
+                    recommendationProfileProjector
+            );
 
     @Test
     void recommendationsPrioritizeGenreAndDirectorSimilarity() {
@@ -22,7 +32,8 @@ class RecommendationServiceTests {
         Movie different = movie("tt3", "Whiplash", "Damien Chazelle", List.of("Drama", "Music"), List.of("jazz"), 4.8, 75);
 
         when(movieRepository.findMovieByImdbId("tt1")).thenReturn(java.util.Optional.of(source));
-        when(movieRepository.findAll()).thenReturn(List.of(source, similar, different));
+        when(recommendationSnapshotService.topCandidatesForMovie("tt1", 4)).thenReturn(List.of("tt3", "tt2"));
+        when(movieRepository.findByImdbIdIn(List.of("tt3", "tt2"))).thenReturn(List.of(different, similar));
 
         List<Movie> recommendations = recommendationService.recommendationsForMovie("tt1", 2);
 
