@@ -15,7 +15,7 @@ Movie Atlas is a full-stack movie discovery and recommendation platform built wi
 
 ## Tech stack
 
-- Java 17
+- Java 21
 - Spring Boot 4
 - Spring Data MongoDB
 - MongoDB
@@ -69,16 +69,50 @@ This project is set up to deploy cleanly to AWS App Runner using [apprunner.yaml
 2. In AWS Console, open App Runner
 3. Create service from source code repository
 4. Connect the GitHub repo
-5. Use `apprunner.yaml` for build and run configuration
+5. Use [apprunner.yaml](/Users/agammanashroy/Desktop/Movie/apprunner.yaml) for build and run configuration
 6. Add environment variables:
 
 ```text
 MONGO_URI=your-atlas-uri
 MONGO_DATABASE=movie-api-db
 APP_CATALOG_SEED_ON_STARTUP=true
+APP_CACHE_REDIS_ENABLED=false
 ```
 
-7. Deploy and wait for the public service URL
+7. In Health Check settings, use path `/api/v1/health`
+8. Deploy and wait for the public service URL
+9. Verify the public URL with:
+
+```bash
+curl https://your-app-url/api/v1/health
+```
+
+### Why these settings matter
+
+- App Runner injects `PORT`, and the app now honors it via `server.port=${PORT:8080}`
+- MongoDB Atlas is required because App Runner cannot reach your local Docker MongoDB
+- Redis caching should stay disabled on App Runner unless you add a managed Redis instance
+
+### App Runner smoke test
+
+After deployment, confirm the public service works end to end:
+
+```bash
+APP_URL="https://your-app-url"
+
+curl -s "$APP_URL/api/v1/health"
+
+EMAIL="demo$(date +%s)@example.com"
+
+TOKEN=$(
+  curl -s -X POST "$APP_URL/api/v1/auth/register" \
+    -H "Content-Type: application/json" \
+    -d "{\"displayName\":\"Demo User\",\"email\":\"$EMAIL\",\"password\":\"supersecret\"}" \
+  | python3 -c 'import sys,json; print(json.load(sys.stdin)["token"])'
+)
+
+curl -s -H "Authorization: Bearer $TOKEN" "$APP_URL/api/v1/auth/me"
+```
 
 ### Recommended production architecture
 

@@ -4,7 +4,7 @@ runtime: java21
 build:
   commands:
     build:
-      - ./mvnw -DskipTests package
+      - ./mvnw -q -DskipTests package
 
 run:
   runtime-version: 21
@@ -15,3 +15,5 @@ run:
   env:
     - name: APP_CATALOG_SEED_ON_STARTUP
       value: "true"
+    - name: APP_CACHE_REDIS_ENABLED
+      value: "false"
