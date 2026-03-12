@@ -15,17 +15,20 @@ public class UserExperienceService {
     private final AppUserRepository appUserRepository;
     private final MovieRepository movieRepository;
     private final RatingRepository ratingRepository;
+    private final InteractionEventPublisher interactionEventPublisher;
 
     public UserExperienceService(
             AuthService authService,
             AppUserRepository appUserRepository,
             MovieRepository movieRepository,
-            RatingRepository ratingRepository
+            RatingRepository ratingRepository,
+            InteractionEventPublisher interactionEventPublisher
     ) {
         this.authService = authService;
         this.appUserRepository = appUserRepository;
         this.movieRepository = movieRepository;
         this.ratingRepository = ratingRepository;
+        this.interactionEventPublisher = interactionEventPublisher;
     }
 
     public WatchlistResponse getWatchlist(String authorizationHeader) {
@@ -44,6 +47,7 @@ public class UserExperienceService {
             watchlist.add(movie.getImdbId());
             user.setWatchlistImdbIds(watchlist);
             user = appUserRepository.save(user);
+            interactionEventPublisher.publishWatchlistAdded(user.getId(), movie.getImdbId());
         }
 
         return AuthResponse.UserProfile.from(user);
@@ -55,6 +59,7 @@ public class UserExperienceService {
         if (watchlist.remove(imdbId)) {
             user.setWatchlistImdbIds(watchlist);
             user = appUserRepository.save(user);
+            interactionEventPublisher.publishWatchlistRemoved(user.getId(), imdbId);
         }
         return AuthResponse.UserProfile.from(user);
     }
@@ -73,6 +78,7 @@ public class UserExperienceService {
 
         Rating savedRating = ratingRepository.save(rating);
         refreshMovieRatingStats(movie.getImdbId());
+        interactionEventPublisher.publishRatingSet(user.getId(), movie.getImdbId(), request.rating());
         return savedRating;
     }
 

@@ -34,4 +34,11 @@ public class RecommendationController {
     ) {
         return ResponseEntity.ok(recommendationService.personalizedRecommendations(authorizationHeader, limit));
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserPreferenceProfileView> profile(
+            @RequestHeader("Authorization") String authorizationHeader
+    ) {
+        return ResponseEntity.ok(recommendationService.profileView(authorizationHeader));
+    }
 }

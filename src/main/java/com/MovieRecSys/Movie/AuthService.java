@@ -2,6 +2,7 @@ package com.MovieRecSys.Movie;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -62,17 +63,21 @@ public class AuthService {
     }
 
     public AppUser requireUser(String authorizationHeader) {
+        return findUserByAuthorizationHeader(authorizationHeader)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid session token"));
+    }
+
+    public Optional<AppUser> findUserByAuthorizationHeader(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith(BEARER_PREFIX)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing bearer token");
+            return Optional.empty();
         }
 
         String token = authorizationHeader.substring(BEARER_PREFIX.length()).trim();
         if (token.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing bearer token");
+            return Optional.empty();
         }
 
-        return appUserRepository.findByAuthToken(token)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid session token"));
+        return appUserRepository.findByAuthToken(token);
     }
 
     private String generateToken() {
