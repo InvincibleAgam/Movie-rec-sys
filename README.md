@@ -1,207 +1,185 @@
 # Movie Atlas
 
-Movie Atlas is a full-stack movie discovery and recommendation platform built with Spring Boot, MongoDB, and a custom static frontend. It supports a seeded movie catalog, personalized recommendations, reviews, ratings, and watchlists.
+Movie Atlas is a full-stack movie discovery and recommendation platform built with Spring Boot, MongoDB, Redis, RabbitMQ, and a custom frontend. It features a **two-stage recommendation pipeline** (retrieval + ranking) with collaborative filtering, an **event-driven architecture** with dead-letter queue support, **circuit breaker resilience**, and comprehensive **Prometheus/Grafana observability**.
 
-## Features
+## Live Demo
 
-- CSV-based catalog import pipeline with idempotent startup seeding
-- Larger bundled movie catalog for better demos and testing
-- Recommendation engine based on genre, keyword, cast, director, and rating signals
-- User registration and login with hashed passwords
-- Watchlist and ratings APIs for personalized experiences
-- In-browser frontend for catalog browsing, search, recommendations, and account actions
-- Docker and Docker Compose setup for local deployment
-- GitHub Actions CI workflow for Maven test runs
+- Application: [movie-atlas-x0n3.onrender.com](https://movie-atlas-x0n3.onrender.com)
+- Health check: [movie-atlas-x0n3.onrender.com/api/v1/health](https://movie-atlas-x0n3.onrender.com/api/v1/health)
 
-## Tech stack
+Note: the public demo runs on Render's free tier, so the first request after inactivity may take longer while the service wakes up.
 
-- Java 21
-- Spring Boot 4
-- Spring Data MongoDB
-- MongoDB
-- Vanilla JavaScript, HTML, and CSS
-- Maven
+## Architecture
 
-## Run locally
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the full system design, including request paths, async pipeline, cache strategy, consistency model, failure modes, and tradeoffs.
 
-### Option 1: Atlas / external MongoDB
+## Highlights
 
-1. Create a `.env` file from `.env.example`
-2. Paste your MongoDB Atlas connection string into `MONGO_URI` and set `MONGO_DATABASE`
-3. Keep `.env` local only and never commit real connection strings
-4. Run:
+- **Two-stage recommendation engine**: Stage 1 (retrieval) uses content similarity, collaborative filtering, and genre-level popularity. Stage 2 (ranking) scores candidates using 10 features including genre overlap, collaborative signal, recency, and exploration factor.
+- **Item-item collaborative filtering** using inverse-user-frequency weighted co-occurrence matrix
+- **Offline evaluation pipeline** measuring NDCG@K, Precision@K, Recall@K, and MAP across multiple ranking strategies
+- **Event-driven architecture** via RabbitMQ with dead-letter queue, idempotent consumers, and event replay support
+- **Circuit breaker resilience** (Resilience4j) around Redis with automatic fallback to database
+- **Prometheus/Grafana observability** with custom metrics for recommendation latency (p50/p95/p99), cache hit rates, and event throughput
+- **JWT auth with refresh token rotation** and BCrypt-hashed token storage
+- **Rate limiting** (Bucket4j) for auth, review, and general API endpoints
+- **k6 load testing** suite with configurable scenarios and latency thresholds
+- **Event replay system** for rebuilding all materialized state from raw event history
+
+## Core Features
+
+- User registration, login, logout, and profile lookup (JWT + refresh tokens)
+- Movie catalog browsing, detail views, and search
+- Ratings, reviews, and watchlist management
+- Item-to-item recommendation API (two-stage pipeline)
+- Personalized "for you" recommendations (collaborative + content hybrid)
+- Offline evaluation metrics endpoint
+- Materialized recommendation profile inspection
+- Admin endpoints for signal rebuilds
+- Health and Prometheus metrics endpoints
+
+## Tech Stack
+
+- Java 21 / Spring Boot 4
+- Spring Data MongoDB / MongoDB
+- Redis (cache with circuit breaker)
+- RabbitMQ (event-driven pipeline)
+- Resilience4j (circuit breakers, retry)
+- Micrometer + Prometheus + Grafana (observability)
+- JJWT (JWT authentication)
+- Bucket4j (rate limiting)
+- k6 (load testing)
+- Vanilla JavaScript, HTML, CSS (frontend)
+- Maven / Docker / Docker Compose
+
+## Project Structure
+
+- Backend application: [`src/main/java`](src/main/java)
+- Static frontend assets: [`src/main/resources/static`](src/main/resources/static)
+- Seed catalog: [`src/main/resources/data/movie_catalog.csv`](src/main/resources/data/movie_catalog.csv)
+- Architecture document: [`ARCHITECTURE.md`](ARCHITECTURE.md)
+- Monitoring config: [`monitoring/`](monitoring/)
+- Load testing: [`load-test.js`](load-test.js)
+- Docker Compose: [`docker-compose.yml`](docker-compose.yml)
+- Render deployment: [`render.yaml`](render.yaml)
+- AWS App Runner config: [`apprunner.yaml`](apprunner.yaml)
+
+## Local Development
+
+### Option 1: Run against MongoDB Atlas
+
+1. Create a local `.env` file from [`.env.example`](.env.example).
+2. Set `MONGO_URI` to your MongoDB Atlas connection string.
+3. Set `MONGO_DATABASE=movie-api-db`.
+4. Start the application:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-5. Open:
+5. Open [http://localhost:8080](http://localhost:8080).
 
-```text
-http://localhost:8080
-```
-
-### Option 2: Docker Compose with local MongoDB
+### Option 2: Run with Docker Compose (full stack)
 
 ```bash
 docker compose up --build
 ```
 
-Then open:
+This starts the Spring Boot app, MongoDB, Redis, RabbitMQ (with management UI at port 15672), Prometheus, and Grafana (at port 3000).
+
+## Configuration
+
+Common environment variables:
 
 ```text
-http://localhost:8080
-```
-
-## AWS deployment
-
-This project is set up to deploy cleanly to AWS App Runner using [apprunner.yaml](/Users/agammanashroy/Desktop/Movie/apprunner.yaml).
-
-### Why AWS App Runner
-
-- Stronger cloud signal for internship resumes than hobby-only platforms
-- Minimal ops overhead for a Spring Boot service
-- Easy path from GitHub repo to public HTTPS URL
-
-### App Runner deployment steps
-
-1. Push this repo to GitHub
-2. In AWS Console, open App Runner
-3. Create service from source code repository
-4. Connect the GitHub repo
-5. Use [apprunner.yaml](/Users/agammanashroy/Desktop/Movie/apprunner.yaml) for build and run configuration
-6. Add environment variables:
-
-```text
-MONGO_URI=your-atlas-uri
+MONGO_URI=your-mongodb-uri
 MONGO_DATABASE=movie-api-db
 APP_CATALOG_SEED_ON_STARTUP=true
-APP_CACHE_REDIS_ENABLED=false
+APP_CACHE_REDIS_ENABLED=true
+APP_MESSAGING_RABBITMQ_ENABLED=true
+APP_AUTH_JWT_SECRET=your-256-bit-secret
+PORT=8080
 ```
 
-7. In Health Check settings, use path `/api/v1/health`
-8. Deploy and wait for the public service URL
-9. Verify the public URL with:
+Notes:
 
-```bash
-curl https://your-app-url/api/v1/health
-```
+- `APP_MESSAGING_RABBITMQ_ENABLED=false` disables RabbitMQ and uses scheduled polling (backward-compatible).
+- `APP_CACHE_REDIS_ENABLED=false` disables Redis caching; the app serves directly from MongoDB.
+- The bundled movie catalog seeds on startup when the target database is empty.
 
-### Why these settings matter
+## API Surface
 
-- App Runner injects `PORT`, and the app now honors it via `server.port=${PORT:8080}`
-- MongoDB Atlas is required because App Runner cannot reach your local Docker MongoDB
-- Redis caching should stay disabled on App Runner unless you add a managed Redis instance
+### Recommendations
+- `GET /api/v1/recommendations/movie/{imdbId}` — item-to-item (two-stage pipeline)
+- `GET /api/v1/recommendations/for-you` — personalized (authenticated)
+- `GET /api/v1/recommendations/profile` — user preference profile
+- `GET /api/v1/recommendations/cache/stats` — cache hit/miss stats
 
-### App Runner smoke test
+### Evaluation
+- `GET /api/v1/evaluation/run?k=10` — offline evaluation (NDCG, Precision@K, Recall@K, MAP)
+- `POST /api/v1/evaluation/rebuild-collaborative` — rebuild collaborative signals
 
-After deployment, confirm the public service works end to end:
-
-```bash
-APP_URL="https://your-app-url"
-
-curl -s "$APP_URL/api/v1/health"
-
-EMAIL="demo$(date +%s)@example.com"
-
-TOKEN=$(
-  curl -s -X POST "$APP_URL/api/v1/auth/register" \
-    -H "Content-Type: application/json" \
-    -d "{\"displayName\":\"Demo User\",\"email\":\"$EMAIL\",\"password\":\"supersecret\"}" \
-  | python3 -c 'import sys,json; print(json.load(sys.stdin)["token"])'
-)
-
-curl -s -H "Authorization: Bearer $TOKEN" "$APP_URL/api/v1/auth/me"
-```
-
-## Free deployment on Render
-
-This repo also includes a free Render Blueprint in [render.yaml](/Users/agammanashroy/Desktop/Movie/render.yaml), which is the easiest zero-cost way to get a public demo URL.
-
-### Render deployment steps
-
-1. Create a Render account and connect your GitHub account.
-2. In the Render dashboard, click `New` and choose `Blueprint`.
-3. Select this repository and the `main` branch.
-4. Render will detect [render.yaml](/Users/agammanashroy/Desktop/Movie/render.yaml).
-5. When prompted for environment variables, set:
-
-```text
-MONGO_URI=your-mongodb-atlas-uri
-```
-
-6. Keep the default values from the Blueprint for:
-
-```text
-MONGO_DATABASE=movie-api-db
-APP_CATALOG_SEED_ON_STARTUP=true
-APP_CACHE_REDIS_ENABLED=false
-```
-
-7. In MongoDB Atlas, allow inbound access from Render.
-For the simplest setup, add `0.0.0.0/0` in Atlas Network Access, then tighten it later if needed.
-8. Create the Blueprint and wait for the service to finish deploying.
-9. Open the generated `onrender.com` URL and verify:
-
-```bash
-APP_URL="https://your-render-url.onrender.com"
-curl -s "$APP_URL/api/v1/health"
-```
-
-### Render free-tier notes
-
-- Free Render web services spin down after 15 minutes without traffic and can take about a minute to wake up again.
-- This is fine for demos and resume links, but the first request after idle will be slow.
-- The app uses MongoDB Atlas for persistence, so your data survives Render restarts and free-tier cold starts.
-
-### Recommended production architecture
-
-- Frontend and backend served from the same Spring Boot app on App Runner
-- MongoDB Atlas as the managed database
-- GitHub Actions for CI before deploy
-- Optional custom domain mapped to App Runner
-
-## API overview
-
-- `GET /api/v1/movies`
-- `GET /api/v1/movies/{id}`
-- `GET /api/v1/movies/imdb/{imdbId}`
-- `POST /api/v1/reviews`
+### Auth
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
 - `GET /api/v1/auth/me`
 - `DELETE /api/v1/auth/logout`
+
+### Movies & Interactions
+- `GET /api/v1/movies`
+- `GET /api/v1/movies/{id}`
+- `GET /api/v1/movies/imdb/{imdbId}`
+- `GET /api/v1/movies/catalog`
+- `POST /api/v1/reviews`
 - `GET /api/v1/users/watchlist`
 - `POST /api/v1/users/watchlist/{imdbId}`
 - `DELETE /api/v1/users/watchlist/{imdbId}`
 - `GET /api/v1/users/ratings`
 - `POST /api/v1/users/ratings`
-- `GET /api/v1/recommendations/movie/{imdbId}`
-- `GET /api/v1/recommendations/for-you`
-- `GET /api/v1/health`
 
-## Catalog import
+### Admin
+- `POST /api/v1/admin/rebuild-collaborative`
+- `POST /api/v1/admin/rebuild-snapshots`
 
-The project seeds the bundled CSV catalog from [movie_catalog.csv](/Users/agammanashroy/Desktop/Movie/src/main/resources/data/movie_catalog.csv) when the database is empty. This behavior is controlled by:
+### Observability
+- `GET /actuator/health`
+- `GET /actuator/prometheus`
+- `GET /actuator/metrics`
 
-```text
-APP_CATALOG_SEED_ON_STARTUP=true
+## Load Testing
+
+```bash
+# Install k6
+brew install k6
+
+# Run with 50 virtual users for 30 seconds
+k6 run --vus 50 --duration 30s load-test.js
+
+# Or run the full scenario suite
+k6 run load-test.js
 ```
 
-## Resume angle
-
-This project is strongest on a resume when you highlight both product and engineering depth:
-
-- Built a full-stack movie recommendation platform with Spring Boot, MongoDB, and a responsive frontend
-- Designed a catalog ingestion pipeline that seeds and upserts structured movie metadata from CSV
-- Implemented personalized recommendation logic using genre, keyword, cast, director, rating, and watchlist signals
-- Added authentication, ratings, watchlists, and review flows to support user-specific product behavior
-- Containerized the app and added CI-based build verification with GitHub Actions
-
 ## Testing
-
-Run:
 
 ```bash
 ./mvnw test
 ```
+
+## Monitoring
+
+When running with Docker Compose:
+
+- **Prometheus**: [http://localhost:9090](http://localhost:9090)
+- **Grafana**: [http://localhost:3000](http://localhost:3000) (admin/admin)
+- **RabbitMQ Management**: [http://localhost:15672](http://localhost:15672) (guest/guest)
+
+## Security Notes
+
+- Real credentials must never be committed to the repository.
+- Keep `.env` files local and rotate any credential that is accidentally exposed.
+- For public deployments, store connection strings, JWT secrets, and credentials in the hosting platform's environment-variable manager.
+- The JWT secret must be at least 256 bits for HMAC-SHA256 signing.
+
+## License
+
+This repository currently does not include a separate license file. Add one before accepting external contributions or reusing the project commercially.

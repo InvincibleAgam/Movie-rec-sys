@@ -2,8 +2,8 @@ package com.MovieRecSys.Movie;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,12 +15,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Two-stage recommendation service:
+ *   Stage 1 (Retrieval): Multiple CandidateGenerators produce a broad pool of candidates.
+ *   Stage 2 (Ranking):   RankingScorer scores each candidate using 10 features.
+ *
+ * Caching is applied at the final output level.
+ */
 @Service
 public class RecommendationService {
+
     private final MovieRepository movieRepository;
     private final AuthService authService;
-    private final RecommendationSnapshotService recommendationSnapshotService;
-    private final MovieSimilarityScorer movieSimilarityScorer;
+    private final RankingScorer rankingScorer;
+    private final List<CandidateGenerator> candidateGenerators;
     private final UserPreferenceProfileRepository userPreferenceProfileRepository;
     private final RecommendationProfileProjector recommendationProfileProjector;
     private final RecommendationCacheService recommendationCacheService;
@@ -28,21 +36,24 @@ public class RecommendationService {
     public RecommendationService(
             MovieRepository movieRepository,
             AuthService authService,
-            RecommendationSnapshotService recommendationSnapshotService,
-            MovieSimilarityScorer movieSimilarityScorer,
+            RankingScorer rankingScorer,
+            List<CandidateGenerator> candidateGenerators,
             UserPreferenceProfileRepository userPreferenceProfileRepository,
             RecommendationProfileProjector recommendationProfileProjector,
             RecommendationCacheService recommendationCacheService
     ) {
         this.movieRepository = movieRepository;
         this.authService = authService;
-        this.recommendationSnapshotService = recommendationSnapshotService;
-        this.movieSimilarityScorer = movieSimilarityScorer;
+        this.rankingScorer = rankingScorer;
+        this.candidateGenerators = candidateGenerators;
         this.userPreferenceProfileRepository = userPreferenceProfileRepository;
         this.recommendationProfileProjector = recommendationProfileProjector;
         this.recommendationCacheService = recommendationCacheService;
     }
 
+    /**
+     * Item-to-item recommendations using two-stage pipeline.
+     */
     public List<Movie> recommendationsForMovie(String imdbId, int limit) {
         String cacheKey = recommendationCacheService.movieRecommendationKey(imdbId, limit);
         Optional<List<String>> cachedIds = recommendationCacheService.getRecommendationIds(cacheKey);
@@ -53,15 +64,35 @@ public class RecommendationService {
         Movie targetMovie = movieRepository.findMovieByImdbId(imdbId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found"));
 
-        List<Movie> precomputed = precomputedRecommendations(targetMovie, limit);
-        List<Movie> recommendations = !precomputed.isEmpty()
-                ? precomputed
-                : scoreCandidates(targetMovie, movieRepository.findAll(), limit, Set.of(targetMovie.getImdbId()));
+        // Stage 1: Retrieval — gather candidates from all generators
+        Set<String> candidateIds = new LinkedHashSet<>();
+        int candidatePoolSize = Math.max(limit * 4, 24);
+        for (CandidateGenerator generator : candidateGenerators) {
+            candidateIds.addAll(generator.generateForMovie(imdbId, candidatePoolSize));
+        }
+        candidateIds.remove(imdbId);
 
-        recommendationCacheService.cacheRecommendationIds(cacheKey, imdbIds(recommendations), false);
-        return recommendations;
+        // Fallback: if all generators return empty, scan full catalog
+        List<Movie> candidates;
+        if (candidateIds.isEmpty()) {
+            candidates = movieRepository.findAll().stream()
+                    .filter(m -> !m.getImdbId().equals(imdbId))
+                    .toList();
+        } else {
+            candidates = movieRepository.findByImdbIdIn(new ArrayList<>(candidateIds)).stream()
+                    .filter(m -> !m.getImdbId().equals(imdbId))
+                    .toList();
+        }
+
+        // Stage 2: Ranking — score each candidate with full feature vector
+        List<Movie> ranked = rankAndSelect(targetMovie, candidates, limit);
+        recommendationCacheService.cacheRecommendationIds(cacheKey, imdbIds(ranked), false);
+        return ranked;
     }
 
+    /**
+     * Personalized recommendations using two-stage pipeline.
+     */
     public List<Movie> personalizedRecommendations(String authorizationHeader, int limit) {
         AppUser user = authService.requireUser(authorizationHeader);
         String cacheKey = recommendationCacheService.personalizedRecommendationKey(user.getId(), limit);
@@ -72,7 +103,8 @@ public class RecommendationService {
 
         UserPreferenceProfile profile = userPreferenceProfileRepository.findByUserId(user.getId())
                 .orElseGet(() -> recommendationProfileProjector.rebuildProfile(user.getId()));
-        Set<String> anchorImdbIds = new HashSet<>(profile.getAnchorImdbIds() == null ? List.of() : profile.getAnchorImdbIds());
+        Set<String> anchorImdbIds = new HashSet<>(
+                profile.getAnchorImdbIds() == null ? List.of() : profile.getAnchorImdbIds());
 
         if (anchorImdbIds.isEmpty()) {
             List<Movie> popular = movieRepository.searchCatalog(null, null, 0, limit).items();
@@ -80,19 +112,37 @@ public class RecommendationService {
             return popular;
         }
 
-        List<Movie> anchors = movieRepository.findByImdbIdIn(new ArrayList<>(anchorImdbIds));
-        List<Movie> candidatePool = personalizedCandidatePool(anchorImdbIds, Math.max(limit * 4, 24));
-        if (candidatePool.isEmpty()) {
-            candidatePool = movieRepository.findAll();
+        // Stage 1: Retrieval — gather candidates from all generators
+        Set<String> candidateIds = new LinkedHashSet<>();
+        int candidatePoolSize = Math.max(limit * 4, 24);
+        for (CandidateGenerator generator : candidateGenerators) {
+            candidateIds.addAll(generator.generateForUser(profile, candidatePoolSize));
+        }
+        candidateIds.removeAll(anchorImdbIds);
+
+        List<Movie> candidates;
+        if (candidateIds.isEmpty()) {
+            candidates = movieRepository.findAll();
+        } else {
+            candidates = movieRepository.findByImdbIdIn(new ArrayList<>(candidateIds));
         }
 
-        List<Movie> recommendations = candidatePool.stream()
-                .filter(movie -> !anchorImdbIds.contains(movie.getImdbId()))
-                .sorted(Comparator.comparingDouble((Movie movie) -> personalizedScore(profile, anchors, movie)).reversed())
+        List<Movie> anchors = movieRepository.findByImdbIdIn(new ArrayList<>(anchorImdbIds));
+
+        // Stage 2: Ranking — score with user preference context
+        List<Movie> ranked = candidates.stream()
+                .filter(m -> !anchorImdbIds.contains(m.getImdbId()))
+                .map(m -> rankingScorer.scoreForUser(profile, anchors, m))
+                .sorted(Comparator.comparingDouble(RankingFeatures::totalScore).reversed())
                 .limit(limit)
+                .map(features -> candidates.stream()
+                        .filter(m -> m.getImdbId().equals(features.imdbId()))
+                        .findFirst().orElse(null))
+                .filter(java.util.Objects::nonNull)
                 .toList();
-        recommendationCacheService.cacheRecommendationIds(cacheKey, imdbIds(recommendations), true);
-        return recommendations;
+
+        recommendationCacheService.cacheRecommendationIds(cacheKey, imdbIds(ranked), true);
+        return ranked;
     }
 
     public UserPreferenceProfileView profileView(String authorizationHeader) {
@@ -114,64 +164,17 @@ public class RecommendationService {
         return recommendationCacheService.statsView();
     }
 
-    private List<Movie> personalizedCandidatePool(Set<String> anchorImdbIds, int candidateLimit) {
-        Map<String, Double> candidateWeights = new HashMap<>();
-        for (String anchorImdbId : anchorImdbIds) {
-            List<String> candidates = recommendationSnapshotService.topCandidatesForMovie(anchorImdbId, candidateLimit);
-            for (int index = 0; index < candidates.size(); index++) {
-                String candidateImdbId = candidates.get(index);
-                if (anchorImdbIds.contains(candidateImdbId)) {
-                    continue;
-                }
-                candidateWeights.merge(candidateImdbId, 1.0 / (index + 1), Double::sum);
-            }
-        }
+    private List<Movie> rankAndSelect(Movie source, List<Movie> candidates, int limit) {
+        Map<String, Movie> moviesByImdbId = candidates.stream()
+                .collect(Collectors.toMap(Movie::getImdbId, Function.identity(), (a, b) -> a));
 
-        if (candidateWeights.isEmpty()) {
-            return List.of();
-        }
-
-        Map<String, Movie> moviesByImdbId = movieRepository.findByImdbIdIn(new ArrayList<>(candidateWeights.keySet())).stream()
-                .collect(Collectors.toMap(Movie::getImdbId, Function.identity()));
-
-        return candidateWeights.entrySet().stream()
-                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
-                .map(entry -> moviesByImdbId.get(entry.getKey()))
-                .filter(java.util.Objects::nonNull)
-                .toList();
-    }
-
-    private List<Movie> precomputedRecommendations(Movie targetMovie, int limit) {
-        List<String> candidateIds = recommendationSnapshotService.topCandidatesForMovie(targetMovie.getImdbId(), Math.max(limit * 2, limit));
-        if (candidateIds.isEmpty()) {
-            return List.of();
-        }
-
-        Map<String, Movie> moviesByImdbId = movieRepository.findByImdbIdIn(candidateIds).stream()
-                .collect(Collectors.toMap(Movie::getImdbId, Function.identity()));
-
-        return candidateIds.stream()
-                .map(moviesByImdbId::get)
-                .filter(java.util.Objects::nonNull)
-                .sorted(Comparator.comparingDouble((Movie movie) -> movieSimilarityScorer.totalScore(targetMovie, movie)).reversed())
-                .limit(limit)
-                .toList();
-    }
-
-    private List<Movie> scoreCandidates(Movie source, List<Movie> candidates, int limit, Set<String> excludedImdbIds) {
         return candidates.stream()
-                .filter(movie -> !excludedImdbIds.contains(movie.getImdbId()))
-                .sorted(Comparator.comparingDouble((Movie movie) -> movieSimilarityScorer.totalScore(source, movie)).reversed())
+                .map(candidate -> rankingScorer.scoreForMovie(source, candidate))
+                .sorted(Comparator.comparingDouble(RankingFeatures::totalScore).reversed())
                 .limit(limit)
+                .map(features -> moviesByImdbId.get(features.imdbId()))
+                .filter(java.util.Objects::nonNull)
                 .toList();
-    }
-
-    private double personalizedScore(UserPreferenceProfile profile, List<Movie> anchors, Movie movie) {
-        double anchorScore = anchors.stream()
-                .mapToDouble(anchor -> movieSimilarityScorer.contentScore(anchor, movie))
-                .average()
-                .orElse(0.0);
-        return anchorScore + movieSimilarityScorer.preferenceScore(profile, movie) + movieSimilarityScorer.engagementBoost(movie);
     }
 
     private List<Movie> hydrateMoviesInOrder(List<String> imdbIds) {

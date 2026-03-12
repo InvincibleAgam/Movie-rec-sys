@@ -13,21 +13,60 @@ services:
     ports:
       - "6379:6379"
 
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: movie-atlas-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: movie-atlas-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - app
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: movie-atlas-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
   app:
     build: .
     container_name: movie-atlas-app
     depends_on:
       - mongo
       - redis
+      - rabbitmq
     environment:
       MONGO_URI: mongodb://mongo:27017/movie-api-db
       MONGO_DATABASE: movie-api-db
       APP_CATALOG_SEED_ON_STARTUP: "true"
       APP_CACHE_REDIS_ENABLED: "true"
+      APP_MESSAGING_RABBITMQ_ENABLED: "true"
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: "6379"
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
     ports:
       - "8080:8080"
 
 volumes:
   mongo-data:
+  grafana-data:

@@ -16,3 +16,9 @@ services:
         value: "true"
       - key: APP_CACHE_REDIS_ENABLED
         value: "false"
+      - key: APP_MESSAGING_RABBITMQ_ENABLED
+        value: "false"
+      - key: APP_COLLABORATIVE_ENABLED
+        value: "true"
+      - key: SPRING_AUTOCONFIGURE_EXCLUDE
+        value: "org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration"

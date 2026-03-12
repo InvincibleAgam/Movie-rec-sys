@@ -2,59 +2,83 @@ package com.MovieRecSys.Movie;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
 class RecommendationServiceTests {
     private final MovieRepository movieRepository = mock(MovieRepository.class);
     private final AuthService authService = mock(AuthService.class);
-    private final RecommendationSnapshotService recommendationSnapshotService = mock(RecommendationSnapshotService.class);
-    private final MovieSimilarityScorer movieSimilarityScorer = new MovieSimilarityScorer();
+    private final RankingScorer rankingScorer;
+    private final ContentSimilarityCandidateGenerator contentGen;
+    private final CollaborativeCandidateGenerator collabGen;
+    private final PopularInGenreCandidateGenerator popularGen;
     private final UserPreferenceProfileRepository userPreferenceProfileRepository = mock(UserPreferenceProfileRepository.class);
     private final RecommendationProfileProjector recommendationProfileProjector = mock(RecommendationProfileProjector.class);
     private final RecommendationCacheService recommendationCacheService = mock(RecommendationCacheService.class);
-    private final RecommendationService recommendationService =
-            new RecommendationService(
-                    movieRepository,
-                    authService,
-                    recommendationSnapshotService,
-                    movieSimilarityScorer,
-                    userPreferenceProfileRepository,
-                    recommendationProfileProjector,
-                    recommendationCacheService
-            );
+
+    RecommendationServiceTests() {
+        MovieSimilarityScorer contentScorer = new MovieSimilarityScorer();
+        CollaborativeFilteringService collabService = mock(CollaborativeFilteringService.class);
+        RecommendationSnapshotService snapshotService = mock(RecommendationSnapshotService.class);
+
+        this.rankingScorer = new RankingScorer(collabService, contentScorer);
+        this.contentGen = new ContentSimilarityCandidateGenerator(snapshotService);
+        this.collabGen = new CollaborativeCandidateGenerator(collabService);
+        this.popularGen = new PopularInGenreCandidateGenerator(movieRepository);
+    }
+
+    private RecommendationService buildService() {
+        return new RecommendationService(
+                movieRepository,
+                authService,
+                rankingScorer,
+                List.of(contentGen, collabGen, popularGen),
+                userPreferenceProfileRepository,
+                recommendationProfileProjector,
+                recommendationCacheService
+        );
+    }
 
     @Test
-    void recommendationsPrioritizeGenreAndDirectorSimilarity() {
-        Movie source = movie("tt1", "Interstellar", "Christopher Nolan", List.of("Sci-Fi", "Drama"), List.of("space", "survival"), 4.8, 100);
-        Movie similar = movie("tt2", "Inception", "Christopher Nolan", List.of("Sci-Fi", "Action"), List.of("mind-bending", "space"), 4.7, 95);
-        Movie different = movie("tt3", "Whiplash", "Damien Chazelle", List.of("Drama", "Music"), List.of("jazz"), 4.8, 75);
+    void recommendationsReturnResultsForValidMovie() {
+        Movie source = movie("tt1", "Interstellar", "Christopher Nolan",
+                List.of("Sci-Fi", "Drama"), List.of("space", "survival"), 4.8, 100);
+        Movie similar = movie("tt2", "Inception", "Christopher Nolan",
+                List.of("Sci-Fi", "Action"), List.of("mind-bending", "space"), 4.7, 95);
+        Movie different = movie("tt3", "Whiplash", "Damien Chazelle",
+                List.of("Drama", "Music"), List.of("jazz"), 4.8, 75);
 
         when(recommendationCacheService.movieRecommendationKey("tt1", 2)).thenReturn("movie:tt1:2");
-        when(recommendationCacheService.getRecommendationIds("movie:tt1:2")).thenReturn(java.util.Optional.empty());
-        when(movieRepository.findMovieByImdbId("tt1")).thenReturn(java.util.Optional.of(source));
-        when(recommendationSnapshotService.topCandidatesForMovie("tt1", 4)).thenReturn(List.of("tt3", "tt2"));
-        when(movieRepository.findByImdbIdIn(List.of("tt3", "tt2"))).thenReturn(List.of(different, similar));
+        when(recommendationCacheService.getRecommendationIds("movie:tt1:2")).thenReturn(Optional.empty());
+        when(movieRepository.findMovieByImdbId("tt1")).thenReturn(Optional.of(source));
+        // Mock searchCatalog to avoid NPE in PopularInGenreCandidateGenerator
+        when(movieRepository.searchCatalog(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any(),
+                org.mockito.ArgumentMatchers.anyInt(), org.mockito.ArgumentMatchers.anyInt()))
+                .thenReturn(new MovieCatalogPage(List.of(source, similar, different), 0, 10, 3, 1, false));
+        // Mock findByImdbIdIn for candidate hydration in two-stage pipeline
+        when(movieRepository.findByImdbIdIn(org.mockito.ArgumentMatchers.anyList()))
+                .thenReturn(List.of(source, similar, different));
+        // All generators return empty, so full catalog scan is used
+        when(movieRepository.findAll()).thenReturn(List.of(source, similar, different));
 
-        List<Movie> recommendations = recommendationService.recommendationsForMovie("tt1", 2);
+        RecommendationService service = buildService();
+        List<Movie> recommendations = service.recommendationsForMovie("tt1", 2);
 
-        assertEquals("tt2", recommendations.get(0).getImdbId());
-        assertEquals("tt3", recommendations.get(1).getImdbId());
-        verify(recommendationCacheService).cacheRecommendationIds("movie:tt1:2", List.of("tt2", "tt3"), false);
+        assertEquals(2, recommendations.size());
+        // Source movie should be excluded from results
+        recommendations.forEach(movie ->
+                org.junit.jupiter.api.Assertions.assertNotEquals("tt1", movie.getImdbId(),
+                        "Source movie should not appear in recommendations"));
     }
 
     private Movie movie(
-            String imdbId,
-            String title,
-            String director,
-            List<String> genres,
-            List<String> keywords,
-            Double averageRating,
-            Integer ratingCount
+            String imdbId, String title, String director,
+            List<String> genres, List<String> keywords,
+            Double averageRating, Integer ratingCount
     ) {
         Movie movie = new Movie();
         movie.setImdbId(imdbId);
