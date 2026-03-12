@@ -27,14 +27,15 @@ Movie Atlas is a full-stack movie discovery and recommendation platform built wi
 ### Option 1: Atlas / external MongoDB
 
 1. Create a `.env` file from `.env.example`
-2. Fill in `MONGO_URI` and `MONGO_DATABASE`
-3. Run:
+2. Paste your MongoDB Atlas connection string into `MONGO_URI` and set `MONGO_DATABASE`
+3. Keep `.env` local only and never commit real connection strings
+4. Run:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-4. Open:
+5. Open:
 
 ```text
 http://localhost:8080

@@ -34,7 +34,9 @@ build/
 
 ### ENV files ###
 .env
+.env.*
 .env.local
+!.env.example
 
 .DS_Store
 src/main/resources/application.properties.DS_Store
