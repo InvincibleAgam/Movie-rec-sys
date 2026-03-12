@@ -34,5 +34,7 @@ build/
 
 ### ENV files ###
 .env
+.env.local
 
+.DS_Store
 src/main/resources/application.properties.DS_Store

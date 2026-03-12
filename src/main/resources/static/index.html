@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Atlas</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="page-shell">
+    <div class="ambient ambient-left"></div>
+    <div class="ambient ambient-right"></div>
+
+    <header class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Movie Atlas</p>
+            <h1>Build a personalized movie command center.</h1>
+            <p class="hero-text">
+                Explore a bigger catalog, discover recommendations, save a watchlist, rate favorites, and leave reviews from one frontend.
+            </p>
+            <div class="hero-actions">
+                <a class="button button-primary" href="#collection">Browse collection</a>
+                <button class="button button-secondary" id="surpriseButton" type="button">Surprise me</button>
+            </div>
+            <div class="hero-stats" id="heroStats"></div>
+        </div>
+
+        <section class="spotlight-panel">
+            <p class="panel-label">Spotlight</p>
+            <div id="spotlightContent" class="spotlight-content">
+                <div class="loading-copy">Loading featured movie...</div>
+            </div>
+        </section>
+    </header>
+
+    <main class="layout" id="collection">
+        <section class="catalog">
+            <section class="account-panel" id="accountPanel"></section>
+
+            <section class="for-you-panel">
+                <div class="catalog-toolbar">
+                    <div>
+                        <p class="section-kicker">Personalized</p>
+                        <h2>For you</h2>
+                    </div>
+                    <p class="supporting-copy">Log in, rate, and save movies to make this rail smarter.</p>
+                </div>
+                <div id="forYouRail" class="for-you-rail"></div>
+            </section>
+
+            <section class="catalog-section">
+                <div class="catalog-toolbar">
+                    <div>
+                        <p class="section-kicker">Collection</p>
+                        <h2>Browse movies</h2>
+                    </div>
+                    <label class="search-field" for="searchInput">
+                        <span>Search titles</span>
+                        <input id="searchInput" type="search" placeholder="Try Interstellar">
+                    </label>
+                </div>
+
+                <div id="genreFilters" class="genre-filters"></div>
+                <div id="statusBanner" class="status-banner" hidden></div>
+                <div id="movieGrid" class="movie-grid" aria-live="polite"></div>
+            </section>
+        </section>
+
+        <aside class="details-panel">
+            <div id="detailsContent" class="details-content">
+                <div class="empty-state">
+                    <p class="panel-label">Selection</p>
+                    <h3>Pick a movie to see the full dossier.</h3>
+                    <p>We will show the poster, release date, trailer, reviews, rating actions, and related picks here.</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+</div>
+
+<template id="loadingCardTemplate">
+    <article class="movie-card skeleton-card">
+        <div class="skeleton skeleton-poster"></div>
+        <div class="card-body">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-meta"></div>
+        </div>
+    </article>
+</template>
+
+<script src="/app.js" defer></script>
+</body>
+</html>

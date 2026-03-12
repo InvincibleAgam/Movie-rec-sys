@@ -1,5 +1,7 @@
 package com.MovieRecSys.Movie;
+
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +20,17 @@ public class Movie {
     private String imdbId;
     private String title;
     private String releaseDate;
+    private String overview;
+    private String director;
+    private List<String> cast;
+    private List<String> keywords;
+    private Integer runtimeMinutes;
     private String trailerLink;
     private String poster;
     private List<String> genres;
     private List<String> backdrops;
+    private Double averageRating;
+    private Integer ratingCount;
     //The database will only store the ids of the reviews and the reviews themselves will be in separate collection
     //Also known as manual reference relationship over here
     @DocumentReference

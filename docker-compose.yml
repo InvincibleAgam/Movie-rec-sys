@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: movie-atlas-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  app:
+    build: .
+    container_name: movie-atlas-app
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/movie-api-db
+      MONGO_DATABASE: movie-api-db
+      APP_CATALOG_SEED_ON_STARTUP: "true"
+    ports:
+      - "8080:8080"
+
+volumes:
+  mongo-data:

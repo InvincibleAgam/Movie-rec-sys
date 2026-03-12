@@ -1,32 +1,49 @@
 package com.MovieRecSys.Movie.controller;
+
 import java.util.List;
-import java.util.Optional;
 
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.MovieRecSys.Movie.Movie;
 import com.MovieRecSys.Movie.MovieService;
+
 @RestController
 @RequestMapping("/api/v1/movies")
 public class MovieController {
-    @Autowired
-    private MovieService movieService;
-@GetMapping
+    private final MovieService movieService;
+
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
+    @GetMapping
     public ResponseEntity<List<Movie>> getallMovies() {
-    return new ResponseEntity<List<Movie>>(movieService.allMovies(), HttpStatus.OK);
-}
-@GetMapping("/{id}")
-    public ResponseEntity<Optional<Movie>> getSingleMovie(@PathVariable ObjectId id){
-    return new ResponseEntity<Optional<Movie>>(movieService.getSingleMovie(id),HttpStatus.OK);
-}
+        return new ResponseEntity<>(movieService.allMovies(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Movie> getSingleMovie(@PathVariable ObjectId id) {
+        Movie movie = movieService.getSingleMovie(id);
+        if (movie == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(movie);
+    }
+
     @GetMapping("/imdb/{imdbId}")
-    public ResponseEntity<Optional<Movie>> getSingleMovie(@PathVariable String imdbId){
-        return new ResponseEntity<Optional<Movie>>(movieService.getSingleMovie(imdbId),HttpStatus.OK);
+    public ResponseEntity<Movie> getSingleMovie(@PathVariable String imdbId) {
+        Movie movie = movieService.getSingleMovie(imdbId);
+        if (movie == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(movie);
     }
 }

@@ -1,0 +1,17 @@
+version: 1.0
+runtime: java21
+
+build:
+  commands:
+    build:
+      - ./mvnw -DskipTests package
+
+run:
+  runtime-version: 21
+  command: java -jar target/Movie-0.0.1-SNAPSHOT.jar
+  network:
+    port: 8080
+    env: PORT
+  env:
+    - name: APP_CATALOG_SEED_ON_STARTUP
+      value: "true"
