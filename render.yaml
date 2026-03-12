@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: movie-atlas
+    runtime: docker
+    plan: free
+    autoDeployTrigger: commit
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DATABASE
+        value: movie-api-db
+      - key: APP_CATALOG_SEED_ON_STARTUP
+        value: "true"
+      - key: APP_CACHE_REDIS_ENABLED
+        value: "false"

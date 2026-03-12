@@ -114,6 +114,46 @@ TOKEN=$(
 curl -s -H "Authorization: Bearer $TOKEN" "$APP_URL/api/v1/auth/me"
 ```
 
+## Free deployment on Render
+
+This repo also includes a free Render Blueprint in [render.yaml](/Users/agammanashroy/Desktop/Movie/render.yaml), which is the easiest zero-cost way to get a public demo URL.
+
+### Render deployment steps
+
+1. Create a Render account and connect your GitHub account.
+2. In the Render dashboard, click `New` and choose `Blueprint`.
+3. Select this repository and the `main` branch.
+4. Render will detect [render.yaml](/Users/agammanashroy/Desktop/Movie/render.yaml).
+5. When prompted for environment variables, set:
+
+```text
+MONGO_URI=your-mongodb-atlas-uri
+```
+
+6. Keep the default values from the Blueprint for:
+
+```text
+MONGO_DATABASE=movie-api-db
+APP_CATALOG_SEED_ON_STARTUP=true
+APP_CACHE_REDIS_ENABLED=false
+```
+
+7. In MongoDB Atlas, allow inbound access from Render.
+For the simplest setup, add `0.0.0.0/0` in Atlas Network Access, then tighten it later if needed.
+8. Create the Blueprint and wait for the service to finish deploying.
+9. Open the generated `onrender.com` URL and verify:
+
+```bash
+APP_URL="https://your-render-url.onrender.com"
+curl -s "$APP_URL/api/v1/health"
+```
+
+### Render free-tier notes
+
+- Free Render web services spin down after 15 minutes without traffic and can take about a minute to wake up again.
+- This is fine for demos and resume links, but the first request after idle will be slow.
+- The app uses MongoDB Atlas for persistence, so your data survives Render restarts and free-tier cold starts.
+
 ### Recommended production architecture
 
 - Frontend and backend served from the same Spring Boot app on App Runner
