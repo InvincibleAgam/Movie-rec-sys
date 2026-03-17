@@ -556,7 +556,7 @@ async function handleSendOtp(event) {
         state.otpStep = "verify";
         state.otpCode = data.code || "";
         renderAccountPanel();
-        setStatus("Your verification code is: " + state.otpCode + " — enter it below.");
+        setStatus("Demo Mode: Your verification code is " + state.otpCode);
     } catch (error) {
         setStatus(error.message || "Failed to send OTP.", true);
     }
