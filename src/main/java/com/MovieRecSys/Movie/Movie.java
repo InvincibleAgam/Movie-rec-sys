@@ -30,6 +30,7 @@ public class Movie {
     private List<String> keywords;
     private Integer runtimeMinutes;
     private String trailerLink;
+    private String streamLink;
     private String poster;
     @Indexed
     private List<String> genres;

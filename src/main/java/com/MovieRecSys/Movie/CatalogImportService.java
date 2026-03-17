@@ -62,6 +62,14 @@ public class CatalogImportService {
         movie.setKeywords(splitList(record.get("keywords")));
         movie.setRuntimeMinutes(parseInteger(record.get("runtimeMinutes")));
         movie.setTrailerLink(record.get("trailerLink"));
+        
+        try {
+            movie.setStreamLink(record.get("streamLink"));
+        } catch (IllegalArgumentException e) {
+            // handle gracefully if column is missing from older csv versions
+            movie.setStreamLink(null);
+        }
+        
         movie.setPoster(record.get("poster"));
         movie.setGenres(splitList(record.get("genres")));
         movie.setBackdrops(splitList(record.get("backdrops")));
@@ -80,6 +88,7 @@ public class CatalogImportService {
                 .set("keywords", movie.getKeywords())
                 .set("runtimeMinutes", movie.getRuntimeMinutes())
                 .set("trailerLink", movie.getTrailerLink())
+                .set("streamLink", movie.getStreamLink())
                 .set("poster", movie.getPoster())
                 .set("genres", movie.getGenres())
                 .set("backdrops", movie.getBackdrops())

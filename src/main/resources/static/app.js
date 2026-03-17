@@ -9,10 +9,14 @@ const state = {
     authToken: localStorage.getItem("movieAtlasToken") || "",
     currentUser: null,
     watchlist: [],
+    watchlistMovies: [],
     ratings: [],
     forYouMovies: [],
     selectedRecommendations: [],
-    authMode: "login"
+    authMode: "login",
+    otpStep: "email",
+    otpVerified: false,
+    otpEmail: ""
 };
 
 const movieGrid = document.getElementById("movieGrid");
@@ -26,12 +30,14 @@ const loadingTemplate = document.getElementById("loadingCardTemplate");
 const accountPanel = document.getElementById("accountPanel");
 const forYouRail = document.getElementById("forYouRail");
 const heroStats = document.getElementById("heroStats");
+const watchlistPanel = document.getElementById("watchlistPanel");
 
 document.addEventListener("DOMContentLoaded", async () => {
     renderLoadingCards();
     wireEvents();
     renderAccountPanel();
     renderForYouRail();
+    renderWatchlistPanel();
     await loadMovies();
     await restoreSession();
 });
@@ -59,12 +65,7 @@ async function loadMovies() {
     setStatus("");
 
     try {
-        const response = await fetch("/api/v1/movies");
-        if (!response.ok) {
-            throw new Error(`Failed to load movies (${response.status})`);
-        }
-
-        const movies = await response.json();
+        const movies = await fetchJson("/api/v1/movies");
         state.movies = Array.isArray(movies) ? movies : [];
         state.loading = false;
         applyFilters();
@@ -95,11 +96,13 @@ async function restoreSession() {
         await Promise.all([loadWatchlist(), loadRatings(), loadForYou()]);
         renderAccountPanel();
         renderForYouRail();
+        renderWatchlistPanel();
         renderDetails();
     } catch (error) {
         resetAuthState();
         renderAccountPanel();
         renderForYouRail();
+        renderWatchlistPanel();
         setStatus("Your saved session expired. Please log in again.");
         console.error(error);
     }
@@ -219,7 +222,6 @@ function renderSpotlight() {
 
     spotlightContent.innerHTML = `
         ${spotlightImage ? `<img class="spotlight-backdrop" src="${escapeAttribute(spotlightImage)}" alt="${escapeAttribute(featuredMovie.title || "Movie")} backdrop">` : ""}
-        <p class="panel-label">Spotlight</p>
         <h2 class="spotlight-title">${escapeHtml(featuredMovie.title || "Untitled")}</h2>
         <div class="spotlight-meta">
             <span>${escapeHtml(formatReleaseDate(featuredMovie.releaseDate))}</span>
@@ -258,6 +260,58 @@ function renderAccountPanel() {
         return;
     }
 
+    if (state.authMode === "register" && !state.otpVerified) {
+        if (state.otpStep === "email") {
+            accountPanel.innerHTML = `
+                <div class="catalog-toolbar">
+                    <div>
+                        <p class="section-kicker">Account</p>
+                        <h2>Create account</h2>
+                    </div>
+                    <button class="button button-secondary" id="toggleAuthMode" type="button">Have an account?</button>
+                </div>
+                <p class="supporting-copy">We'll send a verification code to your email.</p>
+                <form class="auth-form" id="otpEmailForm">
+                    <input id="otpEmailInput" name="email" type="email" placeholder="Email" required>
+                    <button class="button button-primary" type="submit">Send verification code</button>
+                </form>
+            `;
+            document.getElementById("toggleAuthMode")?.addEventListener("click", () => {
+                state.authMode = "login";
+                state.otpStep = "email";
+                state.otpVerified = false;
+                renderAccountPanel();
+            });
+            document.getElementById("otpEmailForm")?.addEventListener("submit", handleSendOtp);
+        } else {
+            accountPanel.innerHTML = `
+                <div class="catalog-toolbar">
+                    <div>
+                        <p class="section-kicker">Account</p>
+                        <h2>Verify email</h2>
+                    </div>
+                    <button class="button button-secondary" id="backToEmail" type="button">Change email</button>
+                </div>
+                <p class="supporting-copy">A 6-digit code was sent to <strong>${escapeHtml(state.otpEmail)}</strong></p>
+                <form class="auth-form" id="otpVerifyForm">
+                    <input id="otpCodeInput" name="code" type="text" placeholder="Enter 6-digit code" maxlength="6" pattern="[0-9]{6}" required autocomplete="one-time-code" inputmode="numeric">
+                    <button class="button button-primary" type="submit">Verify code</button>
+                </form>
+                <button class="button-link" id="resendOtp" type="button">Resend code</button>
+            `;
+            document.getElementById("backToEmail")?.addEventListener("click", () => {
+                state.otpStep = "email";
+                renderAccountPanel();
+            });
+            document.getElementById("otpVerifyForm")?.addEventListener("submit", handleVerifyOtp);
+            document.getElementById("resendOtp")?.addEventListener("click", async () => {
+                await fetchJson("/api/v1/auth/send-otp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: state.otpEmail }) });
+                setStatus("A new code has been sent.");
+            });
+        }
+        return;
+    }
+
     accountPanel.innerHTML = `
         <div class="catalog-toolbar">
             <div>
@@ -266,9 +320,10 @@ function renderAccountPanel() {
             </div>
             <button class="button button-secondary" id="toggleAuthMode" type="button">${state.authMode === "login" ? "Need an account?" : "Have an account?"}</button>
         </div>
+        ${state.authMode === "register" && state.otpVerified ? '<p class="supporting-copy otp-verified-badge">✅ Email verified: <strong>' + escapeHtml(state.otpEmail) + '</strong></p>' : ''}
         <form class="auth-form" id="authForm">
             ${state.authMode === "register" ? '<input id="displayNameInput" name="displayName" type="text" placeholder="Display name">' : ""}
-            <input id="emailInput" name="email" type="email" placeholder="Email">
+            ${state.authMode === "register" ? '<input id="emailInput" name="email" type="email" value="' + escapeAttribute(state.otpEmail) + '" readonly>' : '<input id="emailInput" name="email" type="email" placeholder="Email">'}
             <input id="passwordInput" name="password" type="password" placeholder="Password">
             <button class="button button-primary" type="submit">${state.authMode === "login" ? "Log in" : "Create account"}</button>
         </form>
@@ -276,6 +331,9 @@ function renderAccountPanel() {
 
     document.getElementById("toggleAuthMode")?.addEventListener("click", () => {
         state.authMode = state.authMode === "login" ? "register" : "login";
+        state.otpStep = "email";
+        state.otpVerified = false;
+        state.otpEmail = "";
         renderAccountPanel();
     });
     document.getElementById("authForm")?.addEventListener("submit", handleAuthSubmit);
@@ -301,6 +359,77 @@ function renderForYouRail() {
 
     forYouRail.querySelectorAll("[data-imdb]").forEach((button) => {
         button.addEventListener("click", () => selectMovie(button.dataset.imdb));
+    });
+}
+
+function renderWatchlistPanel() {
+    if (!state.currentUser) {
+        watchlistPanel.innerHTML = '';
+        watchlistPanel.hidden = true;
+        return;
+    }
+
+    watchlistPanel.hidden = false;
+
+    if (!state.watchlistMovies.length) {
+        watchlistPanel.innerHTML = `
+            <div class="catalog-toolbar">
+                <div>
+                    <p class="section-kicker">Your Collection</p>
+                    <h2>My Watchlist</h2>
+                </div>
+            </div>
+            <div class="empty-grid"><p>Your watchlist is empty. Click "Save to watchlist" on any movie to add it here.</p></div>
+        `;
+        return;
+    }
+
+    watchlistPanel.innerHTML = `
+        <div class="catalog-toolbar">
+            <div>
+                <p class="section-kicker">Your Collection</p>
+                <h2>My Watchlist</h2>
+            </div>
+            <span class="supporting-copy">${state.watchlistMovies.length} movie${state.watchlistMovies.length !== 1 ? 's' : ''} saved</span>
+        </div>
+        <div class="watchlist-grid">
+            ${state.watchlistMovies.map((movie) => `
+                <div class="watchlist-card" data-imdb="${escapeAttribute(movie.imdbId)}">
+                    <div class="watchlist-card-art">
+                        ${renderImage(movie.poster, escapeHtml(movie.title) + ' poster')}
+                    </div>
+                    <div class="watchlist-card-info">
+                        <h4>${escapeHtml(movie.title)}</h4>
+                        <p class="movie-meta">${escapeHtml(formatYear(movie.releaseDate))} · ${escapeHtml((movie.genres || []).join(', '))}</p>
+                        <span class="tag rating-tag">${renderStars(movie.averageRating)}</span>
+                    </div>
+                    <button class="watchlist-remove-btn" data-remove="${escapeAttribute(movie.imdbId)}" title="Remove from watchlist">✕</button>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    watchlistPanel.querySelectorAll('.watchlist-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.watchlist-remove-btn')) return;
+            selectMovie(card.dataset.imdb);
+        });
+    });
+
+    watchlistPanel.querySelectorAll('.watchlist-remove-btn').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const imdbId = btn.dataset.remove;
+            await api(`/api/v1/users/watchlist/${imdbId}`, { method: 'DELETE' });
+            await loadWatchlist();
+            await loadForYou();
+            renderWatchlistPanel();
+            renderAccountPanel();
+            renderMovieGrid();
+            renderHeroStats();
+            if (state.selectedMovie?.imdbId === imdbId) renderDetails();
+            setStatus('Removed from watchlist.');
+        });
     });
 }
 
@@ -337,6 +466,7 @@ function renderDetails() {
         <p class="detail-copy">${escapeHtml(buildDetailCopy(movie))}</p>
         <div class="detail-actions">
             ${movie.trailerLink ? `<a class="button button-primary" href="${escapeAttribute(movie.trailerLink)}" target="_blank" rel="noreferrer">Play trailer</a>` : ""}
+            ${movie.streamLink ? `<a class="button button-primary" href="${escapeAttribute(movie.streamLink)}" target="_blank" rel="noreferrer">Watch Movie</a>` : ""}
             <button class="button button-secondary" type="button" id="watchlistButton">${watchlistLabel}</button>
         </div>
         <section class="rating-panel">
@@ -407,6 +537,55 @@ function handleHashSelection() {
     }
 }
 
+async function handleSendOtp(event) {
+    event.preventDefault();
+    const email = document.getElementById("otpEmailInput").value.trim();
+    if (!email) return;
+
+    try {
+        setStatus("Generating verification code...");
+        const response = await fetch("/api/v1/auth/send-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.message || "Failed to send OTP.");
+
+        state.otpEmail = email;
+        state.otpStep = "verify";
+        state.otpCode = data.code || "";
+        renderAccountPanel();
+        setStatus("Your verification code is: " + state.otpCode + " — enter it below.");
+    } catch (error) {
+        setStatus(error.message || "Failed to send OTP.", true);
+    }
+}
+
+async function handleVerifyOtp(event) {
+    event.preventDefault();
+    const code = document.getElementById("otpCodeInput").value.trim();
+    if (!code) return;
+
+    try {
+        const response = await fetch("/api/v1/auth/verify-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: state.otpEmail, code })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.verified) {
+            throw new Error(data.message || "Invalid or expired code. Please try again.");
+        }
+        state.otpVerified = true;
+        state.otpStep = "email";
+        renderAccountPanel();
+        setStatus("✅ Email verified! Now fill in your name and password.");
+    } catch (error) {
+        setStatus(error.message, true);
+    }
+}
+
 async function handleAuthSubmit(event) {
     event.preventDefault();
     const email = document.getElementById("emailInput").value.trim();
@@ -418,29 +597,41 @@ async function handleAuthSubmit(event) {
             ? { email, password }
             : { displayName, email, password };
         const endpoint = state.authMode === "login" ? "/api/v1/auth/login" : "/api/v1/auth/register";
+        
         const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
 
-        const data = await response.json();
+        const data = await response.json().catch(() => ({}));
+
         if (!response.ok) {
-            throw new Error(data.message || "Authentication failed");
+            let errorMessage = data.message || "We could not complete that request.";
+            if (response.status === 401 && state.authMode === "login") {
+                 errorMessage = "Incorrect password. Please try again.";
+            } else if (response.status === 404 || (response.status === 401 && data.message?.toLowerCase().includes("user"))) {
+                 errorMessage = "Account not found. You have to sign up first.";
+            }
+            throw new Error(errorMessage);
         }
 
         state.authToken = data.token;
         localStorage.setItem("movieAtlasToken", state.authToken);
         state.currentUser = data.user;
+        state.otpVerified = false;
+        state.otpStep = "email";
+        state.otpEmail = "";
         await Promise.all([loadWatchlist(), loadRatings(), loadForYou()]);
         renderAccountPanel();
         renderForYouRail();
+        renderWatchlistPanel();
         renderHeroStats();
         renderMovieGrid();
         renderDetails();
         setStatus(state.authMode === "login" ? "Logged in successfully." : "Account created successfully.");
     } catch (error) {
-        setStatus(error.message || "We could not complete that request.", true);
+        setStatus(error.message, true);
     }
 }
 
@@ -454,6 +645,7 @@ async function logout() {
     resetAuthState();
     renderAccountPanel();
     renderForYouRail();
+    renderWatchlistPanel();
     renderHeroStats();
     renderMovieGrid();
     renderDetails();
@@ -464,6 +656,7 @@ function resetAuthState() {
     state.authToken = "";
     state.currentUser = null;
     state.watchlist = [];
+    state.watchlistMovies = [];
     state.ratings = [];
     state.forYouMovies = [];
     localStorage.removeItem("movieAtlasToken");
@@ -471,7 +664,8 @@ function resetAuthState() {
 
 async function loadWatchlist() {
     const response = await api("/api/v1/users/watchlist");
-    state.watchlist = response.movies.map((movie) => movie.imdbId);
+    state.watchlistMovies = response.movies || [];
+    state.watchlist = state.watchlistMovies.map((movie) => movie.imdbId);
 }
 
 async function loadRatings() {
@@ -507,6 +701,7 @@ async function toggleWatchlist() {
     await loadForYou();
     renderAccountPanel();
     renderForYouRail();
+    renderWatchlistPanel();
     renderMovieGrid();
     renderDetails();
     renderHeroStats();
@@ -556,7 +751,7 @@ async function submitReview(event) {
     renderDetails();
 
     try {
-        const response = await fetch("/api/v1/reviews", {
+        const createdReview = await fetchJson("/api/v1/reviews", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -567,11 +762,6 @@ async function submitReview(event) {
                 authorName: state.currentUser?.displayName || "Anonymous viewer"
             })
         });
-
-        const createdReview = await response.json();
-        if (!response.ok) {
-            throw new Error(createdReview.message || "Failed to post review");
-        }
 
         const movie = state.movies.find((entry) => entry.imdbId === state.selectedMovie.imdbId);
         if (movie) {

@@ -1,21 +1,22 @@
 :root {
-    --bg: #08111f;
-    --bg-elevated: rgba(8, 17, 31, 0.78);
-    --panel: rgba(13, 26, 46, 0.74);
-    --panel-strong: rgba(12, 24, 41, 0.92);
-    --line: rgba(255, 255, 255, 0.1);
-    --text: #f6efe4;
-    --muted: #aeb9c8;
-    --accent: #ff6f3c;
-    --accent-soft: #ffb38b;
-    --secondary: #4ed1c5;
-    --warning: #ffd166;
-    --danger: #ff7b7b;
-    --shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
-    --radius-xl: 28px;
-    --radius-lg: 20px;
-    --radius-md: 14px;
-    --content-width: 1280px;
+    --bg: #030712;
+    --bg-elevated: rgba(3, 7, 18, 0.65);
+    --panel: rgba(17, 24, 39, 0.65);
+    --panel-strong: rgba(17, 24, 39, 0.85);
+    --line: rgba(255, 255, 255, 0.08);
+    --text: #f9fafb;
+    --muted: #9ca3af;
+    --accent: #f97316;
+    --accent-soft: #fdba74;
+    --secondary: #14b8a6;
+    --warning: #fcd34d;
+    --danger: #f87171;
+    --shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+    --radius-xl: 32px;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --content-width: 1400px;
+    --glow: 0 0 20px rgba(249, 115, 22, 0.3);
 }
 
 * {
@@ -30,11 +31,12 @@ body {
     margin: 0;
     min-height: 100vh;
     background:
-        radial-gradient(circle at top left, rgba(255, 111, 60, 0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(78, 209, 197, 0.18), transparent 32%),
-        linear-gradient(145deg, #07111f 0%, #081421 45%, #0d1724 100%);
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.15), transparent 30%),
+        radial-gradient(circle at top right, rgba(20, 184, 166, 0.15), transparent 35%),
+        linear-gradient(145deg, #030712 0%, #0f172a 50%, #030712 100%);
+    background-attachment: fixed;
     color: var(--text);
-    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    font-family: "Inter", "Outfit", "Segoe UI", sans-serif;
 }
 
 a {
@@ -68,15 +70,15 @@ textarea {
 }
 
 .ambient-left {
-    top: 56px;
-    left: -120px;
-    background: rgba(255, 111, 60, 0.22);
+    top: -50px;
+    left: -150px;
+    background: rgba(249, 115, 22, 0.3);
 }
 
 .ambient-right {
-    top: 320px;
-    right: -120px;
-    background: rgba(78, 209, 197, 0.2);
+    top: 250px;
+    right: -150px;
+    background: rgba(20, 184, 166, 0.25);
 }
 
 .hero,
@@ -122,8 +124,9 @@ textarea {
 .section-kicker {
     margin: 0;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.25em;
     font-size: 0.75rem;
+    font-weight: 700;
     color: var(--accent-soft);
 }
 
@@ -132,14 +135,19 @@ textarea {
 .details-content h3,
 .spotlight-title {
     margin: 0;
-    font-family: "Iowan Old Style", "Palatino Linotype", serif;
-    font-weight: 700;
-    line-height: 0.95;
+    font-family: "Outfit", "Segoe UI", sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
 }
 
 .hero h1 {
-    max-width: 11ch;
-    font-size: clamp(3.1rem, 7vw, 5.8rem);
+    max-width: 12ch;
+    font-size: clamp(3.2rem, 8vw, 6.2rem);
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero-text {
@@ -188,28 +196,44 @@ textarea {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 46px;
-    padding: 0 18px;
+    min-height: 48px;
+    padding: 0 24px;
     border-radius: 999px;
     border: 1px solid transparent;
     cursor: pointer;
-    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .button:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.02);
+}
+
+.button:active {
+    transform: translateY(0) scale(0.98);
 }
 
 .button-primary {
-    background: linear-gradient(135deg, var(--accent), #ff9367);
-    color: #160d09;
-    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), #fbd38d);
+    color: #111827;
+    box-shadow: var(--glow);
+}
+
+.button-primary:hover {
+    box-shadow: 0 0 30px rgba(249, 115, 22, 0.5);
 }
 
 .button-secondary {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
     color: var(--text);
+    backdrop-filter: blur(8px);
+}
+
+.button-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .spotlight-panel,
@@ -219,7 +243,8 @@ textarea {
     border: 1px solid var(--line);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow);
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
 .spotlight-panel {
@@ -256,10 +281,14 @@ textarea {
     height: 100%;
     object-fit: cover;
     opacity: 0.4;
+    pointer-events: none;
 }
 
 .spotlight-title {
-    font-size: clamp(2rem, 4vw, 3.1rem);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .spotlight-meta,
@@ -307,9 +336,10 @@ textarea {
 
 .genre-button.active,
 .genre-button:hover {
-    transform: translateY(-1px);
-    background: rgba(255, 111, 60, 0.14);
-    border-color: rgba(255, 111, 60, 0.45);
+    transform: translateY(-2px);
+    background: rgba(249, 115, 22, 0.2);
+    border-color: rgba(249, 115, 22, 0.5);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
 }
 
 .layout {
@@ -445,23 +475,25 @@ textarea {
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 22px;
-    background: linear-gradient(180deg, rgba(11, 22, 38, 0.96), rgba(12, 23, 39, 0.82));
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
     cursor: pointer;
-    transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    backdrop-filter: blur(10px);
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .movie-card:hover,
 .movie-card.active {
-    transform: translateY(-4px);
-    border-color: rgba(255, 111, 60, 0.42);
-    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(249, 115, 22, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(249, 115, 22, 0.2);
+    z-index: 10;
 }
 
 .card-art {
     position: relative;
     height: 280px;
     overflow: hidden;
-    background: linear-gradient(180deg, rgba(255, 111, 60, 0.18), rgba(13, 22, 37, 0.95));
+    background: linear-gradient(180deg, rgba(249, 115, 22, 0.1), rgba(15, 23, 42, 0.9));
 }
 
 .card-art img {
@@ -688,6 +720,124 @@ textarea {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ── Watchlist Panel ────────────────────────── */
+.watchlist-panel {
+    margin-bottom: 2rem;
+}
+
+.watchlist-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.watchlist-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.watchlist-card:hover {
+    background: hsla(220, 20%, 18%, 0.9);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px hsla(var(--accent-h), 90%, 55%, 0.15);
+    transform: translateX(4px);
+}
+
+.watchlist-card-art {
+    width: 56px;
+    height: 84px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.watchlist-card-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.watchlist-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.watchlist-card-info h4 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.watchlist-card-info .movie-meta {
+    font-size: 0.78rem;
+    opacity: 0.7;
+    margin: 0 0 0.35rem;
+}
+
+.watchlist-remove-btn {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    opacity: 0;
+}
+
+.watchlist-card:hover .watchlist-remove-btn {
+    opacity: 1;
+}
+
+.watchlist-remove-btn:hover {
+    background: hsla(0, 80%, 55%, 0.2);
+    border-color: hsl(0, 80%, 55%);
+    color: hsl(0, 80%, 65%);
+}
+
+
+/* ── OTP ────────────────────────────────── */
+.otp-verified-badge {
+    color: #4ade80;
+    font-size: 0.88rem;
+}
+
+.button-link {
+    background: none;
+    border: none;
+    color: var(--accent-soft);
+    cursor: pointer;
+    font-size: 0.82rem;
+    padding: 4px 0;
+    text-decoration: underline;
+    transition: color 0.2s;
+    margin-top: -0.25rem;
+}
+
+.button-link:hover {
+    color: var(--accent);
 }
 
 @media (max-width: 1080px) {
