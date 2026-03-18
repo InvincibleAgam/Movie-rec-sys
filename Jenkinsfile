@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE   = 'movie-atlas'
         DOCKER_TAG     = "${env.BUILD_NUMBER ?: 'latest'}"
-        REGISTRY       = credentials('docker-registry-url')   // configure in Jenkins credentials
-        REGISTRY_CREDS = credentials('docker-registry-creds') // username/password credential
+        // REGISTRY       = credentials('docker-registry-url')   // configure in Jenkins credentials
+        // REGISTRY_CREDS = credentials('docker-registry-creds') // username/password credential
     }
 
     options {
