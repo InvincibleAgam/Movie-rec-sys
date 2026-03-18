@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'eclipse-temurin:17-jdk'
-            args  '-v $HOME/.m2:/root/.m2'          // cache Maven deps across builds
-        }
-    }
+    agent any
 
     environment {
         DOCKER_IMAGE   = 'movie-atlas'
