@@ -13,7 +13,7 @@ services:
       - key: MONGO_DATABASE
         value: movie-api-db
       - key: APP_CATALOG_SEED_ON_STARTUP
-        value: "true"
+        value: "false"
       - key: APP_CACHE_REDIS_ENABLED
         value: "false"
       - key: APP_MESSAGING_RABBITMQ_ENABLED
