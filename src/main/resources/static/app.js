@@ -7,6 +7,7 @@ const state = {
     loading: true,
     submittingReview: false,
     authToken: localStorage.getItem("movieAtlasToken") || "",
+    refreshToken: localStorage.getItem("movieAtlasRefresh") || "",
     currentUser: null,
     watchlist: [],
     watchlistMovies: [],
@@ -618,6 +619,10 @@ async function handleAuthSubmit(event) {
 
         state.authToken = data.token;
         localStorage.setItem("movieAtlasToken", state.authToken);
+        if (data.refreshToken) {
+            state.refreshToken = data.refreshToken;
+            localStorage.setItem("movieAtlasRefresh", state.refreshToken);
+        }
         state.currentUser = data.user;
         state.otpVerified = false;
         state.otpStep = "email";
@@ -654,12 +659,14 @@ async function logout() {
 
 function resetAuthState() {
     state.authToken = "";
+    state.refreshToken = "";
     state.currentUser = null;
     state.watchlist = [];
     state.watchlistMovies = [];
     state.ratings = [];
     state.forYouMovies = [];
     localStorage.removeItem("movieAtlasToken");
+    localStorage.removeItem("movieAtlasRefresh");
 }
 
 async function loadWatchlist() {
@@ -900,13 +907,51 @@ function renderImage(src, alt) {
 }
 
 async function api(url, options = {}) {
-    return fetchJson(url, {
+    let response = await authedFetch(url, options);
+    // Access token is short-lived (15 min); transparently rotate via the refresh
+    // token on a 401 and retry the request once.
+    if (response.status === 401 && state.refreshToken) {
+        const refreshed = await tryRefreshSession();
+        if (refreshed) {
+            response = await authedFetch(url, options);
+        }
+    }
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(data.message || `Request failed (${response.status})`);
+    }
+    return data;
+}
+
+function authedFetch(url, options = {}) {
+    return fetch(url, {
         ...options,
         headers: {
             ...(options.headers || {}),
             Authorization: `Bearer ${state.authToken}`
         }
     });
+}
+
+async function tryRefreshSession() {
+    try {
+        const response = await fetch("/api/v1/auth/refresh", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refreshToken: state.refreshToken })
+        });
+        if (!response.ok) {
+            return false;
+        }
+        const data = await response.json();
+        state.authToken = data.token;
+        state.refreshToken = data.refreshToken;
+        localStorage.setItem("movieAtlasToken", state.authToken);
+        localStorage.setItem("movieAtlasRefresh", state.refreshToken);
+        return true;
+    } catch (error) {
+        return false;
+    }
 }
 
 async function fetchJson(url, options = {}) {

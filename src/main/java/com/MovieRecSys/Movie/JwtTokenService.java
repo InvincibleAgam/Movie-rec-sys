@@ -78,7 +78,7 @@ public class JwtTokenService {
      * Generate a refresh token and persist its hash.
      */
     public String generateRefreshToken(ObjectId userId) {
-        String rawToken = UUID.randomUUID() + "-" + UUID.randomUUID();
+        String rawToken = UUID.randomUUID().toString(); // 122-bit secret, kept <72B for BCrypt
         String tokenFamily = UUID.randomUUID().toString();
 
         RefreshToken refreshToken = new RefreshToken();
@@ -124,5 +124,64 @@ public class JwtTokenService {
             token.setAuditLog(audit);
         });
         refreshTokenRepository.saveAll(tokens);
+    }
+
+    /** Result of a successful refresh-token rotation. */
+    public record RotationResult(ObjectId userId, String newRefreshToken) {}
+
+    /**
+     * Rotate a refresh token: validate the presented token, invalidate it, and
+     * issue a fresh one within the same token family.
+     *
+     * Reuse detection: a token whose family is already revoked, or whose raw
+     * value no longer matches the stored hash (i.e. an already-rotated token
+     * being replayed), triggers revocation of the entire family — the standard
+     * refresh-token-reuse defense against stolen tokens.
+     *
+     * @param refreshTokenValue the client's refresh token, formatted {@code rawToken|tokenFamily}
+     * @return the user id and a newly minted refresh token
+     * @throws IllegalArgumentException if the token is malformed, expired, unknown, or reused
+     */
+    public RotationResult rotateRefreshToken(String refreshTokenValue) {
+        if (refreshTokenValue == null || !refreshTokenValue.contains("|")) {
+            throw new IllegalArgumentException("Malformed refresh token");
+        }
+        int sep = refreshTokenValue.lastIndexOf('|');
+        String rawToken = refreshTokenValue.substring(0, sep);
+        String family = refreshTokenValue.substring(sep + 1);
+
+        RefreshToken stored = refreshTokenRepository.findByTokenFamily(family)
+                .orElseThrow(() -> new IllegalArgumentException("Unknown refresh token"));
+
+        // Reuse of a family we already retired -> revoke everything for the user.
+        if (stored.isRevoked()) {
+            revokeAllTokens(stored.getUserId());
+            throw new IllegalArgumentException("Refresh token reuse detected");
+        }
+        if (stored.getExpiresAt() != null && stored.getExpiresAt().isBefore(Instant.now())) {
+            stored.setRevoked(true);
+            appendAudit(stored, "Refresh token expired");
+            refreshTokenRepository.save(stored);
+            throw new IllegalArgumentException("Refresh token expired");
+        }
+        // Raw value no longer matches -> an old (pre-rotation) token is being replayed.
+        if (!passwordEncoder.matches(rawToken, stored.getTokenHash())) {
+            revokeAllTokens(stored.getUserId());
+            throw new IllegalArgumentException("Refresh token reuse detected");
+        }
+
+        // Valid -> rotate in place: new raw value, same family, unchanged absolute expiry.
+        String newRaw = UUID.randomUUID().toString();
+        stored.setTokenHash(passwordEncoder.encode(newRaw));
+        appendAudit(stored, "Refresh token rotated");
+        refreshTokenRepository.save(stored);
+
+        return new RotationResult(stored.getUserId(), newRaw + "|" + family);
+    }
+
+    private void appendAudit(RefreshToken token, String message) {
+        List<String> audit = token.getAuditLog() == null ? new ArrayList<>() : new ArrayList<>(token.getAuditLog());
+        audit.add(Instant.now() + " - " + message);
+        token.setAuditLog(audit);
     }
 }

@@ -1,27 +1,501 @@
 imdbId,title,releaseDate,overview,director,cast,keywords,runtimeMinutes,trailerLink,streamLink,poster,genres,backdrops,averageRating,ratingCount
-tt0133093,The Matrix,1999-03-31,"A hacker discovers the world is a simulation and joins a rebellion against the machines controlling humanity.",The Wachowskis,"Keanu Reeves|Laurence Fishburne|Carrie-Anne Moss","simulation|cyberpunk|chosen one|artificial intelligence",136,https://www.youtube.com/watch?v=vKQi3bBA1y8,https://www.youtube.com/results?search_query=Watch+The+Matrix+full+movie,https://image.tmdb.org/t/p/w500/p96dm7sCMn4VYAStA6siNz30G1r.jpg,"Action|Sci-Fi",https://image.tmdb.org/t/p/w780/tlm8UkiQsitc8rSuIAscQDCnP8d.jpg,4.6,84
-tt0816692,Interstellar,2014-11-07,"A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",Christopher Nolan,"Matthew McConaughey|Anne Hathaway|Jessica Chastain","space travel|wormhole|time dilation|survival",169,https://www.youtube.com/watch?v=zSWdZVtXT7E,https://www.youtube.com/results?search_query=Watch+Interstellar+full+movie,https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg,"Adventure|Drama|Sci-Fi",https://image.tmdb.org/t/p/w780/2ssWTSVklAEc98frZUQhgtGHx7s.jpg,4.8,122
-tt1375666,Inception,2010-07-16,"A skilled thief uses dream-sharing technology to plant an idea into the mind of a powerful executive.",Christopher Nolan,"Leonardo DiCaprio|Joseph Gordon-Levitt|Elliot Page","dreams|heist|mind-bending|layers",148,https://www.youtube.com/watch?v=YoHD9XEInc0,https://www.youtube.com/results?search_query=Watch+Inception+full+movie,https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg,"Action|Adventure|Sci-Fi",https://image.tmdb.org/t/p/w780/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg,4.7,116
-tt0468569,The Dark Knight,2008-07-18,"Batman faces the Joker, a chaotic criminal who pushes Gotham to the edge.",Christopher Nolan,"Christian Bale|Heath Ledger|Aaron Eckhart","superhero|joker|vigilante|crime",152,https://www.youtube.com/watch?v=EXeTwQWrcwY,https://www.youtube.com/results?search_query=Watch+The+Dark+Knight+full+movie,https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg,"Action|Crime|Drama",https://image.tmdb.org/t/p/w780/dqK9Hag1054tghRQSqLSfrkvQnA.jpg,4.9,144
-tt0109830,Forrest Gump,1994-07-06,"A kind-hearted man unintentionally witnesses and influences several decades of American history.",Robert Zemeckis,"Tom Hanks|Robin Wright|Gary Sinise","life journey|historical events|love|friendship",142,https://www.youtube.com/watch?v=bLvqoHBptjg,https://www.youtube.com/results?search_query=Watch+Forrest+Gump+full+movie,https://image.tmdb.org/t/p/w500/saHP97rTPS5eLmrLQEcANmKrsFl.jpg,"Drama|Romance",https://image.tmdb.org/t/p/w780/67HggiWaP9ZLv5sPYmyRV37yAJM.jpg,4.5,91
-tt0110912,Pulp Fiction,1994-10-14,"The lives of multiple criminals intertwine through sharply written and unexpectedly funny stories.",Quentin Tarantino,"John Travolta|Samuel L. Jackson|Uma Thurman","nonlinear narrative|crime|hitmen|cult classic",154,https://www.youtube.com/watch?v=s7EdQ4FqbhY,https://www.youtube.com/results?search_query=Watch+Pulp+Fiction+full+movie,https://image.tmdb.org/t/p/w500/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg,"Crime|Drama",https://image.tmdb.org/t/p/w780/suaEOtk1N1sgg2MTM7oZd2cfVp3.jpg,4.6,88
-tt0111161,The Shawshank Redemption,1994-09-23,"Two imprisoned men bond over years, finding redemption through acts of decency and hope.",Frank Darabont,"Tim Robbins|Morgan Freeman|Bob Gunton","prison|hope|friendship|redemption",142,https://www.youtube.com/watch?v=NmzuHjWmXOc,https://www.youtube.com/results?search_query=Watch+The+Shawshank+Redemption+full+movie,https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg,"Drama",https://image.tmdb.org/t/p/w780/zfbjgQE1uSd9wiPTX4VzsLi0rGG.jpg,4.9,151
-tt0120737,The Lord of the Rings: The Fellowship of the Ring,2001-12-19,"A hobbit begins a dangerous journey to destroy a powerful ring before evil can claim it.",Peter Jackson,"Elijah Wood|Ian McKellen|Viggo Mortensen","fantasy|quest|ring|friendship",178,https://www.youtube.com/watch?v=V75dMMIW2B4,https://www.youtube.com/results?search_query=Watch+Lord+of+the+Rings+Fellowship+full+movie,https://image.tmdb.org/t/p/w500/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg,"Adventure|Fantasy",https://image.tmdb.org/t/p/w780/z51Wzj94hvAIsWfknifKTqKJRwp.jpg,4.8,109
-tt0167260,The Lord of the Rings: The Return of the King,2003-12-17,"Middle-earth stands on the brink of war as the final battle for the ring unfolds.",Peter Jackson,"Elijah Wood|Viggo Mortensen|Ian McKellen","fantasy|battle|destiny|epic",201,https://www.youtube.com/watch?v=r5X-hFf6Bwo,https://www.youtube.com/results?search_query=Watch+Lord+of+the+Rings+Return+King+full+movie,https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg,"Adventure|Fantasy",https://image.tmdb.org/t/p/w780/2u7zbn8EudG6kLlBzUYqP8RyFU4.jpg,4.9,134
-tt6751668,Parasite,2019-11-08,"A poor family gradually infiltrates the lives of a wealthy household with unexpected consequences.",Bong Joon Ho,"Song Kang-ho|Lee Sun-kyun|Cho Yeo-jeong","class divide|satire|thriller|social commentary",132,https://www.youtube.com/watch?v=5xH0HfJHsaY,https://www.youtube.com/results?search_query=Watch+Parasite+full+movie,https://image.tmdb.org/t/p/w500/igICOruFgiqdY1HXwTNRuXJute.jpg,"Drama|Thriller",https://image.tmdb.org/t/p/w780/hiKmpZMGZsrkA3cdce8a7Dpos1j.jpg,4.7,77
-tt7286456,Joker,2019-10-04,"A failed comedian spirals into a dark identity that shocks Gotham City.",Todd Phillips,"Joaquin Phoenix|Robert De Niro|Zazie Beetz","villain origin|mental health|gotham|isolation",122,https://www.youtube.com/watch?v=zAGVQLHvwOY,https://www.youtube.com/results?search_query=Watch+Joker+full+movie,https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg,"Crime|Drama|Thriller",https://image.tmdb.org/t/p/w780/hO7KbdvGOtDdeg0W4Y5nKEHeDDh.jpg,4.2,68
-tt0137523,Fight Club,1999-10-15,"An office worker forms an underground fight club that evolves into something far more dangerous.",David Fincher,"Brad Pitt|Edward Norton|Helena Bonham Carter","identity|consumerism|underground|twist",139,https://www.youtube.com/watch?v=qtRKdVHc-cE,https://www.youtube.com/results?search_query=Watch+Fight+Club+full+movie,https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg,"Drama",https://image.tmdb.org/t/p/w780/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg,4.4,73
-tt0172495,Gladiator,2000-05-05,"A betrayed Roman general rises as a gladiator to challenge a corrupt emperor.",Ridley Scott,"Russell Crowe|Joaquin Phoenix|Connie Nielsen","revenge|arena|rome|epic",155,https://www.youtube.com/watch?v=owK1qxDselE,https://www.youtube.com/results?search_query=Watch+Gladiator+full+movie,https://image.tmdb.org/t/p/w500/ty8TGRuvJLPUmAR1H1nRIsgwvim.jpg,"Action|Adventure|Drama",https://image.tmdb.org/t/p/w780/jhk6D8pim3yaByu1801kMoxXFaX.jpg,4.5,81
-tt1853728,Django Unchained,2012-12-25,"A freed slave partners with a bounty hunter to rescue his wife from a brutal plantation owner.",Quentin Tarantino,"Jamie Foxx|Christoph Waltz|Leonardo DiCaprio","revenge|western|bounty hunter|rescue",165,https://www.youtube.com/watch?v=eUdM9vrCbow,https://www.youtube.com/results?search_query=Watch+Django+Unchained+full+movie,https://image.tmdb.org/t/p/w500/7oWY8VDWW7thTzWh3OKYRkWUlD5.jpg,"Drama|Western",https://image.tmdb.org/t/p/w780/s4cJQaj40SwMifUrrdtdOJsjnRO.jpg,4.4,66
-tt0317248,City of God,2002-08-30,"Two young men choose very different paths while growing up amid violence in the favelas of Rio.",Fernando Meirelles,"Alexandre Rodrigues|Leandro Firmino|Phellipe Haagensen","favela|coming of age|crime|violence",130,https://www.youtube.com/watch?v=dcUOO4Itgmw,https://www.youtube.com/results?search_query=Watch+City+of+God+full+movie,https://image.tmdb.org/t/p/w500/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg,"Crime|Drama",https://image.tmdb.org/t/p/w780/uvitbjFU4JqvMwIkMWHp69bmUzG.jpg,4.6,59
-tt0120815,Saving Private Ryan,1998-07-24,"A group of soldiers venture behind enemy lines to bring a paratrooper home during World War II.",Steven Spielberg,"Tom Hanks|Matt Damon|Tom Sizemore","war|rescue mission|brotherhood|d-day",169,https://www.youtube.com/watch?v=9CiW_DgxCnQ,https://www.youtube.com/results?search_query=Watch+Saving+Private+Ryan+full+movie,https://image.tmdb.org/t/p/w500/isSrJpZ5SuWr2za9OxowpjkfXhp.jpg,"Drama|War",https://image.tmdb.org/t/p/w780/rW2xRFlJRbTnBJlQTSjQmjevIwb.jpg,4.7,79
-tt4154796,Avengers: Endgame,2019-04-26,"The Avengers assemble one last time to reverse a catastrophic loss and restore the universe.",Anthony Russo,"Robert Downey Jr.|Chris Evans|Scarlett Johansson","superhero|time travel|team-up|sacrifice",181,https://www.youtube.com/watch?v=TcMBFSGVi1c,https://www.youtube.com/results?search_query=Watch+Avengers+Endgame+full+movie,https://image.tmdb.org/t/p/w500/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg,"Action|Adventure|Sci-Fi",https://image.tmdb.org/t/p/w780/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg,4.3,128
-tt0993846,The Wolf of Wall Street,2013-12-25,"A stockbroker rises and crashes spectacularly while indulging in excess and corruption.",Martin Scorsese,"Leonardo DiCaprio|Jonah Hill|Margot Robbie","finance|excess|rise and fall|wall street",180,https://www.youtube.com/watch?v=iszwuX1AK6A,https://www.youtube.com/results?search_query=Watch+Wolf+of+Wall+Street+full+movie,https://image.tmdb.org/t/p/w500/kW9LmvYHAaS9iA0tHmZVq8hQYoq.jpg,"Biography|Comedy|Crime",https://image.tmdb.org/t/p/w780/7Nwnmyzrtd0FkcRyPqmdzTPppQa.jpg,4.2,72
-tt2582802,Whiplash,2014-10-10,"A driven drummer and an unforgiving instructor push each other to dangerous extremes.",Damien Chazelle,"Miles Teller|J.K. Simmons|Melissa Benoist","music|perfectionism|jazz|obsession",106,https://www.youtube.com/watch?v=7d_jQycdQGo,https://www.youtube.com/results?search_query=Watch+Whiplash+full+movie,https://image.tmdb.org/t/p/w500/7fn624j5lj3xTme2SgiLCeuedmO.jpg,"Drama|Music",https://image.tmdb.org/t/p/w780/wbQa0EnWUyRzQ5d1pHLNRlmsCUP.jpg,4.8,74
-tt4154756,Avengers: Infinity War,2018-04-27,"The Avengers and their allies try to stop Thanos from collecting all six Infinity Stones.",Anthony Russo,"Robert Downey Jr.|Chris Hemsworth|Josh Brolin","superhero|cosmic|team-up|villain",149,https://www.youtube.com/watch?v=6ZfuNTqbHE8,https://www.youtube.com/results?search_query=Watch+Avengers+Infinity+War+full+movie,https://image.tmdb.org/t/p/w500/qOsvcxDd3txFzy30rFbfknnd8Ek.jpg,"Action|Adventure|Sci-Fi",https://image.tmdb.org/t/p/w780/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg,4.4,118
-tt2380307,Coco,2017-11-22,"A young boy travels to the Land of the Dead to uncover his family's forgotten story.",Lee Unkrich,"Anthony Gonzalez|Gael Garcia Bernal|Benjamin Bratt","family|music|afterlife|memory",105,https://www.youtube.com/watch?v=Rvr68u6k5sI,https://www.youtube.com/results?search_query=Watch+Coco+full+movie,https://image.tmdb.org/t/p/w500/6Ryitt95xrO8KXuqRGm1fUuNwqF.jpg,"Adventure|Animation|Family",https://image.tmdb.org/t/p/w780/g7CHF8gTLGooTbP4GznIGwaqAGL.jpg,4.7,64
-tt1630029,Avatar: The Way of Water,2022-12-16,"Jake Sully lives with his newfound family formed on the extrasolar moon Pandora. Once a familiar threat returns to finish what was previously started, Jake must work with Neytiri and the army of the Na'vi race to protect their home.",James Cameron,"Sam Worthington|Zoe Saldaña|Sigourney Weaver","pandora|family|alien|sci-fi",192,https://www.youtube.com/watch?v=d9MyW72ELq0,https://www.youtube.com/results?search_query=Watch+Avatar+Way+of+Water+full+movie,https://image.tmdb.org/t/p/w500/qnzQm0PCVnSyv1dqpVmRgMWHbLD.jpg,"Action|Adventure|Fantasy|Sci-Fi",https://image.tmdb.org/t/p/w780/cd8YDn7M0lfaHhZdU6MvCDxPalP.jpg,4.4,45
-tt15398776,Oppenheimer,2023-07-21,"The story of American scientist, J. Robert Oppenheimer, and his role in the development of the atomic bomb.",Christopher Nolan,"Cillian Murphy|Emily Blunt|Matt Damon|Robert Downey Jr.","biography|history|manhattan project|nuclear",180,https://www.youtube.com/watch?v=uYPbbksJxIg,https://www.youtube.com/results?search_query=Watch+Oppenheimer+full+movie,https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg,"Biography|Drama|History",https://image.tmdb.org/t/p/w780/ycnO0cjsAROSGJKuMODgRtWsHQw.jpg,4.8,112
-tt10366206,John Wick: Chapter 4,2023-03-24,"John Wick uncovers a path to defeating The High Table. But before he can earn his freedom, Wick must face off against a new enemy with powerful alliances across the globe and forces that turn old friends into foes.",Chad Stahelski,"Keanu Reeves|Donnie Yen|Bill Skarsgård","action|assassin|martial arts|sequel",169,https://www.youtube.com/watch?v=qEVUtrk8_B4,https://www.youtube.com/results?search_query=Watch+John+Wick+Chapter+4+full+movie,https://image.tmdb.org/t/p/w500/sP7MVWz9Fi5nkLmRCNKXnlcKkdb.jpg,"Action|Crime|Thriller",https://image.tmdb.org/t/p/w780/7I6VUdPj6tQECNHdviJkUHD2u89.jpg,4.5,88
-tt1160419,Dune,2021-10-22,"A noble family becomes embroiled in a war for control over the galaxy's most valuable asset while its heir becomes troubled by visions of a dark future.",Denis Villeneuve,"Timothée Chalamet|Rebecca Ferguson|Oscar Isaac","spice|desert planet|feudalism|prophecy",155,https://www.youtube.com/watch?v=n9xhKvBWxl4,https://www.youtube.com/results?search_query=Watch+Dune+full+movie,https://image.tmdb.org/t/p/w500/pc15b0pi8o1oUv9vNhakwMQ9TxA.jpg,"Action|Adventure|Drama|Sci-Fi",https://image.tmdb.org/t/p/w780/wYMbnrdRCREjNLwFlG5SLWzBjui.jpg,4.6,92
-tt1877830,The Batman,2022-03-04,"When a sadistic serial killer begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.",Matt Reeves,"Robert Pattinson|Zoë Kravitz|Paul Dano","detective|vigilante|corruption|serial killer",176,https://www.youtube.com/watch?v=mqqft2x_Aa4,https://www.youtube.com/results?search_query=Watch+The+Batman+full+movie,https://image.tmdb.org/t/p/w500/djCPA8NYhhsDT1DVTViOgH4INqY.jpg,"Action|Crime|Drama",https://image.tmdb.org/t/p/w780/rvtdN5XkWAfGX6xDuPL6yYS2seK.jpg,4.4,101
+tt0109830,Forrest Gump,1994-01-01,Forrest Gump is a comedy/drama film released in 1994.,,,bittersweet|bubba gump shrimp|emotional|heartwarming|lieutenant dan|shrimp|stupid is as stupid does|touching,,,,,Comedy|Drama|Romance|War,,4.2,329
+tt0111161,"Shawshank Redemption, The",1994-01-01,"Shawshank Redemption, The is a crime/drama film released in 1994.",,,morgan freeman|prison|stephen king|wrongful imprisonment,,,,,Crime|Drama,,4.4,317
+tt0110912,Pulp Fiction,1994-01-01,Pulp Fiction is a comedy/crime film released in 1994.,,,1990s|achronological|action|action packed|aggressive|amazing|amazing dialogues|anthology,,,,,Comedy|Crime|Drama|Thriller,,4.2,307
+tt0102926,"Silence of the Lambs, The",1991-01-01,"Silence of the Lambs, The is a crime/horror film released in 1991.",,,disturbing|drama|gothic|hannibal lector|psychology|suspense,,,,,Crime|Horror|Thriller,,4.2,279
+tt0133093,"Matrix, The",1999-01-01,"Matrix, The is a action/sci-fi film released in 1999.",,,alternate universe|martial arts|philosophy|post apocalyptic|sci-fi,,,,,Action|Sci-Fi|Thriller,,4.2,278
+tt0076759,Star Wars: Episode IV - A New Hope,1977-01-01,Star Wars: Episode IV - A New Hope is a action/adventure film released in 1977.,,,action|classic|classic sci-fi|darth vader|engrossing adventure|epic|great soundtrack|luke skywalker,,,,,Action|Adventure|Sci-Fi,,4.2,251
+tt0107290,Jurassic Park,1993-01-01,Jurassic Park is a action/adventure film released in 1993.,,,dinosaur,,,,,Action|Adventure|Sci-Fi|Thriller,,3.8,238
+tt0112573,Braveheart,1995-01-01,Braveheart is a action/drama film released in 1995.,,,beautiful scenery|epic|historical|inspirational|medieval|mel gibson|oscar (best cinematography)|revenge,,,,,Action|Drama|War,,4.0,237
+tt0103064,Terminator 2: Judgment Day,1991-01-01,Terminator 2: Judgment Day is a action/sci-fi film released in 1991.,,,apocalypse|arnold schwarzenegger|nuclear war|robots|sci-fi|scifi masterpiece|suspense|time travel,,,,,Action|Sci-Fi,,4.0,224
+tt0108052,Schindler's List,1993-01-01,Schindler's List is a drama/war film released in 1993.,,,based on a true story|biography|disturbing|holocaust|moving|thought-provoking,,,,,Drama|War,,4.2,220
+tt0137523,Fight Club,1999-01-01,Fight Club is a action/crime film released in 1999.,,,action|atmospheric|based on a book|brad pitt|challenging|chuck palahniuk|classic|clever,,,,,Action|Crime|Drama|Thriller,,4.3,218
+tt0114709,Toy Story,1995-01-01,Toy Story is a adventure/animation film released in 1995.,,,fun|pixar,,,,,Adventure|Animation|Children|Comedy|Fantasy,,3.9,215
+tt0080684,Star Wars: Episode V - The Empire Strikes Back,1980-01-01,Star Wars: Episode V - The Empire Strikes Back is a action/adventure film released in 1980.,,,classic|george lucas|harrison ford|i am your father|music|original plot|sci-fi|sequel,,,,,Action|Adventure|Sci-Fi,,4.2,211
+tt0114814,"Usual Suspects, The",1995-01-01,"Usual Suspects, The is a crime/mystery film released in 1995.",,,heist|mindfuck|suspense|thriller|tricky|twist ending,,,,,Crime|Mystery|Thriller,,4.2,204
+tt0169547,American Beauty,1999-01-01,American Beauty is a drama/romance film released in 1999.,,,,,,,,Drama|Romance,,4.1,204
+tt0114369,Seven (a.k.a. Se7en),1995-01-01,Seven (a.k.a. Se7en) is a mystery/thriller film released in 1995.,,,mystery|serial killer|twist ending,,,,,Mystery|Thriller,,4.0,203
+tt0116629,Independence Day (a.k.a. ID4),1996-01-01,Independence Day (a.k.a. ID4) is a action/adventure film released in 1996.,,,aliens,,,,,Action|Adventure|Sci-Fi|Thriller,,3.4,202
+tt0112384,Apollo 13,1995-01-01,Apollo 13 is a adventure/drama film released in 1995.,,,moon|nasa|space,,,,,Adventure|Drama|IMAX,,3.8,201
+tt0082971,Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark),1981-01-01,Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) is a action/adventure film released in 1981.,,,adventure|archaeology|ark of the covenant|indiana jones|steven spielberg|treasure hunt,,,,,Action|Adventure,,4.2,200
+tt0120737,"Lord of the Rings: The Fellowship of the Ring, The",2001-01-01,"Lord of the Rings: The Fellowship of the Ring, The is a adventure/fantasy film released in 2001.",,,fantasy|high fantasy|magic|mythology|tolkein|tolkien|wizards,,,,,Adventure|Fantasy,,4.1,198
+tt0086190,Star Wars: Episode VI - Return of the Jedi,1983-01-01,Star Wars: Episode VI - Return of the Jedi is a action/adventure film released in 1983.,,,darth vader|luke skywalker|space opera,,,,,Action|Adventure|Sci-Fi,,4.1,196
+tt0068646,"Godfather, The",1972-01-01,"Godfather, The is a crime/drama film released in 1972.",,,mafia,,,,,Crime|Drama,,4.3,192
+tt0106977,"Fugitive, The",1993-01-01,"Fugitive, The is a thriller film released in 1993.",,,based on a tv show,,,,,Thriller,,4.0,190
+tt0096895,Batman,1989-01-01,Batman is a action/crime film released in 1989.,,,superhero,,,,,Action|Crime|Thriller,,3.4,189
+tt0120815,Saving Private Ryan,1998-01-01,Saving Private Ryan is a action/drama film released in 1998.,,,world war ii,,,,,Action|Drama|War,,4.1,188
+tt0167261,"Lord of the Rings: The Two Towers, The",2002-01-01,"Lord of the Rings: The Two Towers, The is a adventure/fantasy film released in 2002.",,,myth|tolkein,,,,,Adventure|Fantasy,,4.0,188
+tt0167260,"Lord of the Rings: The Return of the King, The",2003-01-01,"Lord of the Rings: The Return of the King, The is a action/adventure film released in 2003.",,,adventure|ensemble cast|fantasy|fantasy world|great soundtrack|lord of the rings|scenic|stylized,,,,,Action|Adventure|Drama|Fantasy,,4.1,185
+tt0103639,Aladdin,1992-01-01,Aladdin is a adventure/animation film released in 1992.,,,disney,,,,,Adventure|Animation|Children|Comedy|Musical,,3.8,183
+tt0116282,Fargo,1996-01-01,Fargo is a comedy/crime film released in 1996.,,,based on a true story|coen brothers|dark comedy|kidnapping|steve buscemi,,,,,Comedy|Crime|Drama|Thriller,,4.1,181
+tt0167404,"Sixth Sense, The",1999-01-01,"Sixth Sense, The is a drama/horror film released in 1999.",,,atmospheric|bruce willis|ghosts|i see dead people|imdb top 250|mindfuck|stylized|twist ending,,,,,Drama|Horror|Mystery,,3.9,179
+tt0111503,True Lies,1994-01-01,True Lies is a action/adventure film released in 1994.,,,spies,,,,,Action|Adventure|Comedy|Romance|Thriller,,3.5,178
+tt0114746,Twelve Monkeys (a.k.a. 12 Monkeys),1995-01-01,Twelve Monkeys (a.k.a. 12 Monkeys) is a mystery/sci-fi film released in 1995.,,,brad pitt|bruce willis|mindfuck|post apocalyptic|post-apocalyptic|remake|time travel|twist ending,,,,,Mystery|Sci-Fi|Thriller,,4.0,177
+tt0110357,"Lion King, The",1994-01-01,"Lion King, The is a adventure/animation film released in 1994.",,,disney|disney animated feature|oscar (best music - original score)|soundtrack,,,,,Adventure|Animation|Children|Drama|Musical|IMAX,,3.9,172
+tt0088763,Back to the Future,1985-01-01,Back to the Future is a adventure/comedy film released in 1985.,,,time travel,,,,,Adventure|Comedy|Sci-Fi,,4.0,171
+tt0111257,Speed,1994-01-01,Speed is a action/romance film released in 1994.,,,bus,,,,,Action|Romance|Thriller,,3.5,171
+tt0172495,Gladiator,2000-01-01,Gladiator is a action/adventure film released in 2000.,,,ancient rome|epic|history|imdb top 250|revenge|romans|rome|russell crowe,,,,,Action|Adventure|Drama,,3.9,170
+tt0126029,Shrek,2001-01-01,Shrek is a adventure/animation film released in 2001.,,,fairy tales,,,,,Adventure|Animation|Children|Comedy|Fantasy|Romance,,3.9,170
+tt0119654,Men in Black (a.k.a. MIB),1997-01-01,Men in Black (a.k.a. MIB) is a action/comedy film released in 1997.,,,aliens,,,,,Action|Comedy|Sci-Fi,,3.5,165
+tt0099348,Dances with Wolves,1990-01-01,Dances with Wolves is a adventure/drama film released in 1990.,,,american indians|native americans,,,,,Adventure|Drama|Western,,3.8,164
+tt0117060,Mission: Impossible,1996-01-01,Mission: Impossible is a action/adventure film released in 1996.,,,based on a tv show,,,,,Action|Adventure|Mystery|Thriller,,3.5,162
+tt0109040,Ace Ventura: Pet Detective,1994-01-01,Ace Ventura: Pet Detective is a comedy film released in 1994.,,,,,,,,Comedy,,3.0,161
+tt0209144,Memento,2000-01-01,Memento is a mystery/thriller film released in 2000.,,,backwards. memory|cerebral|dark|dreamlike|mindfuck|mystery|nonlinear|psychological,,,,,Mystery|Thriller,,4.1,159
+tt0110475,"Mask, The",1994-01-01,"Mask, The is a action/comedy film released in 1994.",,,,,,,,Action|Comedy|Crime|Fantasy,,3.2,157
+tt0468569,"Dark Knight, The",2008-01-01,"Dark Knight, The is a action/crime film released in 2008.",,,dark|gritty|psychology|superhero,,,,,Action|Crime|Drama|IMAX,,4.2,149
+tt0325980,Pirates of the Caribbean: The Curse of the Black Pearl,2003-01-01,Pirates of the Caribbean: The Curse of the Black Pearl is a action/adventure film released in 2003.,,,swashbuckler,,,,,Action|Adventure|Comedy|Fantasy,,3.8,149
+tt0078748,Alien,1979-01-01,Alien is a horror/sci-fi film released in 1979.,,,aliens,,,,,Horror|Sci-Fi,,4.0,146
+tt0101414,Beauty and the Beast,1991-01-01,Beauty and the Beast is a animation/children film released in 1991.,,,disney,,,,,Animation|Children|Fantasy|Musical|Romance|IMAX,,3.8,146
+tt0095016,Die Hard,1988-01-01,Die Hard is a action/crime film released in 1988.,,,,,,,,Action|Crime|Thriller,,3.9,145
+tt0107614,Mrs. Doubtfire,1993-01-01,Mrs. Doubtfire is a comedy/drama film released in 1993.,,,cross dressing|divorce|men in drag,,,,,Comedy|Drama,,3.4,144
+tt0112864,Die Hard: With a Vengeance,1995-01-01,Die Hard: With a Vengeance is a action/crime film released in 1995.,,,,,,,,Action|Crime|Thriller,,3.6,144
+tt0107048,Groundhog Day,1993-01-01,Groundhog Day is a comedy/fantasy film released in 1993.,,,,,,,,Comedy|Fantasy|Romance,,3.9,143
+tt1375666,Inception,2010-01-01,Inception is a action/crime film released in 2010.,,,action|alternate reality|big budget|cerebral|clever|complicated|dead wife|dreamlike,,,,,Action|Crime|Drama|Mystery|Sci-Fi|Thriller|IMAX,,4.1,143
+tt0093779,"Princess Bride, The",1987-01-01,"Princess Bride, The is a action/adventure film released in 1987.",,,inigo montoya|six-fingered man,,,,,Action|Adventure|Comedy|Fantasy|Romance,,4.2,142
+tt0119217,Good Will Hunting,1997-01-01,Good Will Hunting is a drama/romance film released in 1997.,,,heartwarming|inspirational,,,,,Drama|Romance,,4.1,141
+tt0266543,Finding Nemo,2003-01-01,Finding Nemo is a adventure/animation film released in 2003.,,,disney|fish|heartwarming,,,,,Adventure|Animation|Children|Comedy,,4.0,141
+tt0111282,Stargate,1994-01-01,Stargate is a action/adventure film released in 1994.,,,time travel,,,,,Action|Adventure|Sci-Fi,,3.4,140
+tt0097576,Indiana Jones and the Last Crusade,1989-01-01,Indiana Jones and the Last Crusade is a action/adventure film released in 1989.,,,archaeology|holy grail,,,,,Action|Adventure,,4.0,140
+tt0120915,Star Wars: Episode I - The Phantom Menace,1999-01-01,Star Wars: Episode I - The Phantom Menace is a action/adventure film released in 1999.,,,prequel|the force,,,,,Action|Adventure|Sci-Fi,,3.1,140
+tt0120338,Titanic,1997-01-01,Titanic is a drama/romance film released in 1997.,,,romance|shipwreck,,,,,Drama|Romance,,3.4,140
+tt0112462,Batman Forever,1995-01-01,Batman Forever is a action/adventure film released in 1995.,,,superhero,,,,,Action|Adventure|Comedy|Crime,,2.9,137
+tt0071853,Monty Python and the Holy Grail,1975-01-01,Monty Python and the Holy Grail is a adventure/comedy film released in 1975.,,,british comedy|england|king arthur|monty python,,,,,Adventure|Comedy|Fantasy,,4.2,136
+tt0100405,Pretty Woman,1990-01-01,Pretty Woman is a comedy/romance film released in 1990.,,,prostitution,,,,,Comedy|Romance,,3.5,135
+tt0109686,Dumb & Dumber (Dumb and Dumber),1994-01-01,Dumb & Dumber (Dumb and Dumber) is a adventure/comedy film released in 1994.,,,,,,,,Adventure|Comedy,,3.1,133
+tt0120903,X-Men,2000-01-01,X-Men is a action/adventure film released in 2000.,,,action|comic book|hugh jackman|marvel|superhero,,,,,Action|Adventure|Sci-Fi,,3.7,133
+tt0110413,Léon: The Professional (a.k.a. The Professional) (Léon),1994-01-01,Léon: The Professional (a.k.a. The Professional) (Léon) is a action/crime film released in 1994.,,,action|assassin|assassination|assassins|awkward romance|corruption|crime|disturbing,,,,,Action|Crime|Drama|Thriller,,4.0,133
+tt0073486,One Flew Over the Cuckoo's Nest,1975-01-01,One Flew Over the Cuckoo's Nest is a drama film released in 1975.,,,emotional|jack nicholson|mental illness,,,,,Drama,,4.2,133
+tt0113189,GoldenEye,1995-01-01,GoldenEye is a action/adventure film released in 1995.,,,,,,,,Action|Adventure|Thriller,,3.5,132
+tt0198781,"Monsters, Inc.",2001-01-01,"Monsters, Inc. is a adventure/animation film released in 2001.",,,,,,,,Adventure|Animation|Children|Comedy|Fantasy,,3.9,132
+tt0105236,Reservoir Dogs,1992-01-01,Reservoir Dogs is a crime/mystery film released in 1992.,,,ensemble cast|heist|humorous|neo-noir|nonlinear|quentin tarantino|religion|stylized,,,,,Crime|Mystery|Thriller,,4.2,131
+tt0088247,"Terminator, The",1984-01-01,"Terminator, The is a action/sci-fi film released in 1984.",,,action|artificial intelligence|robots|sci-fi|special effects|tense|time travel,,,,,Action|Sci-Fi|Thriller,,3.9,131
+tt0266697,Kill Bill: Vol. 1,2003-01-01,Kill Bill: Vol. 1 is a action/crime film released in 2003.,,,martial arts|revenge,,,,,Action|Crime|Thriller,,4.0,131
+tt0338013,Eternal Sunshine of the Spotless Mind,2004-01-01,Eternal Sunshine of the Spotless Mind is a drama/romance film released in 2004.,,,alternate reality|arthouse|artistic|atmospheric|beautiful|bittersweet|colourful|comedy,,,,,Drama|Romance|Sci-Fi,,4.2,131
+tt0120586,American History X,1998-01-01,American History X is a crime/drama film released in 1998.,,,edward norton|emotional|politics|racism|thought-provoking,,,,,Crime|Drama,,4.2,129
+tt0071562,"Godfather: Part II, The",1974-01-01,"Godfather: Part II, The is a crime/drama film released in 1974.",,,al pacino|mafia,,,,,Crime|Drama,,4.3,129
+tt0112431,Babe,1995-01-01,Babe is a children/drama film released in 1995.,,,animal movie|pigs|villain nonexistent or not needed for good story,,,,,Children|Drama,,3.7,128
+tt0099685,Goodfellas,1990-01-01,Goodfellas is a crime/drama film released in 1990.,,,mafia,,,,,Crime|Drama,,4.2,126
+tt0090605,Aliens,1986-01-01,Aliens is a action/adventure film released in 1986.,,,action|aliens|horror|sci-fi|space|space craft|space travel|suspense,,,,,Action|Adventure|Horror|Sci-Fi,,4.0,126
+tt0120382,"Truman Show, The",1998-01-01,"Truman Show, The is a comedy/drama film released in 1998.",,,tv,,,,,Comedy|Drama|Sci-Fi,,3.8,125
+tt0317705,"Incredibles, The",2004-01-01,"Incredibles, The is a action/adventure film released in 2004.",,,animation|disney|samuel l. jackson|superhero,,,,,Action|Adventure|Animation|Children|Comedy,,3.8,125
+tt0083658,Blade Runner,1982-01-01,Blade Runner is a action/sci-fi film released in 1982.,,,androids|artificial intelligence|atmospheric|cyberpunk|dreamlike|existentialism|future|mindfuck,,,,,Action|Sci-Fi|Thriller,,4.1,124
+tt0117998,Twister,1996-01-01,Twister is a action/adventure film released in 1996.,,,disaster,,,,,Action|Adventure|Romance|Thriller,,3.3,123
+tt0268978,"Beautiful Mind, A",2001-01-01,"Beautiful Mind, A is a drama/romance film released in 2001.",,,mathematics,,,,,Drama|Romance,,4.0,123
+tt0083866,E.T. the Extra-Terrestrial,1982-01-01,E.T. the Extra-Terrestrial is a children/drama film released in 1982.,,,aliens,,,,,Children|Drama|Sci-Fi,,3.8,122
+tt0145487,Spider-Man,2002-01-01,Spider-Man is a action/adventure film released in 2002.,,,superhero,,,,,Action|Adventure|Sci-Fi|Thriller,,3.5,122
+tt0117500,"Rock, The",1996-01-01,"Rock, The is a action/adventure film released in 1996.",,,alcatraz|michael bay|terrorism,,,,,Action|Adventure|Thriller,,3.6,121
+tt0145660,Austin Powers: The Spy Who Shagged Me,1999-01-01,Austin Powers: The Spy Who Shagged Me is a action/adventure film released in 1999.,,,,,,,,Action|Adventure|Comedy,,3.2,121
+tt0066921,"Clockwork Orange, A",1971-01-01,"Clockwork Orange, A is a crime/drama film released in 1971.",,,brainwashing,,,,,Crime|Drama|Sci-Fi|Thriller,,4.0,120
+tt0087332,Ghostbusters (a.k.a. Ghost Busters),1984-01-01,Ghostbusters (a.k.a. Ghost Busters) is a action/comedy film released in 1984.,,,ghosts,,,,,Action|Comedy|Sci-Fi,,3.8,120
+tt0181689,Minority Report,2002-01-01,Minority Report is a action/crime film released in 2002.,,,future,,,,,Action|Crime|Mystery|Sci-Fi|Thriller,,3.6,120
+tt0211915,"Amelie (Fabuleux destin d'Amélie Poulain, Le)",2001-01-01,"Amelie (Fabuleux destin d'Amélie Poulain, Le) is a comedy/romance film released in 2001.",,,whimsical,,,,,Comedy|Romance,,4.2,120
+tt0067992,Willy Wonka & the Chocolate Factory,1971-01-01,Willy Wonka & the Chocolate Factory is a children/comedy film released in 1971.,,,,,,,,Children|Comedy|Fantasy|Musical,,3.9,119
+tt0240772,Ocean's Eleven,2001-01-01,Ocean's Eleven is a crime/thriller film released in 2001.,,,heist,,,,,Crime|Thriller,,3.8,119
+tt0372784,Batman Begins,2005-01-01,Batman Begins is a action/crime film released in 2005.,,,,,,,,Action|Crime|IMAX,,3.9,116
+tt0099785,Home Alone,1990-01-01,Home Alone is a children/comedy film released in 1990.,,,christmas,,,,,Children|Comedy,,3.0,116
+tt0119116,"Fifth Element, The",1997-01-01,"Fifth Element, The is a action/adventure film released in 1997.",,,,,,,,Action|Adventure|Comedy|Sci-Fi,,3.7,116
+tt0114898,Waterworld,1995-01-01,Waterworld is a action/adventure film released in 1995.,,,,,,,,Action|Adventure|Sci-Fi,,2.9,115
+tt0099653,Ghost,1990-01-01,Ghost is a comedy/drama film released in 1990.,,,overrated,,,,,Comedy|Drama|Fantasy|Romance|Thriller,,3.4,115
+tt0264464,Catch Me If You Can,2002-01-01,Catch Me If You Can is a crime/drama film released in 2002.,,,cheating|crime|intelligent|leonardo dicaprio|lies|smart|tom hanks|twists & turns,,,,,Crime|Drama,,3.9,115
+tt0088847,"Breakfast Club, The",1985-01-01,"Breakfast Club, The is a comedy/drama film released in 1985.",,,,,,,,Comedy|Drama,,3.8,113
+tt0113957,"Net, The",1995-01-01,"Net, The is a action/crime film released in 1995.",,,computers,,,,,Action|Crime|Thriller,,3.0,112
+tt0258463,"Bourne Identity, The",2002-01-01,"Bourne Identity, The is a action/mystery film released in 2002.",,,,,,,,Action|Mystery|Thriller,,3.8,112
+tt0120689,"Green Mile, The",1999-01-01,"Green Mile, The is a crime/drama film released in 1999.",,,stephen king,,,,,Crime|Drama,,4.1,111
+tt0109444,Clear and Present Danger,1994-01-01,Clear and Present Danger is a action/crime film released in 1994.,,,tom clancy,,,,,Action|Crime|Drama|Thriller,,3.6,110
+tt0190332,"Crouching Tiger, Hidden Dragon (Wo hu cang long)",2000-01-01,"Crouching Tiger, Hidden Dragon (Wo hu cang long) is a action/drama film released in 2000.",,,china|martial arts,,,,,Action|Drama|Romance,,3.8,110
+tt0113497,Jumanji,1995-01-01,Jumanji is a adventure/children film released in 1995.,,,fantasy|game|magic board game|robin williams,,,,,Adventure|Children|Fantasy,,3.4,110
+tt0378194,Kill Bill: Vol. 2,2004-01-01,Kill Bill: Vol. 2 is a action/drama film released in 2004.,,,revenge,,,,,Action|Drama|Thriller,,3.9,110
+tt0081505,"Shining, The",1980-01-01,"Shining, The is a horror film released in 1980.",,,atmospheric|disturbing|horror|jack nicholson|masterpiece|psychological|stanley kubrick|stephen king,,,,,Horror,,4.1,109
+tt0110148,Interview with the Vampire: The Vampire Chronicles,1994-01-01,Interview with the Vampire: The Vampire Chronicles is a drama/horror film released in 1994.,,,,,,,,Drama|Horror,,3.5,109
+tt0062622,2001: A Space Odyssey,1968-01-01,2001: A Space Odyssey is a adventure/drama film released in 1968.,,,aliens|apes|arthur c. clarke|artificial intelligence|atmospheric|cinematography|classic|computer,,,,,Adventure|Drama|Sci-Fi,,3.9,109
+tt0246578,Donnie Darko,2001-01-01,Donnie Darko is a drama/mystery film released in 2001.,,,atmospheric|cerebral|cult film|dreamlike|enigmatic|hallucinatory|jake gyllenhaal|mental illness,,,,,Drama|Mystery|Sci-Fi|Thriller,,4.0,109
+tt0091042,Ferris Bueller's Day Off,1986-01-01,Ferris Bueller's Day Off is a comedy film released in 1986.,,,high school,,,,,Comedy,,3.8,109
+tt0087469,Indiana Jones and the Temple of Doom,1984-01-01,Indiana Jones and the Temple of Doom is a action/adventure film released in 1984.,,,archaeology,,,,,Action|Adventure|Fantasy,,3.6,108
+tt0111280,Star Trek: Generations,1994-01-01,Star Trek: Generations is a adventure/drama film released in 1994.,,,enterprise,,,,,Adventure|Drama|Sci-Fi,,3.4,108
+tt0078788,Apocalypse Now,1979-01-01,Apocalypse Now is a action/drama film released in 1979.,,,vietnam,,,,,Action|Drama|War,,4.2,107
+tt0407887,"Departed, The",2006-01-01,"Departed, The is a crime/drama film released in 2006.",,,atmospheric|jack nicholson|leonardo dicaprio|martin scorsese|suspense|twist ending|undercover cop|way too long,,,,,Crime|Drama|Thriller,,4.3,107
+tt0241527,Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone),2001-01-01,Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) is a adventure/children film released in 2001.,,,alan rickman|everything you want is here|harry potter|humorous|magic|wizards,,,,,Adventure|Children|Fantasy,,3.8,107
+tt0118715,"Big Lebowski, The",1998-01-01,"Big Lebowski, The is a comedy/crime film released in 1998.",,,black comedy|bowling|classic|coen brothers|comedy|crime|cult classic|cult film,,,,,Comedy|Crime,,3.9,106
+tt0108160,Sleepless in Seattle,1993-01-01,Sleepless in Seattle is a comedy/drama film released in 1993.,,,empire state building,,,,,Comedy|Drama|Romance,,3.5,106
+tt0129387,There's Something About Mary,1998-01-01,There's Something About Mary is a comedy/romance film released in 1998.,,,ben stiller|crude humor|goofy,,,,,Comedy|Romance,,3.7,105
+tt1049413,Up,2009-01-01,Up is a adventure/animation film released in 2009.,,,adventure|bechdel test:fail|bittersweet|cartoon|children|computer animation|divorce|dogs,,,,,Adventure|Animation|Children|Drama,,4.0,105
+tt0109445,Clerks,1994-01-01,Clerks is a comedy film released in 1994.,,,cynical|generation x|hilarious|independent film|quirky|witty,,,,,Comedy,,3.9,104
+tt0112697,Clueless,1995-01-01,Clueless is a comedy/romance film released in 1995.,,,chick flick|emma|funny|jane austen|paul rudd|quotable|seen more than once,,,,,Comedy|Romance,,3.3,104
+tt0910970,WALL·E,2008-01-01,WALL·E is a adventure/animation film released in 2008.,,,last man on earth|love story|post apocalyptic|social commentary,,,,,Adventure|Animation|Children|Romance|Sci-Fi,,4.1,104
+tt0075314,Taxi Driver,1976-01-01,Taxi Driver is a crime/drama film released in 1976.,,,assassination,,,,,Crime|Drama|Thriller,,4.1,104
+tt0109831,Four Weddings and a Funeral,1994-01-01,Four Weddings and a Funeral is a comedy/romance film released in 1994.,,,wedding,,,,,Comedy|Romance,,3.5,103
+tt0112740,Crimson Tide,1995-01-01,Crimson Tide is a drama/thriller film released in 1995.,,,submarine,,,,,Drama|Thriller|War,,3.6,103
+tt0163651,American Pie,1999-01-01,American Pie is a comedy/romance film released in 1999.,,,best comedy|chris klein|dumb|jason biggs|not funny|pizza beer|seann william scott|teen,,,,,Comedy|Romance,,3.4,103
+tt0113277,Heat,1995-01-01,Heat is a action/crime film released in 1995.,,,,,,,,Action|Crime|Thriller,,3.9,102
+tt0093058,Full Metal Jacket,1987-01-01,Full Metal Jacket is a drama/war film released in 1987.,,,anti-war|vietnam,,,,,Drama|War,,4.1,102
+tt0295297,Harry Potter and the Chamber of Secrets,2002-01-01,Harry Potter and the Chamber of Secrets is a adventure/fantasy film released in 2002.,,,magic|wizards,,,,,Adventure|Fantasy,,3.6,102
+tt0117951,Trainspotting,1996-01-01,Trainspotting is a comedy/crime film released in 1996.,,,based on a book|dark comedy|drug abuse|narrated,,,,,Comedy|Crime|Drama,,4.0,102
+tt0114069,Outbreak,1995-01-01,Outbreak is a action/drama film released in 1995.,,,,,,,,Action|Drama|Sci-Fi|Thriller,,3.4,101
+tt0106582,Cliffhanger,1993-01-01,Cliffhanger is a action/adventure film released in 1993.,,,,,,,,Action|Adventure|Thriller,,3.0,101
+tt0106918,"Firm, The",1993-01-01,"Firm, The is a drama/thriller film released in 1993.",,,john grisham,,,,,Drama|Thriller,,3.5,101
+tt0118655,Austin Powers: International Man of Mystery,1997-01-01,Austin Powers: International Man of Mystery is a action/adventure film released in 1997.,,,,,,,,Action|Adventure|Comedy,,3.5,100
+tt0034583,Casablanca,1942-01-01,Casablanca is a drama/romance film released in 1942.,,,start of a beautiful friendship,,,,,Drama|Romance,,4.2,100
+tt0162222,Cast Away,2000-01-01,Cast Away is a drama film released in 2000.,,,,,,,,Drama,,3.7,100
+tt0434409,V for Vendetta,2006-01-01,V for Vendetta is a action/sci-fi film released in 2006.,,,,,,,,Action|Sci-Fi|Thriller|IMAX,,3.9,100
+tt0120601,Being John Malkovich,1999-01-01,Being John Malkovich is a comedy/drama film released in 1999.,,,,,,,,Comedy|Drama|Fantasy,,4.0,99
+tt0116483,Happy Gilmore,1996-01-01,Happy Gilmore is a comedy film released in 1996.,,,adam sandler|golf|test tag,,,,,Comedy,,3.4,99
+tt0114924,While You Were Sleeping,1995-01-01,While You Were Sleeping is a comedy/romance film released in 1995.,,,coma,,,,,Comedy|Romance,,3.5,98
+tt0119488,L.A. Confidential,1997-01-01,L.A. Confidential is a crime/film-noir film released in 1997.,,,police,,,,,Crime|Film-Noir|Mystery|Thriller,,4.1,97
+tt0096438,Who Framed Roger Rabbit?,1988-01-01,Who Framed Roger Rabbit? is a adventure/animation film released in 1988.,,,live action/animation,,,,,Adventure|Animation|Children|Comedy|Crime|Fantasy|Mystery,,3.6,97
+tt0057012,Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb,1964-01-01,Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb is a comedy/war film released in 1964.,,,atomic bomb|black comedy|dark comedy|purity of essence|quirky|satire|slim pickens,,,,,Comedy|War,,4.3,97
+tt0120363,Toy Story 2,1999-01-01,Toy Story 2 is a adventure/animation film released in 1999.,,,animation|disney|funny|original|pixar|sequel|tom hanks,,,,,Adventure|Animation|Children|Comedy|Fantasy,,3.9,97
+tt0499549,Avatar,2009-01-01,Avatar is a action/adventure film released in 2009.,,,bad science|beautiful scenery|futuristic|graphic design|james cameron|military|music|politics,,,,,Action|Adventure|Sci-Fi|IMAX,,3.6,97
+tt0180093,Requiem for a Dream,2000-01-01,Requiem for a Dream is a drama film released in 2000.,,,depressing|drug abuse|psychology,,,,,Drama,,3.9,96
+tt0119822,As Good as It Gets,1997-01-01,As Good as It Gets is a comedy/drama film released in 1997.,,,,,,,,Comedy|Drama|Romance,,3.7,96
+tt0234215,"Matrix Reloaded, The",2003-01-01,"Matrix Reloaded, The is a action/adventure film released in 2003.",,,,,,,,Action|Adventure|Sci-Fi|Thriller|IMAX,,3.4,96
+tt0095953,Rain Man,1988-01-01,Rain Man is a drama film released in 1988.,,,autism,,,,,Drama,,3.8,96
+tt0151804,Office Space,1999-01-01,Office Space is a comedy/crime film released in 1999.,,,stapler|workplace,,,,,Comedy|Crime,,4.1,94
+tt0190590,"O Brother, Where Art Thou?",2000-01-01,"O Brother, Where Art Thou? is a adventure/comedy film released in 2000.",,,bluegrass,,,,,Adventure|Comedy|Crime,,3.8,94
+tt0371746,Iron Man,2008-01-01,Iron Man is a action/adventure film released in 2008.,,,,,,,,Action|Adventure|Sci-Fi,,3.8,94
+tt0304141,Harry Potter and the Prisoner of Azkaban,2004-01-01,Harry Potter and the Prisoner of Azkaban is a adventure/fantasy film released in 2004.,,,magic|wizards,,,,,Adventure|Fantasy|IMAX,,3.9,93
+tt0208092,Snatch,2000-01-01,Snatch is a comedy/crime film released in 2000.,,,,,,,,Comedy|Crime|Thriller,,4.2,93
+tt0107688,"Nightmare Before Christmas, The",1993-01-01,"Nightmare Before Christmas, The is a animation/children film released in 1993.",,,christmas|halloween,,,,,Animation|Children|Fantasy|Musical,,3.6,93
+tt0032138,"Wizard of Oz, The",1939-01-01,"Wizard of Oz, The is a adventure/children film released in 1939.",,,dorothy|toto,,,,,Adventure|Children|Fantasy|Musical,,3.9,92
+tt0110632,Natural Born Killers,1994-01-01,Natural Born Killers is a action/crime film released in 1994.,,,brutality|controversial|dark comedy|psychedelic|satire|stylized,,,,,Action|Crime|Thriller,,3.2,92
+tt0120591,Armageddon,1998-01-01,Armageddon is a action/romance film released in 1998.,,,space,,,,,Action|Romance|Sci-Fi|Thriller,,3.1,92
+tt0121765,Star Wars: Episode II - Attack of the Clones,2002-01-01,Star Wars: Episode II - Attack of the Clones is a action/adventure film released in 2002.,,,,,,,,Action|Adventure|Sci-Fi|IMAX,,3.2,92
+tt0298148,Shrek 2,2004-01-01,Shrek 2 is a adventure/animation film released in 2004.,,,ogres,,,,,Adventure|Animation|Children|Comedy|Musical|Romance,,3.6,92
+tt0120623,"Bug's Life, A",1998-01-01,"Bug's Life, A is a adventure/animation film released in 1998.",,,pixar,,,,,Adventure|Animation|Children|Comedy,,3.5,92
+tt0138097,Shakespeare in Love,1998-01-01,Shakespeare in Love is a comedy/drama film released in 1998.,,,england,,,,,Comedy|Drama|Romance,,3.8,92
+tt0094721,Beetlejuice,1988-01-01,Beetlejuice is a comedy/fantasy film released in 1988.,,,,,,,,Comedy|Fantasy,,3.5,91
+tt0094737,Big,1988-01-01,Big is a comedy/drama film released in 1988.,,,children,,,,,Comedy|Drama|Fantasy|Romance,,3.7,91
+tt0092005,Stand by Me,1986-01-01,Stand by Me is a adventure/drama film released in 1986.,,,stephen king,,,,,Adventure|Drama,,4.0,91
+tt0117731,Star Trek: First Contact,1996-01-01,Star Trek: First Contact is a action/adventure film released in 1996.,,,borg,,,,,Action|Adventure|Sci-Fi|Thriller,,3.9,91
+tt0212338,Meet the Parents,2000-01-01,Meet the Parents is a comedy film released in 2000.,,,comedy|robert de niro,,,,,Comedy,,3.4,91
+tt0073195,Jaws,1975-01-01,Jaws is a action/horror film released in 1975.,,,shark,,,,,Action|Horror,,4.0,91
+tt0099810,"Hunt for Red October, The",1990-01-01,"Hunt for Red October, The is a action/adventure film released in 1990.",,,tom clancy,,,,,Action|Adventure|Thriller,,3.9,90
+tt0482571,"Prestige, The",2006-01-01,"Prestige, The is a drama/mystery film released in 2006.",,,atmospheric|enigmatic|ummarti2006,,,,,Drama|Mystery|Sci-Fi|Thriller,,4.0,90
+tt0079470,Monty Python's Life of Brian,1979-01-01,Monty Python's Life of Brian is a comedy film released in 1979.,,,bible|parody|religion,,,,,Comedy,,3.9,89
+tt0113161,Get Shorty,1995-01-01,Get Shorty is a comedy/crime film released in 1995.,,,hollywood,,,,,Comedy|Crime|Thriller,,3.5,89
+tt0099088,Back to the Future Part III,1990-01-01,Back to the Future Part III is a adventure/comedy film released in 1990.,,,,,,,,Adventure|Comedy|Sci-Fi|Western,,3.4,88
+tt0100802,Total Recall,1990-01-01,Total Recall is a action/adventure film released in 1990.,,,,,,,,Action|Adventure|Sci-Fi|Thriller,,3.7,88
+tt0361748,Inglourious Basterds,2009-01-01,Inglourious Basterds is a action/drama film released in 2009.,,,black comedy|brad pitt|christoph waltz|quentin tarantino|satire,,,,,Action|Drama|War,,4.1,88
+tt0118799,Life Is Beautiful (La Vita è bella),1997-01-01,Life Is Beautiful (La Vita è bella) is a comedy/drama film released in 1997.,,,bittersweet|emotional|heartwarming|holocaust|poignant|sentimental|tear jerker|tearjerking,,,,,Comedy|Drama|Romance|War,,4.1,88
+tt0112281,Ace Ventura: When Nature Calls,1995-01-01,Ace Ventura: When Nature Calls is a comedy film released in 1995.,,,,,,,,Comedy,,2.7,88
+tt0120616,"Mummy, The",1999-01-01,"Mummy, The is a action/adventure film released in 1999.",,,,,,,,Action|Adventure|Comedy|Fantasy|Horror|Thriller,,3.1,87
+tt0080339,Airplane!,1980-01-01,Airplane! is a comedy film released in 1980.,,,aviation|spoof,,,,,Comedy,,3.9,87
+tt0245429,Spirited Away (Sen to Chihiro no kamikakushi),2001-01-01,Spirited Away (Sen to Chihiro no kamikakushi) is a adventure/animation film released in 2001.,,,anime,,,,,Adventure|Animation|Fantasy,,4.2,87
+tt0096874,Back to the Future Part II,1989-01-01,Back to the Future Part II is a adventure/comedy film released in 1989.,,,time travel,,,,,Adventure|Comedy|Sci-Fi,,3.5,87
+tt0116996,Mars Attacks!,1996-01-01,Mars Attacks! is a action/comedy film released in 1996.,,,,,,,,Action|Comedy|Sci-Fi,,3.1,86
+tt0115685,"Birdcage, The",1996-01-01,"Birdcage, The is a comedy film released in 1996.",,,,,,,,Comedy,,3.5,86
+tt0097165,Dead Poets Society,1989-01-01,Dead Poets Society is a drama film released in 1989.,,,high school|highschool,,,,,Drama,,4.0,86
+tt0119177,Gattaca,1997-01-01,Gattaca is a drama/sci-fi film released in 1997.,,,future|intelligent|thought-provoking,,,,,Drama|Sci-Fi|Thriller,,4.0,86
+tt0268380,Ice Age,2002-01-01,Ice Age is a adventure/animation film released in 2002.,,,,,,,,Adventure|Animation|Children|Comedy,,3.7,85
+tt0098635,When Harry Met Sally...,1989-01-01,When Harry Met Sally... is a comedy/romance film released in 1989.,,,new york,,,,,Comedy|Romance,,3.9,85
+tt0116695,Jerry Maguire,1996-01-01,Jerry Maguire is a drama/romance film released in 1996.,,,sports,,,,,Drama|Romance,,3.6,85
+tt0080455,"Blues Brothers, The",1980-01-01,"Blues Brothers, The is a action/comedy film released in 1980.",,,saturday night live,,,,,Action|Comedy|Musical,,3.8,84
+tt0047396,Rear Window,1954-01-01,Rear Window is a mystery/thriller film released in 1954.,,,imdb top 250|james stewart|mystery|photographer|photography|voyeurism,,,,,Mystery|Thriller,,4.3,84
+tt0106220,Addams Family Values,1993-01-01,Addams Family Values is a children/comedy film released in 1993.,,,black comedy|christina ricci|christopher lloyd|dark comedy|family|gothic,,,,,Children|Comedy|Fantasy,,3.1,84
+tt0115759,Broken Arrow,1996-01-01,Broken Arrow is a action/adventure film released in 1996.,,,,,,,,Action|Adventure|Thriller,,3.0,84
+tt0401792,Sin City,2005-01-01,Sin City is a action/crime film released in 2005.,,,cult,,,,,Action|Crime|Film-Noir|Mystery|Thriller,,3.9,84
+tt0054215,Psycho,1960-01-01,Psycho is a crime/horror film released in 1960.,,,alfred hitchcock|black and white|imdb top 250|norman bates|psychology|remade|suspenseful|tense,,,,,Crime|Horror,,4.0,83
+tt0181875,Almost Famous,2000-01-01,Almost Famous is a drama film released in 2000.,,,journalism|music|rolling stone,,,,,Drama,,3.9,83
+tt0092099,Top Gun,1986-01-01,Top Gun is a action/romance film released in 1986.,,,navy|predictable,,,,,Action|Romance,,3.3,83
+tt0112641,Casino,1995-01-01,Casino is a crime/drama film released in 1995.,,,mafia,,,,,Crime|Drama,,3.9,82
+tt0118884,Contact,1997-01-01,Contact is a drama/sci-fi film released in 1997.,,,,,,,,Drama|Sci-Fi,,3.7,82
+tt0117218,"Nutty Professor, The",1996-01-01,"Nutty Professor, The is a comedy/fantasy film released in 1996.",,,,,,,,Comedy|Fantasy|Romance|Sci-Fi,,2.7,82
+tt0110932,Quiz Show,1994-01-01,Quiz Show is a drama film released in 1994.,,,tv,,,,,Drama,,3.5,81
+tt0111070,"Santa Clause, The",1994-01-01,"Santa Clause, The is a comedy/drama film released in 1994.",,,christmas,,,,,Comedy|Drama|Fantasy,,3.2,81
+tt0381061,Casino Royale,2006-01-01,Casino Royale is a action/adventure film released in 2006.,,,,,,,,Action|Adventure|Thriller,,3.9,81
+tt0440963,"Bourne Ultimatum, The",2007-01-01,"Bourne Ultimatum, The is a action/crime film released in 2007.",,,assassin|assassin-in-training (scene)|espionage|robert ludlum,,,,,Action|Crime|Thriller,,3.7,81
+tt0457430,"Pan's Labyrinth (Laberinto del fauno, El)",2006-01-01,"Pan's Labyrinth (Laberinto del fauno, El) is a drama/fantasy film released in 2006.",,,atmospheric|bittersweet|visually appealing,,,,,Drama|Fantasy|Thriller,,3.8,81
+tt0106697,Demolition Man,1993-01-01,Demolition Man is a action/adventure film released in 1993.,,,,,,,,Action|Adventure|Sci-Fi,,3.1,81
+tt0120201,Starship Troopers,1997-01-01,Starship Troopers is a action/sci-fi film released in 1997.,,,,,,,,Action|Sci-Fi,,3.3,80
+tt0099487,Edward Scissorhands,1990-01-01,Edward Scissorhands is a drama/fantasy film released in 1990.,,,freaks,,,,,Drama|Fantasy|Romance,,3.7,80
+tt0113862,Mr. Holland's Opus,1995-01-01,Mr. Holland's Opus is a drama film released in 1995.,,,music,,,,,Drama,,3.7,80
+tt0416449,300,2007-01-01,300 is a action/fantasy film released in 2007.,,,,,,,,Action|Fantasy|War|IMAX,,3.7,80
+tt0120655,Dogma,1999-01-01,Dogma is a adventure/comedy film released in 1999.,,,irreverent|jay and silent bob|kevin smith|religion|satire,,,,,Adventure|Comedy|Fantasy,,3.6,79
+tt0242653,"Matrix Revolutions, The",2003-01-01,"Matrix Revolutions, The is a action/adventure film released in 2003.",,,,,,,,Action|Adventure|Sci-Fi|Thriller|IMAX,,3.2,79
+tt0316654,Spider-Man 2,2004-01-01,Spider-Man 2 is a action/adventure film released in 2004.,,,doc ock,,,,,Action|Adventure|Sci-Fi|IMAX,,3.8,79
+tt0061722,"Graduate, The",1967-01-01,"Graduate, The is a comedy/drama film released in 1967.",,,simon and garfunkel,,,,,Comedy|Drama|Romance,,4.1,79
+tt0121766,Star Wars: Episode III - Revenge of the Sith,2005-01-01,Star Wars: Episode III - Revenge of the Sith is a action/adventure film released in 2005.,,,space|space opera,,,,,Action|Adventure|Sci-Fi,,3.4,78
+tt0120630,Chicken Run,2000-01-01,Chicken Run is a animation/children film released in 2000.,,,,,,,,Animation|Children|Comedy,,3.6,78
+tt0119094,Face/Off,1997-01-01,Face/Off is a action/crime film released in 1997.,,,transplants,,,,,Action|Crime|Drama|Thriller,,3.4,77
+tt0119174,"Game, The",1997-01-01,"Game, The is a drama/mystery film released in 1997.",,,mindfuck|mystery|plot twist|psychological|suspense|twist ending,,,,,Drama|Mystery|Thriller,,3.7,77
+tt0029583,Snow White and the Seven Dwarfs,1937-01-01,Snow White and the Seven Dwarfs is a animation/children film released in 1937.,,,disney,,,,,Animation|Children|Drama|Fantasy|Musical,,3.6,77
+tt0108550,What's Eating Gilbert Grape,1993-01-01,What's Eating Gilbert Grape is a drama film released in 1993.,,,mental illness,,,,,Drama,,3.8,77
+tt0120755,Mission: Impossible II,2000-01-01,Mission: Impossible II is a action/adventure film released in 2000.,,,,,,,,Action|Adventure|Thriller,,2.7,77
+tt0449059,Little Miss Sunshine,2006-01-01,Little Miss Sunshine is a adventure/comedy film released in 2006.,,,,,,,,Adventure|Comedy|Drama,,3.9,77
+tt0365748,Shaun of the Dead,2004-01-01,Shaun of the Dead is a comedy/horror film released in 2004.,,,zombies,,,,,Comedy|Horror,,4.0,77
+tt0158983,"South Park: Bigger, Longer and Uncut",1999-01-01,"South Park: Bigger, Longer and Uncut is a animation/comedy film released in 1999.",,,adult humor|controversial|crude humor|free speech|parody|satire|south park|trey parker,,,,,Animation|Comedy|Musical,,3.9,76
+tt1345836,"Dark Knight Rises, The",2012-01-01,"Dark Knight Rises, The is a action/adventure film released in 2012.",,,anne hathaway|christian bale|christopher nolan|comic book|great ending|morgan freeman|political commentary|superhero,,,,,Action|Adventure|Crime|IMAX,,4.0,76
+tt0086879,Amadeus,1984-01-01,Amadeus is a drama film released in 1984.,,,mozart|salieri,,,,,Drama,,4.2,76
+tt0113627,Leaving Las Vegas,1995-01-01,Leaving Las Vegas is a drama/romance film released in 1995.,,,alcoholism,,,,,Drama|Romance,,3.6,76
+tt0106673,Dave,1993-01-01,Dave is a comedy/romance film released in 1993.,,,president,,,,,Comedy|Romance,,3.5,76
+tt0290334,X2: X-Men United,2003-01-01,X2: X-Men United is a action/adventure film released in 2003.,,,jean grey|magneto|rogue|superhero|wolverine,,,,,Action|Adventure|Sci-Fi|Thriller,,3.7,76
+tt1119646,"Hangover, The",2009-01-01,"Hangover, The is a comedy/crime film released in 2009.",,,casino|comedy|funny|hotel|las vegas,,,,,Comedy|Crime,,3.6,76
+tt0093409,Lethal Weapon,1987-01-01,Lethal Weapon is a action/comedy film released in 1987.,,,,,,,,Action|Comedy|Crime|Drama,,3.7,75
+tt0130827,Run Lola Run (Lola rennt),1998-01-01,Run Lola Run (Lola rennt) is a action/crime film released in 1998.,,,alternate endings,,,,,Action|Crime,,4.0,75
+tt0177789,Galaxy Quest,1999-01-01,Galaxy Quest is a adventure/comedy film released in 1999.,,,spoof,,,,,Adventure|Comedy|Sci-Fi,,3.6,75
+tt0146882,High Fidelity,2000-01-01,High Fidelity is a comedy/drama film released in 2000.,,,music|nick hornby,,,,,Comedy|Drama|Romance,,3.7,75
+tt0372183,"Bourne Supremacy, The",2004-01-01,"Bourne Supremacy, The is a action/crime film released in 2004.",,,,,,,,Action|Crime|Thriller,,3.8,75
+tt0317248,City of God (Cidade de Deus),2002-01-01,City of God (Cidade de Deus) is a action/adventure film released in 2002.,,,crime|multiple storylines|not seen|photography|true story|violence,,,,,Action|Adventure|Crime|Drama|Thriller,,4.1,75
+tt0110478,Maverick,1994-01-01,Maverick is a adventure/comedy film released in 1994.,,,,,,,,Adventure|Comedy|Western,,3.5,74
+tt0119528,Liar Liar,1997-01-01,Liar Liar is a comedy film released in 1997.,,,lawyer,,,,,Comedy,,3.0,74
+tt0335266,Lost in Translation,2003-01-01,Lost in Translation is a comedy/drama film released in 2003.,,,atmospheric|japan,,,,,Comedy|Drama|Romance,,4.0,74
+tt0405422,"40-Year-Old Virgin, The",2005-01-01,"40-Year-Old Virgin, The is a comedy/romance film released in 2005.",,,best picture|classic|hilarious|steve carell,,,,,Comedy|Romance,,3.5,74
+tt0816692,Interstellar,2014-01-01,Interstellar is a sci-fi/imax film released in 2014.,,,bad dialogue|black hole|christopher nolan|philosophical issues|sci-fi|thought-provoking|time-travel|visually appealing,,,,,Sci-Fi|IMAX,,4.0,73
+tt0217869,Unbreakable,2000-01-01,Unbreakable is a drama/sci-fi film released in 2000.,,,atmospheric|comics|father-son relationship|mindfuck|somber|superhero|unique,,,,,Drama|Sci-Fi,,3.5,73
+tt0160127,Charlie's Angels,2000-01-01,Charlie's Angels is a action/comedy film released in 2000.,,,,,,,,Action|Comedy,,2.7,72
+tt0382932,Ratatouille,2007-01-01,Ratatouille is a animation/children film released in 2007.,,,a clever chef rat|clever|inspirational,,,,,Animation|Children|Drama,,3.9,72
+tt0060196,"Good, the Bad and the Ugly, The (Buono, il brutto, il cattivo, Il)",1966-01-01,"Good, the Bad and the Ugly, The (Buono, il brutto, il cattivo, Il) is a action/adventure film released in 1966.",,,spaghetti western,,,,,Action|Adventure|Western,,4.1,72
+tt0383574,Pirates of the Caribbean: Dead Man's Chest,2006-01-01,Pirates of the Caribbean: Dead Man's Chest is a action/adventure film released in 2006.,,,,,,,,Action|Adventure|Fantasy,,3.5,72
+tt1853728,Django Unchained,2012-01-01,Django Unchained is a action/drama film released in 2012.,,,action|christoph waltz|funny|good soundtrack|great performances|humour|leonardo dicaprio|quentin tarantino,,,,,Action|Drama|Western,,3.9,71
+tt0095159,"Fish Called Wanda, A",1988-01-01,"Fish Called Wanda, A is a comedy/crime film released in 1988.",,,fish,,,,,Comedy|Crime,,3.9,71
+tt0058331,Mary Poppins,1964-01-01,Mary Poppins is a children/comedy film released in 1964.,,,disney|nanny,,,,,Children|Comedy|Fantasy|Musical,,3.9,71
+tt0315327,Bruce Almighty,2003-01-01,Bruce Almighty is a comedy/drama film released in 2003.,,,classic|religion,,,,,Comedy|Drama|Fantasy|Romance,,3.3,71
+tt0330373,Harry Potter and the Goblet of Fire,2005-01-01,Harry Potter and the Goblet of Fire is a adventure/fantasy film released in 2005.,,,magic|wizards,,,,,Adventure|Fantasy|Thriller|IMAX,,3.8,71
+tt1010048,Slumdog Millionaire,2008-01-01,Slumdog Millionaire is a crime/drama film released in 2008.,,,,,,,,Crime|Drama|Romance,,3.8,71
+tt0109707,Ed Wood,1994-01-01,Ed Wood is a comedy/drama film released in 1994.,,,movie business,,,,,Comedy|Drama,,3.7,70
+tt0093870,RoboCop,1987-01-01,RoboCop is a action/crime film released in 1987.,,,,,,,,Action|Crime|Drama|Sci-Fi|Thriller,,3.4,70
+tt0195685,Erin Brockovich,2000-01-01,Erin Brockovich is a drama film released in 2000.,,,scandal|true story,,,,,Drama,,3.5,70
+tt0181865,Traffic,2000-01-01,Traffic is a crime/drama film released in 2000.,,,based on a tv show|drugs,,,,,Crime|Drama|Thriller,,3.9,70
+tt0107206,In the Line of Fire,1993-01-01,In the Line of Fire is a action/thriller film released in 1993.,,,assassination,,,,,Action|Thriller,,3.7,70
+tt0112346,"American President, The",1995-01-01,"American President, The is a comedy/drama film released in 1995.",,,politics|president,,,,,Comedy|Drama|Romance,,3.7,70
+tt0117571,Scream,1996-01-01,Scream is a comedy/horror film released in 1996.,,,slasher|spoof,,,,,Comedy|Horror|Mystery|Thriller,,3.2,70
+tt0033467,Citizen Kane,1941-01-01,Citizen Kane is a drama/mystery film released in 1941.,,,rosebud,,,,,Drama|Mystery,,4.0,69
+tt0072431,Young Frankenstein,1974-01-01,Young Frankenstein is a comedy/fantasy film released in 1974.,,,spoof,,,,,Comedy|Fantasy,,4.0,69
+tt0107977,Robin Hood: Men in Tights,1993-01-01,Robin Hood: Men in Tights is a comedy film released in 1993.,,,,,,,,Comedy,,3.1,69
+tt0848228,"Avengers, The",2012-01-01,"Avengers, The is a action/adventure film released in 2012.",,,captain america|fun|great humor|silly|superhero|superhero team|visually appealing,,,,,Action|Adventure|Sci-Fi|IMAX,,3.9,69
+tt0319061,Big Fish,2003-01-01,Big Fish is a drama/fantasy film released in 2003.,,,dreamlike|sentimental|surreal|tim burton,,,,,Drama|Fantasy|Romance,,3.8,69
+tt0097523,"Honey, I Shrunk the Kids",1989-01-01,"Honey, I Shrunk the Kids is a adventure/children film released in 1989.",,,disney,,,,,Adventure|Children|Comedy|Fantasy|Sci-Fi,,2.8,68
+tt0110322,Legends of the Fall,1994-01-01,Legends of the Fall is a drama/romance film released in 1994.,,,,,,,,Drama|Romance|War|Western,,3.4,68
+tt0099423,Die Hard 2,1990-01-01,Die Hard 2 is a action/adventure film released in 1990.,,,,,,,,Action|Adventure|Thriller,,3.4,68
+tt0187393,"Patriot, The",2000-01-01,"Patriot, The is a action/drama film released in 2000.",,,,,,,,Action|Drama|War,,3.4,68
+tt0114148,Pocahontas,1995-01-01,Pocahontas is a animation/children film released in 1995.,,,,,,,,Animation|Children|Drama|Musical|Romance,,3.1,68
+tt0077631,Grease,1978-01-01,Grease is a comedy/musical film released in 1978.,,,high school,,,,,Comedy|Musical|Romance,,3.1,68
+tt0265666,"Royal Tenenbaums, The",2001-01-01,"Royal Tenenbaums, The is a comedy/drama film released in 2001.",,,new york,,,,,Comedy|Drama,,3.7,68
+tt0120660,Enemy of the State,1998-01-01,Enemy of the State is a action/thriller film released in 1998.,,,,,,,,Action|Thriller,,3.5,67
+tt0120735,"Lock, Stock & Two Smoking Barrels",1998-01-01,"Lock, Stock & Two Smoking Barrels is a comedy/crime film released in 1998.",,,,,,,,Comedy|Crime|Thriller,,4.1,67
+tt1130884,Shutter Island,2010-01-01,Shutter Island is a drama/mystery film released in 2010.,,,insanity|leonardo dicaprio|martin scorsese|plot twist|psychological|psychological thriller|thought-provoking,,,,,Drama|Mystery|Thriller,,4.0,67
+tt0112818,Dead Man Walking,1995-01-01,Dead Man Walking is a crime/drama film released in 1995.,,,death penalty|nun,,,,,Crime|Drama,,3.8,67
+tt0114388,Sense and Sensibility,1995-01-01,Sense and Sensibility is a drama/romance film released in 1995.,,,jane austen,,,,,Drama|Romance,,3.8,67
+tt0097757,"Little Mermaid, The",1989-01-01,"Little Mermaid, The is a animation/children film released in 1989.",,,,,,,,Animation|Children|Comedy|Musical|Romance,,3.4,67
+tt0119567,"Lost World: Jurassic Park, The",1997-01-01,"Lost World: Jurassic Park, The is a action/adventure film released in 1997.",,,dinosaurs,,,,,Action|Adventure|Sci-Fi|Thriller,,2.8,67
+tt0086250,Scarface,1983-01-01,Scarface is a action/crime film released in 1983.,,,al pacino,,,,,Action|Crime|Drama,,3.9,67
+tt0112851,Desperado,1995-01-01,Desperado is a action/romance film released in 1995.,,,,,,,,Action|Romance|Western,,3.6,66
+tt0088258,This Is Spinal Tap,1984-01-01,This Is Spinal Tap is a comedy film released in 1984.,,,heavy metal|mockumentary|music,,,,,Comedy,,4.0,66
+tt0107818,Philadelphia,1993-01-01,Philadelphia is a drama film released in 1993.,,,aids,,,,,Drama,,3.6,66
+tt0332379,School of Rock,2003-01-01,School of Rock is a comedy/musical film released in 2003.,,,school,,,,,Comedy|Musical,,3.4,66
+tt0108358,Tombstone,1993-01-01,Tombstone is a action/drama film released in 1993.,,,,,,,,Action|Drama|Western,,3.8,65
+tt0243155,Bridget Jones's Diary,2001-01-01,Bridget Jones's Diary is a comedy/drama film released in 2001.,,,singletons,,,,,Comedy|Drama|Romance,,3.6,65
+tt0295178,Austin Powers in Goldmember,2002-01-01,Austin Powers in Goldmember is a comedy film released in 2002.,,,,,,,,Comedy,,2.8,65
+tt0467406,Juno,2007-01-01,Juno is a comedy/drama film released in 2007.,,,michael cera|notable soundtrack|pregnancy|teenage pregnancy|witty,,,,,Comedy|Drama|Romance,,3.8,65
+tt1136608,District 9,2009-01-01,District 9 is a mystery/sci-fi film released in 2009.,,,intelligent sci-fi,,,,,Mystery|Sci-Fi|Thriller,,3.8,65
+tt0094226,"Untouchables, The",1987-01-01,"Untouchables, The is a action/crime film released in 1987.",,,capone|gangsters,,,,,Action|Crime|Drama,,3.9,65
+tt0108399,True Romance,1993-01-01,True Romance is a crime/thriller film released in 1993.,,,,,,,,Crime|Thriller,,3.8,65
+tt0116136,Dragonheart,1996-01-01,Dragonheart is a action/adventure film released in 1996.,,,,,,,,Action|Adventure|Fantasy,,3.1,65
+tt0443453,Borat: Cultural Learnings of America for Make Benefit Glorious Nation of Kazakhstan,2006-01-01,Borat: Cultural Learnings of America for Make Benefit Glorious Nation of Kazakhstan is a comedy film released in 2006.,,,,,,,,Comedy,,3.3,65
+tt0075148,Rocky,1976-01-01,Rocky is a drama film released in 1976.,,,boxing|sports,,,,,Drama,,3.8,64
+tt0109506,"Crow, The",1994-01-01,"Crow, The is a action/crime film released in 1994.",,,,,,,,Action|Crime|Fantasy|Thriller,,3.6,64
+tt0250494,Legally Blonde,2001-01-01,Legally Blonde is a comedy/romance film released in 2001.,,,lawyers,,,,,Comedy|Romance,,3.2,64
+tt0206634,Children of Men,2006-01-01,Children of Men is a action/adventure film released in 2006.,,,,,,,,Action|Adventure|Drama|Sci-Fi|Thriller,,3.9,64
+tt0070735,"Sting, The",1973-01-01,"Sting, The is a comedy/crime film released in 1973.",,,the entertainer,,,,,Comedy|Crime,,4.0,64
+tt0185937,"Blair Witch Project, The",1999-01-01,"Blair Witch Project, The is a drama/horror film released in 1999.",,,claims to be true|video,,,,,Drama|Horror|Thriller,,2.8,64
+tt0059742,"Sound of Music, The",1965-01-01,"Sound of Music, The is a musical/romance film released in 1965.",,,rogers and hammerstein,,,,,Musical|Romance,,3.9,64
+tt0212346,Miss Congeniality,2000-01-01,Miss Congeniality is a comedy/crime film released in 2000.,,,pageant,,,,,Comedy|Crime,,3.1,64
+tt0477348,No Country for Old Men,2007-01-01,No Country for Old Men is a crime/drama film released in 2007.,,,,,,,,Crime|Drama,,3.9,64
+tt0116213,Eraser,1996-01-01,Eraser is a action/drama film released in 1996.,,,,,,,,Action|Drama|Thriller,,3.1,64
+tt0091763,Platoon,1986-01-01,Platoon is a drama/war film released in 1986.,,,vietnam,,,,,Drama|War,,4.0,63
+tt0073629,"Rocky Horror Picture Show, The",1975-01-01,"Rocky Horror Picture Show, The is a comedy/horror film released in 1975.",,,,,,,,Comedy|Horror|Musical|Sci-Fi,,3.3,63
+tt0106598,Coneheads,1993-01-01,Coneheads is a comedy/sci-fi film released in 1993.,,,,,,,,Comedy|Sci-Fi,,2.4,63
+tt0286106,Signs,2002-01-01,Signs is a horror/sci-fi film released in 2002.,,,aliens,,,,,Horror|Sci-Fi|Thriller,,3.2,63
+tt0096754,"Abyss, The",1989-01-01,"Abyss, The is a action/adventure film released in 1989.",,,,,,,,Action|Adventure|Sci-Fi|Thriller,,3.5,62
+tt0071230,Blazing Saddles,1974-01-01,Blazing Saddles is a comedy/western film released in 1974.,,,dark humor|easygoing|silly,,,,,Comedy|Western,,3.9,62
+tt0064115,Butch Cassidy and the Sundance Kid,1969-01-01,Butch Cassidy and the Sundance Kid is a action/western film released in 1969.,,,crime,,,,,Action|Western,,3.9,62
+tt0112642,Casper,1995-01-01,Casper is a adventure/children film released in 1995.,,,,,,,,Adventure|Children,,2.8,62
+tt0325710,"Last Samurai, The",2003-01-01,"Last Samurai, The is a action/adventure film released in 2003.",,,,,,,,Action|Adventure|Drama|War,,3.9,62
+tt0480249,I Am Legend,2007-01-01,I Am Legend is a action/horror film released in 2007.,,,alone in the world|apocalypse|based on a book|last man on earth|plot holes|post apocalyptic|post-apocalyptic|religion,,,,,Action|Horror|Sci-Fi|Thriller|IMAX,,3.5,62
+tt0084726,Star Trek II: The Wrath of Khan,1982-01-01,Star Trek II: The Wrath of Khan is a action/adventure film released in 1982.,,,captain kirk,,,,,Action|Adventure|Sci-Fi|Thriller,,3.8,62
+tt0162661,Sleepy Hollow,1999-01-01,Sleepy Hollow is a fantasy/horror film released in 1999.,,,ichabod crane,,,,,Fantasy|Horror|Mystery|Romance,,3.5,62
+tt0113492,Judge Dredd,1995-01-01,Judge Dredd is a action/crime film released in 1995.,,,,,,,,Action|Crime|Sci-Fi,,2.7,62
+tt0077975,Animal House,1978-01-01,Animal House is a comedy film released in 1978.,,,college|toga,,,,,Comedy,,3.7,62
+tt0363771,"Chronicles of Narnia: The Lion, the Witch and the Wardrobe, The",2005-01-01,"Chronicles of Narnia: The Lion, the Witch and the Wardrobe, The is a adventure/children film released in 2005.",,,c.s. lewis,,,,,Adventure|Children|Fantasy,,3.4,62
+tt0108333,"Three Musketeers, The",1993-01-01,"Three Musketeers, The is a action/adventure film released in 1993.",,,knights,,,,,Action|Adventure|Comedy|Romance,,3.3,61
+tt0078346,Superman,1978-01-01,Superman is a action/adventure film released in 1978.,,,superhero,,,,,Action|Adventure|Sci-Fi,,3.6,61
+tt0105793,Wayne's World,1992-01-01,Wayne's World is a comedy film released in 1992.,,,,,,,,Comedy,,3.5,61
+tt0093773,Predator,1987-01-01,Predator is a action/sci-fi film released in 1987.,,,aliens|arnold schwarzenegger|dialogue|guns|jesse ventura|macho|sci-fi|scifi cult,,,,,Action|Sci-Fi|Thriller,,3.6,61
+tt0107822,"Piano, The",1993-01-01,"Piano, The is a drama/romance film released in 1993.",,,,,,,,Drama|Romance,,3.5,61
+tt0120912,Men in Black II (a.k.a. MIIB) (a.k.a. MIB 2),2002-01-01,Men in Black II (a.k.a. MIIB) (a.k.a. MIB 2) is a action/comedy film released in 2002.,,,crappy sequel|first was much better|sequel,,,,,Action|Comedy|Sci-Fi,,3.0,61
+tt0187078,Gone in 60 Seconds,2000-01-01,Gone in 60 Seconds is a action/crime film released in 2000.,,,,,,,,Action|Crime,,3.2,61
+tt0343818,"I, Robot",2004-01-01,"I, Robot is a action/adventure film released in 2004.",,,,,,,,Action|Adventure|Sci-Fi|Thriller,,3.5,61
+tt0367594,Charlie and the Chocolate Factory,2005-01-01,Charlie and the Chocolate Factory is a adventure/children film released in 2005.,,,roald dahl,,,,,Adventure|Children|Comedy|Fantasy|IMAX,,3.0,61
+tt0120789,Pleasantville,1998-01-01,Pleasantville is a comedy/drama film released in 1998.,,,,,,,,Comedy|Drama|Fantasy,,3.5,61
+tt0425112,Hot Fuzz,2007-01-01,Hot Fuzz is a action/comedy film released in 2007.,,,british comedy,,,,,Action|Comedy|Crime|Mystery,,4.0,61
+tt0032910,Pinocchio,1940-01-01,Pinocchio is a animation/children film released in 1940.,,,disney,,,,,Animation|Children|Fantasy|Musical,,3.5,60
+tt0103776,Batman Returns,1992-01-01,Batman Returns is a action/crime film released in 1992.,,,superhero,,,,,Action|Crime,,3.0,60
+tt0107144,Hot Shots! Part Deux,1993-01-01,Hot Shots! Part Deux is a action/comedy film released in 1993.,,,,,,,,Action|Comedy|War,,2.9,60
+tt0052357,Vertigo,1958-01-01,Vertigo is a drama/mystery film released in 1958.,,,alfred hitchcock|atmospheric|falling|imdb top 250|james stewart,,,,,Drama|Mystery|Romance|Thriller,,4.0,60
+tt0075860,Close Encounters of the Third Kind,1977-01-01,Close Encounters of the Third Kind is a adventure/drama film released in 1977.,,,,,,,,Adventure|Drama|Sci-Fi,,3.7,60
+tt0120746,"Mask of Zorro, The",1998-01-01,"Mask of Zorro, The is a action/comedy film released in 1998.",,,california|mexico,,,,,Action|Comedy|Romance,,3.1,60
+tt0259446,My Big Fat Greek Wedding,2002-01-01,My Big Fat Greek Wedding is a comedy/romance film released in 2002.,,,,,,,,Comedy|Romance,,3.3,60
+tt0119229,Grosse Pointe Blank,1997-01-01,Grosse Pointe Blank is a comedy/crime film released in 1997.,,,hit men|reunion,,,,,Comedy|Crime|Romance,,3.6,59
+tt0118880,Con Air,1997-01-01,Con Air is a action/adventure film released in 1997.,,,,,,,,Action|Adventure|Thriller,,3.0,59
+tt0094012,Spaceballs,1987-01-01,Spaceballs is a comedy/sci-fi film released in 1987.,,,,,,,,Comedy|Sci-Fi,,3.5,59
+tt0088846,Brazil,1985-01-01,Brazil is a fantasy/sci-fi film released in 1985.,,,,,,,,Fantasy|Sci-Fi,,4.2,59
+tt0314331,Love Actually,2003-01-01,Love Actually is a comedy/drama film released in 2003.,,,,,,,,Comedy|Drama|Romance,,3.8,59
+tt0356910,Mr. & Mrs. Smith,2005-01-01,Mr. & Mrs. Smith is a action/adventure film released in 2005.,,,,,,,,Action|Adventure|Comedy|Romance,,3.3,59
+tt0144084,American Psycho,2000-01-01,American Psycho is a crime/horror film released in 2000.,,,,,,,,Crime|Horror|Mystery|Thriller,,3.8,59
+tt2015381,Guardians of the Galaxy,2014-01-01,Guardians of the Galaxy is a action/adventure film released in 2014.,,,funny|great visuals|humorous|unlikely hero,,,,,Action|Adventure|Sci-Fi,,4.1,59
+tt0071315,Chinatown,1974-01-01,Chinatown is a crime/film-noir film released in 1974.,,,incest,,,,,Crime|Film-Noir|Mystery|Thriller,,4.2,59
+tt0796366,Star Trek,2009-01-01,Star Trek is a action/adventure film released in 2009.,,,future|lack of development|lack of story|quick cuts|sci-fi|simon pegg|space|space travel,,,,,Action|Adventure|Sci-Fi|IMAX,,3.9,59
+tt0317740,"Italian Job, The",2003-01-01,"Italian Job, The is a action/crime film released in 2003.",,,heist,,,,,Action|Crime,,3.6,59
+tt0109254,Beverly Hills Cop III,1994-01-01,Beverly Hills Cop III is a action/comedy film released in 1994.,,,,,,,,Action|Comedy|Crime|Thriller,,2.7,59
+tt0104952,My Cousin Vinny,1992-01-01,My Cousin Vinny is a comedy film released in 1992.,,,court,,,,,Comedy,,3.3,59
+tt0117979,"Truth About Cats & Dogs, The",1996-01-01,"Truth About Cats & Dogs, The is a comedy/romance film released in 1996.",,,veterinarian,,,,,Comedy|Romance,,3.4,58
+tt0110622,Naked Gun 33 1/3: The Final Insult,1994-01-01,Naked Gun 33 1/3: The Final Insult is a action/comedy film released in 1994.,,,,,,,,Action|Comedy,,3.1,58
+tt0417741,Harry Potter and the Half-Blood Prince,2009-01-01,Harry Potter and the Half-Blood Prince is a adventure/fantasy film released in 2009.,,,,,,,,Adventure|Fantasy|Mystery|Romance|IMAX,,3.9,58
+tt0988045,Sherlock Holmes,2009-01-01,Sherlock Holmes is a action/crime film released in 2009.,,,,,,,,Action|Crime|Mystery|Thriller,,3.9,58
+tt1504320,"King's Speech, The",2010-01-01,"King's Speech, The is a drama film released in 2010.",,,,,,,,Drama,,4.0,58
+tt0118571,Air Force One,1997-01-01,Air Force One is a action/thriller film released in 1997.,,,president,,,,,Action|Thriller,,3.3,58
+tt0289043,28 Days Later,2002-01-01,28 Days Later is a action/horror film released in 2002.,,,zombies,,,,,Action|Horror|Sci-Fi,,4.0,58
+tt0056592,To Kill a Mockingbird,1962-01-01,To Kill a Mockingbird is a drama film released in 1962.,,,harper lee|racism,,,,,Drama,,4.1,58
+tt0075686,Annie Hall,1977-01-01,Annie Hall is a comedy/romance film released in 1977.,,,new york,,,,,Comedy|Romance,,3.9,58
+tt0310793,Bowling for Columbine,2002-01-01,Bowling for Columbine is a documentary film released in 2002.,,,violence in america,,,,,Documentary,,3.8,58
+tt0093822,Raising Arizona,1987-01-01,Raising Arizona is a comedy film released in 1987.,,,coen brothers,,,,,Comedy,,4.0,58
+tt0120611,Blade,1998-01-01,Blade is a action/horror film released in 1998.,,,vampires,,,,,Action|Horror|Thriller,,3.4,58
+tt0396269,Wedding Crashers,2005-01-01,Wedding Crashers is a comedy/romance film released in 2005.,,,stiller,,,,,Comedy|Romance,,3.5,58
+tt0038650,It's a Wonderful Life,1946-01-01,It's a Wonderful Life is a children/drama film released in 1946.,,,christmas,,,,,Children|Drama|Fantasy|Romance,,4.0,58
+tt0373889,Harry Potter and the Order of the Phoenix,2007-01-01,Harry Potter and the Order of the Phoenix is a adventure/drama film released in 2007.,,,,,,,,Adventure|Drama|Fantasy|IMAX,,3.9,58
+tt0089218,"Goonies, The",1985-01-01,"Goonies, The is a action/adventure film released in 1985.",,,,,,,,Action|Adventure|Children|Comedy|Fantasy,,3.6,57
+tt0104257,"Few Good Men, A",1992-01-01,"Few Good Men, A is a crime/drama film released in 1992.",,,court|military,,,,,Crime|Drama|Thriller,,3.8,57
+tt0090555,Crocodile Dundee,1986-01-01,Crocodile Dundee is a adventure/comedy film released in 1986.,,,australia,,,,,Adventure|Comedy,,3.2,57
+tt0053125,North by Northwest,1959-01-01,North by Northwest is a action/adventure film released in 1959.,,,alfred hitchcock|imdb top 250|mount rushmore,,,,,Action|Adventure|Mystery|Romance|Thriller,,4.2,57
+tt0050083,12 Angry Men,1957-01-01,12 Angry Men is a drama film released in 1957.,,,claustrophobic|confrontational|court|earnest|good dialogue|great screenplay|gritty|motivational,,,,,Drama,,4.1,57
+tt0112715,Congo,1995-01-01,Congo is a action/adventure film released in 1995.,,,michael crichton,,,,,Action|Adventure|Mystery|Sci-Fi,,2.9,57
+tt0109446,"Client, The",1994-01-01,"Client, The is a drama/mystery film released in 1994.",,,john grisham,,,,,Drama|Mystery|Thriller,,3.4,57
+tt0061512,Cool Hand Luke,1967-01-01,Cool Hand Luke is a drama film released in 1967.,,,prison,,,,,Drama,,4.3,57
+tt1285016,"Social Network, The",2010-01-01,"Social Network, The is a drama film released in 2010.",,,good dialogue|loneliness|witty,,,,,Drama,,3.9,57
+tt0357413,Anchorman: The Legend of Ron Burgundy,2004-01-01,Anchorman: The Legend of Ron Burgundy is a comedy film released in 2004.,,,awesome|comedy|hilarious|steve carell|stupid|will ferrell,,,,,Comedy,,3.8,57
+tt0120888,"Wedding Singer, The",1998-01-01,"Wedding Singer, The is a comedy/romance film released in 1998.",,,1980s,,,,,Comedy|Romance,,3.4,56
+tt0128445,Rushmore,1998-01-01,Rushmore is a comedy/drama film released in 1998.,,,,,,,,Comedy|Drama,,3.5,56
+tt0063442,Planet of the Apes,1968-01-01,Planet of the Apes is a action/drama film released in 1968.,,,twist ending,,,,,Action|Drama|Sci-Fi,,3.8,56
+tt0097351,Field of Dreams,1989-01-01,Field of Dreams is a children/drama film released in 1989.,,,baseball,,,,,Children|Drama|Fantasy,,3.5,56
+tt0119164,"Full Monty, The",1997-01-01,"Full Monty, The is a comedy/drama film released in 1997.",,,,,,,,Comedy|Drama,,3.8,56
+tt0126886,Election,1999-01-01,Election is a comedy film released in 1999.,,,,,,,,Comedy,,3.7,56
+tt0125439,Notting Hill,1999-01-01,Notting Hill is a comedy/romance film released in 1999.,,,,,,,,Comedy|Romance,,3.5,56
+tt0212720,A.I. Artificial Intelligence,2001-01-01,A.I. Artificial Intelligence is a adventure/drama film released in 2001.,,,android(s)/cyborg(s)|artificial intelligence|bittersweet|robots|steven spielberg,,,,,Adventure|Drama|Sci-Fi,,3.3,56
+tt0108598,Wallace & Gromit: The Wrong Trousers,1993-01-01,Wallace & Gromit: The Wrong Trousers is a animation/children film released in 1993.,,,aardman,,,,,Animation|Children|Comedy|Crime,,4.0,56
+tt0449088,Pirates of the Caribbean: At World's End,2007-01-01,Pirates of the Caribbean: At World's End is a action/adventure film released in 2007.,,,,,,,,Action|Adventure|Comedy|Fantasy,,3.4,56
+tt0116367,From Dusk Till Dawn,1996-01-01,From Dusk Till Dawn is a action/comedy film released in 1996.,,,,,,,,Action|Comedy|Horror|Thriller,,3.5,55
+tt0048280,Lady and the Tramp,1955-01-01,Lady and the Tramp is a animation/children film released in 1955.,,,disney,,,,,Animation|Children|Comedy|Romance,,3.4,55
+tt0203009,Moulin Rouge,2001-01-01,Moulin Rouge is a drama/musical film released in 2001.,,,,,,,,Drama|Musical|Romance,,3.6,55
+tt0109439,City Slickers II: The Legend of Curly's Gold,1994-01-01,City Slickers II: The Legend of Curly's Gold is a adventure/comedy film released in 1994.,,,,,,,,Adventure|Comedy|Western,,2.6,55
+tt0217505,Gangs of New York,2002-01-01,Gangs of New York is a crime/drama film released in 2002.,,,,,,,,Crime|Drama,,3.5,55
+tt0230600,"Others, The",2001-01-01,"Others, The is a drama/horror film released in 2001.",,,,,,,,Drama|Horror|Mystery|Thriller,,3.6,55
+tt0435761,Toy Story 3,2010-01-01,Toy Story 3 is a adventure/animation film released in 2010.,,,,,,,,Adventure|Animation|Children|Comedy|Fantasy|IMAX,,4.1,55
+tt0085334,"Christmas Story, A",1983-01-01,"Christmas Story, A is a children/comedy film released in 1983.",,,christmas,,,,,Children|Comedy,,4.0,55
+tt0829482,Superbad,2007-01-01,Superbad is a comedy film released in 2007.,,,friendship|high school|michael cera|nerds|self discovery|shenanigans|virginity,,,,,Comedy,,3.9,55
+tt0088011,Romancing the Stone,1984-01-01,Romancing the Stone is a action/adventure film released in 1984.,,,,,,,,Action|Adventure|Comedy|Romance,,3.5,54
+tt0993846,"Wolf of Wall Street, The",2013-01-01,"Wolf of Wall Street, The is a comedy/crime film released in 2013.",,,drugs|leonardo dicaprio|martin scorsese|stock market|wall street,,,,,Comedy|Crime|Drama,,3.9,54
+tt0114319,Sabrina,1995-01-01,Sabrina is a comedy/romance film released in 1995.,,,remake,,,,,Comedy|Romance,,3.2,54
+tt0113071,First Knight,1995-01-01,First Knight is a action/drama film released in 1995.,,,,,,,,Action|Drama|Romance,,3.1,54
+tt0207201,What Women Want,2000-01-01,What Women Want is a comedy/romance film released in 2000.,,,,,,,,Comedy|Romance,,3.1,54
+tt0147800,10 Things I Hate About You,1999-01-01,10 Things I Hate About You is a comedy/romance film released in 1999.,,,shakespeare sort of,,,,,Comedy|Romance,,3.5,54
+tt0115798,"Cable Guy, The",1996-01-01,"Cable Guy, The is a comedy/thriller film released in 1996.",,,,,,,,Comedy|Thriller,,2.8,54
+tt1392170,The Hunger Games,2012-01-01,The Hunger Games is a action/adventure film released in 2012.,,,ending,,,,,Action|Adventure|Drama|Sci-Fi|Thriller,,3.4,54
+tt1431045,Deadpool,2016-01-01,Deadpool is a action/adventure film released in 2016.,,,,,,,,Action|Adventure|Comedy|Sci-Fi,,3.8,54
+tt0196229,Zoolander,2001-01-01,Zoolander is a comedy film released in 2001.,,,ben stiller|comedy|david bowie|goofy|mindless one liners|will ferrell,,,,,Comedy,,3.5,54
+tt0441773,Kung Fu Panda,2008-01-01,Kung Fu Panda is a action/animation film released in 2008.,,,,,,,,Action|Animation|Children|Comedy|IMAX,,3.4,54
+tt0117705,Space Jam,1996-01-01,Space Jam is a adventure/animation film released in 1996.,,,bugs bunny,,,,,Adventure|Animation|Children|Comedy|Fantasy|Sci-Fi,,2.7,53
+tt0032455,Fantasia,1940-01-01,Fantasia is a animation/children film released in 1940.,,,disney,,,,,Animation|Children|Fantasy|Musical,,3.8,53
+tt0061852,"Jungle Book, The",1967-01-01,"Jungle Book, The is a animation/children film released in 1967.",,,disney,,,,,Animation|Children|Comedy|Musical,,3.8,53
+tt0058150,Goldfinger,1964-01-01,Goldfinger is a action/adventure film released in 1964.,,,,,,,,Action|Adventure|Thriller,,3.8,53
+tt0102057,Hook,1991-01-01,Hook is a adventure/comedy film released in 1991.,,,peter pan,,,,,Adventure|Comedy|Fantasy,,3.4,53
+tt1156398,Zombieland,2009-01-01,Zombieland is a action/comedy film released in 2009.,,,bill murray|dark comedy|emma stone|funny|jesse eisenberg|woody harrelson,,,,,Action|Comedy|Horror,,3.9,53
+tt0120663,Eyes Wide Shut,1999-01-01,Eyes Wide Shut is a drama/mystery film released in 1999.,,,sexuality,,,,,Drama|Mystery|Thriller,,3.5,53
+tt0218839,Best in Show,2000-01-01,Best in Show is a comedy film released in 2000.,,,dogs|satire,,,,,Comedy,,3.7,53
+tt0107362,Last Action Hero,1993-01-01,Last Action Hero is a action/adventure film released in 1993.,,,,,,,,Action|Adventure|Comedy|Fantasy,,2.9,53
+tt0120891,Wild Wild West,1999-01-01,Wild Wild West is a action/comedy film released in 1999.,,,,,,,,Action|Comedy|Sci-Fi|Western,,2.2,53
+tt0113481,Johnny Mnemonic,1995-01-01,Johnny Mnemonic is a action/sci-fi film released in 1995.,,,,,,,,Action|Sci-Fi|Thriller,,2.7,53
+tt0099052,Arachnophobia,1990-01-01,Arachnophobia is a comedy/horror film released in 1990.,,,spiders,,,,,Comedy|Horror,,2.8,53
+tt0892769,How to Train Your Dragon,2010-01-01,How to Train Your Dragon is a adventure/animation film released in 2010.,,,,,,,,Adventure|Animation|Children|Fantasy|IMAX,,3.9,53
+tt0450259,Blood Diamond,2006-01-01,Blood Diamond is a action/adventure film released in 2006.,,,africa|corruption|jennifer connelly|justice|leonardo dicaprio,,,,,Action|Adventure|Crime|Drama|Thriller|War,,3.8,53
+tt0070047,"Exorcist, The",1973-01-01,"Exorcist, The is a horror/mystery film released in 1973.",,,demons,,,,,Horror|Mystery,,3.8,53
+tt0113228,Grumpier Old Men,1995-01-01,Grumpier Old Men is a comedy/romance film released in 1995.,,,moldy|old,,,,,Comedy|Romance,,3.3,52
+tt0119008,Donnie Brasco,1997-01-01,Donnie Brasco is a crime/drama film released in 1997.,,,mafia,,,,,Crime|Drama,,3.7,52
+tt0175880,Magnolia,1999-01-01,Magnolia is a drama film released in 1999.,,,l.a.,,,,,Drama,,3.7,52
+tt0109635,Disclosure,1994-01-01,Disclosure is a drama/thriller film released in 1994.,,,,,,,,Drama|Thriller,,3.5,52
+tt0376994,X-Men: The Last Stand,2006-01-01,X-Men: The Last Stand is a action/sci-fi film released in 2006.,,,halle berry|hugh jackman,,,,,Action|Sci-Fi|Thriller,,3.4,52
+tt2278388,"Grand Budapest Hotel, The",2014-01-01,"Grand Budapest Hotel, The is a comedy/drama film released in 2014.",,,,,,,,Comedy|Drama,,3.8,52
+tt0118842,Chasing Amy,1997-01-01,Chasing Amy is a comedy/drama film released in 1997.,,,,,,,,Comedy|Drama|Romance,,3.6,52
+tt0327056,Mystic River,2003-01-01,Mystic River is a crime/drama film released in 2003.,,,child abuse|kidnapping,,,,,Crime|Drama|Mystery,,3.7,52
+tt0478311,Knocked Up,2007-01-01,Knocked Up is a comedy/drama film released in 2007.,,,,,,,,Comedy|Drama|Romance,,3.7,52
+tt0405159,Million Dollar Baby,2004-01-01,Million Dollar Baby is a drama film released in 2004.,,,boxing,,,,,Drama,,3.8,52
+tt0080487,Caddyshack,1980-01-01,Caddyshack is a comedy film released in 1980.,,,golf,,,,,Comedy,,3.8,52
+tt0221027,Blow,2001-01-01,Blow is a crime/drama film released in 2001.,,,,,,,,Crime|Drama,,3.8,51
+tt0112442,Bad Boys,1995-01-01,Bad Boys is a action/comedy film released in 1995.,,,,,,,,Action|Comedy|Crime|Drama|Thriller,,3.2,51
+tt0088161,Splash,1984-01-01,Splash is a comedy/fantasy film released in 1984.,,,mermaid,,,,,Comedy|Fantasy|Romance,,3.1,51
+tt0106308,Army of Darkness,1993-01-01,Army of Darkness is a action/adventure film released in 1993.,,,,,,,,Action|Adventure|Comedy|Fantasy|Horror,,4.0,51
+tt0118971,The Devil's Advocate,1997-01-01,The Devil's Advocate is a drama/mystery film released in 1997.,,,lawyers,,,,,Drama|Mystery|Thriller,,3.4,51
+tt0139654,Training Day,2001-01-01,Training Day is a crime/drama film released in 2001.,,,,,,,,Crime|Drama|Thriller,,3.8,51
+tt0166924,Mulholland Drive,2001-01-01,Mulholland Drive is a crime/drama film released in 2001.,,,,,,,,Crime|Drama|Film-Noir|Mystery|Thriller,,3.8,51
+tt0114694,Tommy Boy,1995-01-01,Tommy Boy is a comedy film released in 1995.,,,,,,,,Comedy,,3.8,50
+tt0084827,Tron,1982-01-01,Tron is a action/adventure film released in 1982.,,,,,,,,Action|Adventure|Sci-Fi,,3.3,50
+tt0128853,You've Got Mail,1998-01-01,You've Got Mail is a comedy/romance film released in 1998.,,,e-mail|remake,,,,,Comedy|Romance,,3.1,50
+tt0053291,Some Like It Hot,1959-01-01,Some Like It Hot is a comedy/crime film released in 1959.,,,men in drag,,,,,Comedy|Crime,,4.0,50
+tt0407304,War of the Worlds,2005-01-01,War of the Worlds is a action/adventure film released in 2005.,,,,,,,,Action|Adventure|Sci-Fi|Thriller,,3.1,50
+tt1074638,Skyfall,2012-01-01,Skyfall is a action/adventure film released in 2012.,,,beautiful cinematography|beautifully filmed|cinematography,,,,,Action|Adventure|Thriller|IMAX,,3.8,50
+tt0175142,Scary Movie,2000-01-01,Scary Movie is a comedy/horror film released in 2000.,,,,,,,,Comedy|Horror,,2.9,50
+tt0319262,"Day After Tomorrow, The",2004-01-01,"Day After Tomorrow, The is a action/adventure film released in 2004.",,,,,,,,Action|Adventure|Drama|Sci-Fi|Thriller,,3.0,50
+tt0379786,Serenity,2005-01-01,Serenity is a action/adventure film released in 2005.,,,firefly|predictable,,,,,Action|Adventure|Sci-Fi,,3.9,50
+tt2084970,The Imitation Game,2014-01-01,The Imitation Game is a drama/thriller film released in 2014.,,,inspirational|intelligent,,,,,Drama|Thriller|War,,4.0,50
+tt1201607,Harry Potter and the Deathly Hallows: Part 2,2011-01-01,Harry Potter and the Deathly Hallows: Part 2 is a action/adventure film released in 2011.,,,,,,,,Action|Adventure|Drama|Fantasy|Mystery|IMAX,,3.9,50
+tt0390521,Super Size Me,2004-01-01,Super Size Me is a comedy/documentary film released in 2004.,,,food|mcdonalds,,,,,Comedy|Documentary|Drama,,3.5,50
+tt0265086,Black Hawk Down,2001-01-01,Black Hawk Down is a action/drama film released in 2001.,,,,,,,,Action|Drama|War,,3.8,50
+tt0375679,Crash,2004-01-01,Crash is a crime/drama film released in 2004.,,,racism,,,,,Crime|Drama,,3.9,50
+tt0112508,Billy Madison,1995-01-01,Billy Madison is a comedy film released in 1995.,,,adam sandler|school|stop looking at me swan,,,,,Comedy,,3.3,49
+tt0116683,James and the Giant Peach,1996-01-01,James and the Giant Peach is a adventure/animation film released in 1996.,,,,,,,,Adventure|Animation|Children|Fantasy|Musical,,3.4,49
+tt0081573,Superman II,1980-01-01,Superman II is a action/sci-fi film released in 1980.,,,superhero,,,,,Action|Sci-Fi,,3.0,49
+tt0134119,"Talented Mr. Ripley, The",1999-01-01,"Talented Mr. Ripley, The is a drama/mystery film released in 1999.",,,based on a book|creepy|disturbing|europe|jude law|murder|obsession|psychology,,,,,Drama|Mystery|Thriller,,3.3,49
+tt0113041,Father of the Bride Part II,1995-01-01,Father of the Bride Part II is a comedy film released in 1995.,,,pregnancy|remake,,,,,Comedy,,3.1,49
+tt0133152,Planet of the Apes,2001-01-01,Planet of the Apes is a action/adventure film released in 2001.,,,,,,,,Action|Adventure|Drama|Sci-Fi,,2.7,49
+tt0257044,Road to Perdition,2002-01-01,Road to Perdition is a crime/drama film released in 2002.,,,cinematography|tom hanks,,,,,Crime|Drama,,3.5,49
+tt0299658,Chicago,2002-01-01,Chicago is a comedy/crime film released in 2002.,,,court|jazz|murder,,,,,Comedy|Crime|Drama|Musical,,3.7,49
+tt0088128,Sixteen Candles,1984-01-01,Sixteen Candles is a comedy/romance film released in 1984.,,,,,,,,Comedy|Romance,,3.6,49
+tt0382625,"Da Vinci Code, The",2006-01-01,"Da Vinci Code, The is a drama/mystery film released in 2006.",,,adventure|audrey tautou|conspiracy theory|mystery|paris|tom hanks|treasure hunt,,,,,Drama|Mystery|Thriller,,3.1,49
+tt0091203,Highlander,1986-01-01,Highlander is a action/adventure film released in 1986.,,,,,,,,Action|Adventure|Fantasy,,3.7,48
+tt0047478,Seven Samurai (Shichinin no samurai),1954-01-01,Seven Samurai (Shichinin no samurai) is a action/adventure film released in 1954.,,,samurai,,,,,Action|Adventure|Drama,,4.2,48
+tt0155267,"Thomas Crown Affair, The",1999-01-01,"Thomas Crown Affair, The is a action/mystery film released in 1999.",,,,,,,,Action|Mystery,,3.6,48
+tt0113986,Nine Months,1995-01-01,Nine Months is a comedy/romance film released in 1995.,,,,,,,,Comedy|Romance,,2.8,48
+tt0332452,Troy,2004-01-01,Troy is a action/adventure film released in 2004.,,,,,,,,Action|Adventure|Drama|War,,3.4,48
+tt0395169,Hotel Rwanda,2004-01-01,Hotel Rwanda is a drama/war film released in 2004.,,,genocide,,,,,Drama|War,,3.8,48
+tt0142342,Big Daddy,1999-01-01,Big Daddy is a comedy film released in 1999.,,,adam sandler,,,,,Comedy,,3.2,48
+tt3659388,The Martian,2015-01-01,The Martian is a adventure/drama film released in 2015.,,,smart,,,,,Adventure|Drama|Sci-Fi,,4.0,48
+tt0112691,Wallace & Gromit: A Close Shave,1995-01-01,Wallace & Gromit: A Close Shave is a animation/children film released in 1995.,,,aardman,,,,,Animation|Children|Comedy,,3.9,48
+tt0119698,Princess Mononoke (Mononoke-hime),1997-01-01,Princess Mononoke (Mononoke-hime) is a action/adventure film released in 1997.,,,adventure|anime|atmospheric|fantasy world|studio ghibli|surreal,,,,,Action|Adventure|Animation|Drama|Fantasy,,4.0,48
+tt0119396,Jackie Brown,1997-01-01,Jackie Brown is a crime/drama film released in 1997.,,,,,,,,Crime|Drama|Thriller,,3.7,48
+tt0333766,Garden State,2004-01-01,Garden State is a comedy/drama film released in 2004.,,,psychology,,,,,Comedy|Drama|Romance,,3.7,48
+tt0118929,Dark City,1998-01-01,Dark City is a adventure/film-noir film released in 1998.,,,amnesia,,,,,Adventure|Film-Noir|Sci-Fi|Thriller,,3.8,48
+tt0103772,Basic Instinct,1992-01-01,Basic Instinct is a crime/mystery film released in 1992.,,,,,,,,Crime|Mystery|Thriller,,3.2,47
+tt1392190,Mad Max: Fury Road,2015-01-01,Mad Max: Fury Road is a action/adventure film released in 2015.,,,beautiful|cinematography|visually appealing,,,,,Action|Adventure|Sci-Fi|Thriller,,3.8,47
+tt0045152,Singin' in the Rain,1952-01-01,Singin' in the Rain is a comedy/musical film released in 1952.,,,movie business,,,,,Comedy|Musical|Romance,,4.1,47
+tt0241303,Chocolat,2000-01-01,Chocolat is a drama/romance film released in 2000.,,,,,,,,Drama|Romance,,3.5,47
+tt0116583,"Hunchback of Notre Dame, The",1996-01-01,"Hunchback of Notre Dame, The is a animation/children film released in 1996.",,,,,,,,Animation|Children|Drama|Musical|Romance,,3.3,47
+tt0097428,Ghostbusters II,1989-01-01,Ghostbusters II is a comedy/fantasy film released in 1989.,,,ghosts,,,,,Comedy|Fantasy|Sci-Fi,,3.0,47
+tt0343660,50 First Dates,2004-01-01,50 First Dates is a comedy/romance film released in 2004.,,,,,,,,Comedy|Romance,,3.6,47
+tt0362227,"Terminal, The",2004-01-01,"Terminal, The is a comedy/drama film released in 2004.",,,,,,,,Comedy|Drama|Romance,,3.3,47
+tt0117666,Sling Blade,1996-01-01,Sling Blade is a drama film released in 1996.,,,ex-con,,,,,Drama,,3.8,47
+tt0097733,Lethal Weapon 2,1989-01-01,Lethal Weapon 2 is a action/comedy film released in 1989.,,,,,,,,Action|Comedy|Crime|Drama,,3.2,47
+tt0298130,"Ring, The",2002-01-01,"Ring, The is a horror/mystery film released in 2002.",,,,,,,,Horror|Mystery|Thriller,,3.2,47
+tt1228705,Iron Man 2,2010-01-01,Iron Man 2 is a action/adventure film released in 2010.,,,,,,,,Action|Adventure|Sci-Fi|Thriller|IMAX,,3.5,47
+tt0115433,101 Dalmatians,1996-01-01,101 Dalmatians is a adventure/children film released in 1996.,,,dogs|remake,,,,,Adventure|Children|Comedy,,3.1,47
+tt0138704,Pi,1998-01-01,Pi is a drama/sci-fi film released in 1998.,,,artsy|atmospheric|cerebral|enigmatic|existentialism|hallucinatory|insanity|mathematics,,,,,Drama|Sci-Fi|Thriller,,3.9,47
+tt0084516,Poltergeist,1982-01-01,Poltergeist is a horror/thriller film released in 1982.,,,ghosts,,,,,Horror|Thriller,,3.4,47
+tt0122933,Analyze This,1999-01-01,Analyze This is a comedy film released in 1999.,,,,,,,,Comedy,,3.1,47
+tt0926084,Harry Potter and the Deathly Hallows: Part 1,2010-01-01,Harry Potter and the Deathly Hallows: Part 1 is a action/adventure film released in 2010.,,,,,,,,Action|Adventure|Fantasy|IMAX,,4.0,47
+tt0103644,Alien³ (a.k.a. Alien 3),1992-01-01,Alien³ (a.k.a. Alien 3) is a action/horror film released in 1992.,,,,,,,,Action|Horror|Sci-Fi|Thriller,,3.1,47
+tt0105435,Sneakers,1992-01-01,Sneakers is a action/comedy film released in 1992.,,,spying,,,,,Action|Comedy|Crime|Drama|Sci-Fi,,3.5,46
+tt0066026,M*A*S*H (a.k.a. MASH),1970-01-01,M*A*S*H (a.k.a. MASH) is a comedy/drama film released in 1970.,,,,,,,,Comedy|Drama|War,,3.9,46
+tt0090756,Blue Velvet,1986-01-01,Blue Velvet is a drama/mystery film released in 1986.,,,sexuality|suburbia,,,,,Drama|Mystery|Thriller,,3.9,46
+tt0113326,Rumble in the Bronx (Hont faan kui),1995-01-01,Rumble in the Bronx (Hont faan kui) is a action/adventure film released in 1995.,,,,,,,,Action|Adventure|Comedy|Crime,,3.5,46
+tt0117333,Phenomenon,1996-01-01,Phenomenon is a drama/romance film released in 1996.,,,,,,,,Drama|Romance,,3.3,46
+tt0268126,Adaptation,2002-01-01,Adaptation is a comedy/drama film released in 2002.,,,,,,,,Comedy|Drama|Romance,,3.9,46
+tt0454921,"Pursuit of Happyness, The",2006-01-01,"Pursuit of Happyness, The is a drama film released in 2006.",,,,,,,,Drama,,3.8,46
+tt0113855,Mortal Kombat,1995-01-01,Mortal Kombat is a action/adventure film released in 1995.,,,,,,,,Action|Adventure|Fantasy,,2.5,46
+tt0104714,Lethal Weapon 3,1992-01-01,Lethal Weapon 3 is a action/comedy film released in 1992.,,,,,,,,Action|Comedy|Crime|Drama,,2.9,46

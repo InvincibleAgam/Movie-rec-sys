@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,6 +34,22 @@ public class ApiExceptionHandler {
                 "timestamp", Instant.now().toString(),
                 "status", 400,
                 "error", "Bad Request",
+                "message", message
+        ));
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<Map<String, Object>> handleMissingHeader(MissingRequestHeaderException exception) {
+        HttpStatus status = "Authorization".equalsIgnoreCase(exception.getHeaderName())
+                ? HttpStatus.UNAUTHORIZED
+                : HttpStatus.BAD_REQUEST;
+        String message = status == HttpStatus.UNAUTHORIZED
+                ? "Missing authentication token"
+                : "Missing required header: " + exception.getHeaderName();
+        return ResponseEntity.status(status).body(Map.of(
+                "timestamp", Instant.now().toString(),
+                "status", status.value(),
+                "error", status.getReasonPhrase(),
                 "message", message
         ));
     }

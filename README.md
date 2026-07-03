@@ -21,8 +21,10 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the full system design, including req
 - **Event-driven architecture** via RabbitMQ with dead-letter queue, idempotent consumers, and event replay support
 - **Circuit breaker resilience** (Resilience4j) around Redis with automatic fallback to database
 - **Prometheus/Grafana observability** with custom metrics for recommendation latency (p50/p95/p99), cache hit rates, and event throughput
-- **JWT auth with refresh token rotation** and BCrypt-hashed token storage
-- **Rate limiting** (Bucket4j) for auth, review, and general API endpoints
+- **Stateless JWT authentication** (HS512 access tokens, 15-minute TTL) with **rotating refresh tokens** — stored BCrypt-hashed at rest, rotated on every use, with token-family **reuse detection** that revokes a compromised family on replay
+- **Rate limiting** (Bucket4j token buckets) enforced per client IP via a servlet interceptor: auth (10/min), review (5/min), and general (60/min) endpoints
+- **Redis caching** that cuts recommendation API latency by ~91% (item-item) to ~98% (personalized) at a ~91% cache-hit rate — see [Performance](#performance-measured)
+- **Real-world data**: a 500-movie catalog and ~5,000 ratings sourced from the [MovieLens](https://grouplens.org/datasets/movielens/) dataset, so collaborative filtering and offline evaluation run on genuine user behaviour
 - **k6 load testing** suite with configurable scenarios and latency thresholds
 - **Event replay system** for rebuilding all materialized state from raw event history
 
@@ -37,6 +39,33 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the full system design, including req
 - Materialized recommendation profile inspection
 - Admin endpoints for signal rebuilds
 - Health and Prometheus metrics endpoints
+
+## Performance (measured)
+
+Measured locally on the bundled dataset (500 movies, ~5,000 ratings, ~110 users) with MongoDB + Redis in Docker.
+
+### Redis cache — recommendation API latency
+
+Sequential client-side latency (steady state, warm cache), Redis disabled vs. enabled:
+
+| Endpoint | p50 (cache off) | p50 (cache on) | p95 (off → on) | Reduction |
+| --- | --- | --- | --- | --- |
+| Item-item `/recommendations/movie/{id}` | 71.6 ms | 6.2 ms | 104.2 → 7.6 ms | **~91%** |
+| Personalized `/recommendations/for-you` | 403.4 ms | 6.8 ms | 507.5 → 7.8 ms | **~98%** |
+
+Cache-hit rate over the run: **~91%**. The personalized endpoint benefits most because its two-stage pipeline recomputes per-candidate collaborative lookups on every uncached request. Reproduce by toggling `APP_CACHE_REDIS_ENABLED` and hitting the endpoints (set `APP_RATE_LIMIT_ENABLED=false` first so the load isn't throttled).
+
+### Offline recommendation quality
+
+Offline evaluation via `GET /api/v1/evaluation/run?k=10` — per-user temporal 70/30 train/test split, relevance = rating ≥ 4, averaged over 113 users:
+
+| Strategy | NDCG@10 | Precision@10 | Recall@10 | MAP |
+| --- | --- | --- | --- | --- |
+| Content-only | 0.043 | 0.040 | 0.042 | 0.013 |
+| Content + engagement | 0.060 | 0.057 | 0.059 | 0.019 |
+| Full pipeline (content + collaborative + ranking) | **0.288** | **0.204** | **0.247** | **0.161** |
+
+The full two-stage pipeline outperforms content-only by ~6.6× on NDCG@10, confirming that item-item collaborative filtering carries most of the ranking signal on this dataset. Note: collaborative signals are rebuilt over the full rating set, so the full-pipeline figures include some train/test leakage and are best read as an upper bound; the content-only row is leakage-free.
 
 ## Tech Stack
 
@@ -95,8 +124,10 @@ Common environment variables:
 MONGO_URI=your-mongodb-uri
 MONGO_DATABASE=movie-api-db
 APP_CATALOG_SEED_ON_STARTUP=true
+APP_DEMO_SEED_RATINGS_ENABLED=false
 APP_CACHE_REDIS_ENABLED=true
 APP_MESSAGING_RABBITMQ_ENABLED=true
+APP_RATE_LIMIT_ENABLED=true
 APP_AUTH_JWT_SECRET=your-256-bit-secret
 PORT=8080
 ```
@@ -105,7 +136,13 @@ Notes:
 
 - `APP_MESSAGING_RABBITMQ_ENABLED=false` disables RabbitMQ and uses scheduled polling (backward-compatible).
 - `APP_CACHE_REDIS_ENABLED=false` disables Redis caching; the app serves directly from MongoDB.
+- `APP_RATE_LIMIT_ENABLED=false` turns off per-IP rate limiting (useful for load testing).
 - The bundled movie catalog seeds on startup when the target database is empty.
+- `APP_AUTH_JWT_SECRET` should be set to a strong 256-bit secret in any real deployment; the default is for local use only.
+
+### Dataset & demo seeding
+
+The bundled catalog ([`data/movie_catalog.csv`](src/main/resources/data/movie_catalog.csv)) holds **500 real movies** (titles, IMDb IDs, genres, and user-tag keywords) drawn from the MovieLens dataset. To also populate realistic interaction data, set `APP_DEMO_SEED_RATINGS_ENABLED=true`: on a fresh database the app seeds **~5,000 real ratings across ~110 users** from [`data/seed_ratings.csv`](src/main/resources/data/seed_ratings.csv) and rebuilds the collaborative-filtering signals — giving the recommender and the offline evaluation genuine behavioural data to work with. The seeder is idempotent and only runs when the ratings collection is empty.
 
 ## API Surface
 
@@ -120,10 +157,11 @@ Notes:
 - `POST /api/v1/evaluation/rebuild-collaborative` — rebuild collaborative signals
 
 ### Auth
-- `POST /api/v1/auth/register`
-- `POST /api/v1/auth/login`
-- `GET /api/v1/auth/me`
-- `DELETE /api/v1/auth/logout`
+- `POST /api/v1/auth/register` — returns a JWT access token + a refresh token
+- `POST /api/v1/auth/login` — returns a JWT access token + a refresh token
+- `POST /api/v1/auth/refresh` — exchange a refresh token for a new access token (rotates the refresh token)
+- `GET /api/v1/auth/me` — current user (requires `Authorization: Bearer <accessToken>`)
+- `DELETE /api/v1/auth/logout` — revokes the user's refresh tokens
 
 ### Movies & Interactions
 - `GET /api/v1/movies`

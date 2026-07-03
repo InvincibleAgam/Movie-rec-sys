@@ -4,10 +4,11 @@ import java.util.List;
 
 public record AuthResponse(
         String token,
+        String refreshToken,
         UserProfile user
 ) {
-    public static AuthResponse of(String token, AppUser user) {
-        return new AuthResponse(token, UserProfile.from(user));
+    public static AuthResponse of(String accessToken, String refreshToken, AppUser user) {
+        return new AuthResponse(accessToken, refreshToken, UserProfile.from(user));
     }
 
     public record UserProfile(

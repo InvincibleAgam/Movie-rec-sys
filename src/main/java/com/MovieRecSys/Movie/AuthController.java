@@ -57,6 +57,15 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@RequestBody Map<String, String> body) {
+        String refreshToken = body.get("refreshToken");
+        if (refreshToken == null || refreshToken.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(authService.refresh(refreshToken));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<AuthResponse.UserProfile> me(@RequestHeader("Authorization") String authorizationHeader) {
         return ResponseEntity.ok(authService.me(authorizationHeader));
