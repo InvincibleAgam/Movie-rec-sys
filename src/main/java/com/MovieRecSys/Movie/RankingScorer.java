@@ -68,6 +68,23 @@ public class RankingScorer {
             List<Movie> anchors,
             Movie candidate
     ) {
+        // Production path: global collaborative signal + stochastic exploration.
+        return scoreForUser(profile, anchors, candidate,
+                (source, cand) -> collaborativeFilteringService.signalStrength(source, cand), true);
+    }
+
+    /**
+     * Score a candidate with an injectable collaborative-signal source and optional
+     * exploration. The offline evaluation calls this with a train-only co-occurrence
+     * lookup and exploration disabled, so scoring is both leakage-free and deterministic.
+     */
+    public RankingFeatures scoreForUser(
+            UserPreferenceProfile profile,
+            List<Movie> anchors,
+            Movie candidate,
+            java.util.function.ToDoubleBiFunction<String, String> collaborativeSignal,
+            boolean explore
+    ) {
         // Average content similarity across all anchor movies
         double avgGenre = anchors.stream()
                 .mapToDouble(a -> overlap(a.getGenres(), candidate.getGenres()))
@@ -84,8 +101,7 @@ public class RankingScorer {
 
         // Max collaborative signal across anchors
         double maxCollabSignal = anchors.stream()
-                .mapToDouble(a -> collaborativeFilteringService.signalStrength(
-                        a.getImdbId(), candidate.getImdbId()))
+                .mapToDouble(a -> collaborativeSignal.applyAsDouble(a.getImdbId(), candidate.getImdbId()))
                 .max().orElse(0.0);
 
         double preferenceScore = contentScorer.preferenceScore(profile, candidate);
@@ -99,7 +115,7 @@ public class RankingScorer {
                 .ratingAffinity(ratingAffinity(candidate) * 0.35)
                 .popularityBias(popularityBias(candidate) * 0.05)
                 .recencyBoost(recencyBoost(candidate) * 1.2)
-                .explorationFactor(ThreadLocalRandom.current().nextDouble(0.0, 0.8))
+                .explorationFactor(explore ? ThreadLocalRandom.current().nextDouble(0.0, 0.8) : 0.0)
                 .preferenceAlignment(preferenceScore * 1.0)
                 .build();
     }

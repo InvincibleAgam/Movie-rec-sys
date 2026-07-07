@@ -97,6 +97,52 @@ public class CollaborativeFilteringService {
         }
 
         // Step 2: Compute co-occurrence with inverse-user-frequency
+        Map<String, Map<String, Double>> coOccurrence = computeCoOccurrence(userItemSets, userRatings);
+
+        // Step 3: Persist top-K neighbors per item
+        collaborativeSignalRepository.deleteAll();
+        List<CollaborativeSignal> signals = new ArrayList<>();
+
+        for (Map.Entry<String, Map<String, Double>> entry : coOccurrence.entrySet()) {
+            CollaborativeSignal signal = new CollaborativeSignal();
+            signal.setImdbId(entry.getKey());
+            signal.setNeighborScores(topK(entry.getValue(), maxNeighbors));
+            signal.setComputedAt(Instant.now());
+            signals.add(signal);
+        }
+
+        collaborativeSignalRepository.saveAll(signals);
+        long elapsed = System.currentTimeMillis() - startTime;
+        log.info("Collaborative signal rebuild complete: {} items in {} ms", signals.size(), elapsed);
+    }
+
+    /**
+     * Build an in-memory item-item co-occurrence matrix from an arbitrary set of
+     * ratings only (no watchlists, no persistence). Used by the offline
+     * evaluation to build a <em>train-only</em> matrix, so the collaborative
+     * signal never sees the held-out test ratings (leakage-free evaluation).
+     */
+    public Map<String, Map<String, Double>> computeCoOccurrenceFromRatings(List<Rating> ratings) {
+        Map<String, Set<String>> userItemSets = new HashMap<>();
+        Map<String, Map<String, Integer>> userRatings = new HashMap<>();
+        for (Rating rating : ratings) {
+            String userId = rating.getUserId().toHexString();
+            userItemSets.computeIfAbsent(userId, k -> new HashSet<>()).add(rating.getImdbId());
+            userRatings.computeIfAbsent(userId, k -> new HashMap<>())
+                    .put(rating.getImdbId(), rating.getValue());
+        }
+        return computeCoOccurrence(userItemSets, userRatings);
+    }
+
+    /** Look up the collaborative signal between two items in a prebuilt co-occurrence matrix. */
+    public double signalStrength(Map<String, Map<String, Double>> coOccurrence, String source, String candidate) {
+        return coOccurrence.getOrDefault(source, Map.of()).getOrDefault(candidate, 0.0);
+    }
+
+    private Map<String, Map<String, Double>> computeCoOccurrence(
+            Map<String, Set<String>> userItemSets,
+            Map<String, Map<String, Integer>> userRatings
+    ) {
         Map<String, Map<String, Double>> coOccurrence = new HashMap<>();
 
         for (Map.Entry<String, Set<String>> entry : userItemSets.entrySet()) {
@@ -127,22 +173,7 @@ public class CollaborativeFilteringService {
                 }
             }
         }
-
-        // Step 3: Persist top-K neighbors per item
-        collaborativeSignalRepository.deleteAll();
-        List<CollaborativeSignal> signals = new ArrayList<>();
-
-        for (Map.Entry<String, Map<String, Double>> entry : coOccurrence.entrySet()) {
-            CollaborativeSignal signal = new CollaborativeSignal();
-            signal.setImdbId(entry.getKey());
-            signal.setNeighborScores(topK(entry.getValue(), maxNeighbors));
-            signal.setComputedAt(Instant.now());
-            signals.add(signal);
-        }
-
-        collaborativeSignalRepository.saveAll(signals);
-        long elapsed = System.currentTimeMillis() - startTime;
-        log.info("Collaborative signal rebuild complete: {} items in {} ms", signals.size(), elapsed);
+        return coOccurrence;
     }
 
     /**

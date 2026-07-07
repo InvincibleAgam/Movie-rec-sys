@@ -1,6 +1,6 @@
 # Movie Atlas
 
-Movie Atlas is a full-stack movie discovery and recommendation platform built with Spring Boot, MongoDB, Redis, RabbitMQ, and a custom frontend. It features a **two-stage recommendation pipeline** (retrieval + ranking) with collaborative filtering, an **event-driven architecture** with dead-letter queue support, **circuit breaker resilience**, and comprehensive **Prometheus/Grafana observability**.
+Movie Atlas is a full-stack movie discovery and recommendation platform built with Spring Boot, MongoDB, Redis, RabbitMQ, and a custom frontend. It features a **two-stage recommendation pipeline** (retrieval + ranking) with item-item collaborative filtering, a **leakage-free offline evaluation harness**, **JWT authentication with rotating refresh tokens**, **Redis caching** (measured ~91–98% latency reduction), and **Prometheus/Grafana observability**.
 
 ## Live Demo
 
@@ -16,17 +16,18 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the full system design, including req
 ## Highlights
 
 - **Two-stage recommendation engine**: Stage 1 (retrieval) uses content similarity, collaborative filtering, and genre-level popularity. Stage 2 (ranking) scores candidates using 10 features including genre overlap, collaborative signal, recency, and exploration factor.
-- **Item-item collaborative filtering** using inverse-user-frequency weighted co-occurrence matrix
-- **Offline evaluation pipeline** measuring NDCG@K, Precision@K, Recall@K, and MAP across multiple ranking strategies
-- **Event-driven architecture** via RabbitMQ with dead-letter queue, idempotent consumers, and event replay support
-- **Circuit breaker resilience** (Resilience4j) around Redis with automatic fallback to database
-- **Prometheus/Grafana observability** with custom metrics for recommendation latency (p50/p95/p99), cache hit rates, and event throughput
+- **Item-item collaborative filtering** using an inverse-user-frequency weighted co-occurrence matrix
+- **Leakage-free offline evaluation** measuring NDCG@K, Precision@K, Recall@K, and MAP across ranking strategies, with the collaborative matrix rebuilt from the training split only and exploration disabled, so results are reproducible (see [Performance](#performance-measured))
+- **Real-time personalization**: rating or watchlisting a movie synchronously rebuilds the user's preference profile and evicts their cached recommendations, so "For you" updates immediately
 - **Stateless JWT authentication** (HS512 access tokens, 15-minute TTL) with **rotating refresh tokens** — stored BCrypt-hashed at rest, rotated on every use, with token-family **reuse detection** that revokes a compromised family on replay
 - **Rate limiting** (Bucket4j token buckets) enforced per client IP via a servlet interceptor: auth (10/min), review (5/min), and general (60/min) endpoints
-- **Redis caching** that cuts recommendation API latency by ~91% (item-item) to ~98% (personalized) at a ~91% cache-hit rate — see [Performance](#performance-measured)
-- **Real-world data**: a 500-movie catalog and ~5,000 ratings sourced from the [MovieLens](https://grouplens.org/datasets/movielens/) dataset, so collaborative filtering and offline evaluation run on genuine user behaviour
+- **Protected operational endpoints**: the admin and evaluation endpoints (destructive rebuilds / expensive jobs) require an `X-Admin-Token`, failing closed when no token is configured
+- **Meaningful health check**: `/api/v1/health` pings MongoDB and returns `503` when the database is unreachable (instead of a hardcoded "UP")
+- **Redis caching** that cuts recommendation API latency by ~91% (item-item) to ~98% (personalized) at a ~91% cache-hit rate; Redis failures are caught and degrade gracefully to a MongoDB recompute
+- **Real-world data**: a 500-movie catalog with real posters, cast, directors and trailers (enriched from [TMDB](https://www.themoviedb.org/)) plus ~5,000 ratings across ~110 users sourced from the [MovieLens](https://grouplens.org/datasets/movielens/) dataset, so collaborative filtering and offline evaluation run on genuine user behaviour
+- **Event-driven pipeline** via RabbitMQ (optional — the default uses a scheduled projector) with idempotent consumers and a dead-letter-queue topology
+- **Prometheus/Grafana observability** with custom metrics for recommendation latency (p50/p95/p99), cache hit rates, and event throughput
 - **k6 load testing** suite with configurable scenarios and latency thresholds
-- **Event replay system** for rebuilding all materialized state from raw event history
 
 ## Core Features
 
@@ -57,23 +58,25 @@ Cache-hit rate over the run: **~91%**. The personalized endpoint benefits most b
 
 ### Offline recommendation quality
 
-Offline evaluation via `GET /api/v1/evaluation/run?k=10` — per-user temporal 70/30 train/test split, relevance = rating ≥ 4, averaged over 113 users:
+Offline evaluation via `GET /api/v1/evaluation/run?k=10` — per-user 70/30 train/test split, relevance = rating ≥ 4, averaged over 113 users:
 
 | Strategy | NDCG@10 | Precision@10 | Recall@10 | MAP |
 | --- | --- | --- | --- | --- |
-| Content-only | 0.043 | 0.040 | 0.042 | 0.013 |
-| Content + engagement | 0.060 | 0.057 | 0.059 | 0.019 |
-| Full pipeline (content + collaborative + ranking) | **0.288** | **0.204** | **0.247** | **0.161** |
+| Content-only | 0.034 | 0.028 | 0.033 | 0.011 |
+| Content + engagement | 0.044 | 0.042 | 0.042 | 0.014 |
+| Full pipeline (content + collaborative + ranking) | **0.079** | **0.057** | **0.061** | **0.037** |
 
-The full two-stage pipeline outperforms content-only by ~6.6× on NDCG@10, confirming that item-item collaborative filtering carries most of the ranking signal on this dataset. Note: collaborative signals are rebuilt over the full rating set, so the full-pipeline figures include some train/test leakage and are best read as an upper bound; the content-only row is leakage-free.
+The full two-stage pipeline outperforms content-only by **~2.3×** on NDCG@10, confirming that item-item collaborative filtering adds real ranking signal on this dataset.
+
+**Leakage-free & deterministic methodology:** the collaborative co-occurrence matrix used during evaluation is rebuilt **only from the training split** (never the held-out test ratings), and the ranker's stochastic exploration term is disabled for evaluation. As a result the metrics are reproducible across runs. (An earlier version built the collaborative signals over the full rating set, which leaked test data into the collaborative feature and inflated the full-pipeline NDCG to ~0.29 — the numbers above are the corrected, leakage-free figures.)
 
 ## Tech Stack
 
 - Java 21 / Spring Boot 4
-- Spring Data MongoDB / MongoDB
-- Redis (cache with circuit breaker)
-- RabbitMQ (event-driven pipeline)
-- Resilience4j (circuit breakers, retry)
+- Spring Data MongoDB / MongoDB (with auto-created indexes)
+- Redis (recommendation cache with graceful MongoDB fallback)
+- RabbitMQ (optional event-driven pipeline)
+- Resilience4j (cache resilience wrapper)
 - Micrometer + Prometheus + Grafana (observability)
 - JJWT (JWT authentication)
 - Bucket4j (rate limiting)
@@ -129,6 +132,7 @@ APP_CACHE_REDIS_ENABLED=true
 APP_MESSAGING_RABBITMQ_ENABLED=true
 APP_RATE_LIMIT_ENABLED=true
 APP_AUTH_JWT_SECRET=your-256-bit-secret
+APP_ADMIN_TOKEN=your-admin-token
 PORT=8080
 ```
 
@@ -139,10 +143,11 @@ Notes:
 - `APP_RATE_LIMIT_ENABLED=false` turns off per-IP rate limiting (useful for load testing).
 - The bundled movie catalog seeds on startup when the target database is empty.
 - `APP_AUTH_JWT_SECRET` should be set to a strong 256-bit secret in any real deployment; the default is for local use only.
+- `APP_ADMIN_TOKEN` must be set to call the admin/evaluation endpoints; when blank, those endpoints are locked (fail closed).
 
 ### Dataset & demo seeding
 
-The bundled catalog ([`data/movie_catalog.csv`](src/main/resources/data/movie_catalog.csv)) holds **500 real movies** (titles, IMDb IDs, genres, and user-tag keywords) drawn from the MovieLens dataset. To also populate realistic interaction data, set `APP_DEMO_SEED_RATINGS_ENABLED=true`: on a fresh database the app seeds **~5,000 real ratings across ~110 users** from [`data/seed_ratings.csv`](src/main/resources/data/seed_ratings.csv) and rebuilds the collaborative-filtering signals — giving the recommender and the offline evaluation genuine behavioural data to work with. The seeder is idempotent and only runs when the ratings collection is empty.
+The bundled catalog ([`data/movie_catalog.csv`](src/main/resources/data/movie_catalog.csv)) holds **500 real movies** — real titles, IMDb IDs and genres from the [MovieLens](https://grouplens.org/datasets/movielens/) dataset, enriched with **posters, cast, directors, runtimes and trailer links from [TMDB](https://www.themoviedb.org/)**. To also populate realistic interaction data, set `APP_DEMO_SEED_RATINGS_ENABLED=true`: on a fresh database the app seeds **~5,000 real ratings across ~110 users** from [`data/seed_ratings.csv`](src/main/resources/data/seed_ratings.csv) and rebuilds the collaborative-filtering signals — giving the recommender and the offline evaluation genuine behavioural data to work with. The seeder is idempotent and only runs when the ratings collection is empty. (Poster/metadata URLs are baked into the catalog CSV; no TMDB API key is required to run the app.)
 
 ## API Surface
 
@@ -152,7 +157,7 @@ The bundled catalog ([`data/movie_catalog.csv`](src/main/resources/data/movie_ca
 - `GET /api/v1/recommendations/profile` — user preference profile
 - `GET /api/v1/recommendations/cache/stats` — cache hit/miss stats
 
-### Evaluation
+### Evaluation (requires `X-Admin-Token` header)
 - `GET /api/v1/evaluation/run?k=10` — offline evaluation (NDCG, Precision@K, Recall@K, MAP)
 - `POST /api/v1/evaluation/rebuild-collaborative` — rebuild collaborative signals
 
@@ -175,11 +180,12 @@ The bundled catalog ([`data/movie_catalog.csv`](src/main/resources/data/movie_ca
 - `GET /api/v1/users/ratings`
 - `POST /api/v1/users/ratings`
 
-### Admin
+### Admin (requires `X-Admin-Token` header)
 - `POST /api/v1/admin/rebuild-collaborative`
 - `POST /api/v1/admin/rebuild-snapshots`
 
-### Observability
+### Health & Observability
+- `GET /api/v1/health` — pings MongoDB; returns `503` if the database is unreachable
 - `GET /actuator/health`
 - `GET /actuator/prometheus`
 - `GET /actuator/metrics`

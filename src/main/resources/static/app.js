@@ -187,6 +187,7 @@ function renderMovieGrid() {
     state.filteredMovies.forEach((movie, index) => {
         const card = document.createElement("article");
         card.className = `movie-card${state.selectedMovie?.imdbId === movie.imdbId ? " active" : ""}`;
+        card.dataset.imdb = movie.imdbId;
         card.style.animationDelay = `${Math.min(index * 50, 300)}ms`;
         card.innerHTML = `
             <div class="card-art">
@@ -294,8 +295,10 @@ function renderAccountPanel() {
                     <button class="button button-secondary" id="backToEmail" type="button">Change email</button>
                 </div>
                 <p class="supporting-copy">A 6-digit code was sent to <strong>${escapeHtml(state.otpEmail)}</strong></p>
+                ${state.otpCode ? '<div class="demo-code-box">Demo mode — your verification code is <span class="demo-code">' + escapeHtml(state.otpCode) + '</span></div>' : ''}
                 <form class="auth-form" id="otpVerifyForm">
                     <input id="otpCodeInput" name="code" type="text" placeholder="Enter 6-digit code" maxlength="6" pattern="[0-9]{6}" required autocomplete="one-time-code" inputmode="numeric">
+                    <p class="form-error" id="otpError" hidden></p>
                     <button class="button button-primary" type="submit">Verify code</button>
                 </form>
                 <button class="button-link" id="resendOtp" type="button">Resend code</button>
@@ -306,8 +309,14 @@ function renderAccountPanel() {
             });
             document.getElementById("otpVerifyForm")?.addEventListener("submit", handleVerifyOtp);
             document.getElementById("resendOtp")?.addEventListener("click", async () => {
-                await fetchJson("/api/v1/auth/send-otp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: state.otpEmail }) });
-                setStatus("A new code has been sent.");
+                try {
+                    const data = await fetchJson("/api/v1/auth/send-otp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: state.otpEmail }) });
+                    state.otpCode = data.code || "";
+                    renderAccountPanel();
+                    setStatus("A new code has been sent.");
+                } catch (error) {
+                    setStatus(error.message || "Failed to resend code.", true);
+                }
             });
         }
         return;
@@ -326,6 +335,8 @@ function renderAccountPanel() {
             ${state.authMode === "register" ? '<input id="displayNameInput" name="displayName" type="text" placeholder="Display name">' : ""}
             ${state.authMode === "register" ? '<input id="emailInput" name="email" type="email" value="' + escapeAttribute(state.otpEmail) + '" readonly>' : '<input id="emailInput" name="email" type="email" placeholder="Email">'}
             <input id="passwordInput" name="password" type="password" placeholder="Password">
+            ${state.authMode === "register" ? '<small class="field-hint">Password must be at least 8 characters</small>' : ''}
+            <p class="form-error" id="authError" hidden></p>
             <button class="button button-primary" type="submit">${state.authMode === "login" ? "Log in" : "Create account"}</button>
         </form>
     `;
@@ -510,31 +521,56 @@ function renderDetails() {
     document.getElementById("reviewForm")?.addEventListener("submit", submitReview);
 }
 
-async function selectMovie(imdbId) {
-    const movie = state.movies.find((entry) => entry.imdbId === imdbId);
-    if (!movie) {
+function selectMovie(imdbId) {
+    if (!state.movies.find((entry) => entry.imdbId === imdbId)) {
         return;
     }
-
-    state.selectedMovie = movie;
-    window.location.hash = imdbId;
-    renderMovieGrid();
-    renderDetails();
-    await loadMovieRecommendations(imdbId);
+    // Setting the hash fires `hashchange` -> handleHashSelection, which does the
+    // actual work. If the hash is already this movie (re-click), apply directly
+    // since no hashchange event will fire.
+    if (window.location.hash.replace("#", "").trim() === imdbId) {
+        applySelection(imdbId);
+    } else {
+        window.location.hash = imdbId;
+    }
 }
 
 function handleHashSelection() {
     const imdbId = window.location.hash.replace("#", "").trim();
-    if (!imdbId) {
+    if (imdbId) {
+        applySelection(imdbId);
+    }
+}
+
+function applySelection(imdbId) {
+    const movie = state.movies.find((entry) => entry.imdbId === imdbId);
+    if (!movie) {
         return;
     }
+    state.selectedMovie = movie;
+    updateActiveCard();          // lightweight highlight; no full-grid rebuild/flash
+    renderDetails();
+    scrollDetailsIntoView();     // make it obvious the click opened the dossier
+    loadMovieRecommendations(imdbId);
+}
 
-    const movie = state.movies.find((entry) => entry.imdbId === imdbId);
-    if (movie) {
-        state.selectedMovie = movie;
-        renderMovieGrid();
-        renderDetails();
-        loadMovieRecommendations(imdbId);
+function updateActiveCard() {
+    movieGrid.querySelectorAll(".movie-card").forEach((card) => {
+        card.classList.toggle("active", card.dataset.imdb === state.selectedMovie?.imdbId);
+    });
+}
+
+function scrollDetailsIntoView() {
+    if (!detailsContent) {
+        return;
+    }
+    // On desktop the dossier is sticky and always visible, so no scroll is needed.
+    // Only scroll when it isn't in view (e.g. the single-column mobile layout).
+    const rect = detailsContent.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight * 0.6 && rect.bottom > 0;
+    if (!inView) {
+        const target = detailsContent.closest("[data-details-panel], section, aside") || detailsContent;
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 }
 
@@ -583,6 +619,7 @@ async function handleVerifyOtp(event) {
         renderAccountPanel();
         setStatus("✅ Email verified! Now fill in your name and password.");
     } catch (error) {
+        setFormError("otpError", error.message);
         setStatus(error.message, true);
     }
 }
@@ -592,6 +629,17 @@ async function handleAuthSubmit(event) {
     const email = document.getElementById("emailInput").value.trim();
     const password = document.getElementById("passwordInput").value;
     const displayName = document.getElementById("displayNameInput")?.value?.trim() || "";
+
+    // Inline client-side validation so errors show on the form, not an off-screen banner.
+    setFormError("authError", "");
+    if (state.authMode === "register" && !displayName) {
+        setFormError("authError", "Please enter a display name.");
+        return;
+    }
+    if (state.authMode === "register" && password.length < 8) {
+        setFormError("authError", "Password must be at least 8 characters.");
+        return;
+    }
 
     try {
         const payload = state.authMode === "login"
@@ -636,6 +684,7 @@ async function handleAuthSubmit(event) {
         renderDetails();
         setStatus(state.authMode === "login" ? "Logged in successfully." : "Account created successfully.");
     } catch (error) {
+        setFormError("authError", error.message);
         setStatus(error.message, true);
     }
 }
@@ -733,7 +782,12 @@ async function submitRating(value) {
         });
 
         await Promise.all([loadRatings(), loadForYou(), loadMovies()]);
-        selectMovie(movie.imdbId);
+        // Repaint everything that depends on the new rating/profile — especially the
+        // "For you" rail — so recommendations update in place without a page reload.
+        renderForYouRail();
+        renderMovieGrid();
+        renderHeroStats();
+        renderDetails();
         setStatus(`Saved your ${value}-star rating.`);
     } catch (error) {
         setStatus(error.message || "We could not save your rating.", true);
@@ -818,8 +872,14 @@ function renderReviews(reviews) {
 
 function buildSummary(movie) {
     const genres = (movie.genres || []).slice(0, 2).join(" / ");
+    if (genres && movie.director) {
+        return `${genres} · ${movie.director}`;
+    }
     if (genres) {
-        return `${genres} · ${movie.director || "Director unavailable"}`;
+        return genres;
+    }
+    if (movie.director) {
+        return movie.director;
     }
     return "Open the dossier for more details.";
 }
@@ -883,6 +943,18 @@ function formatYear(value) {
     }
 
     return String(parsed.getFullYear());
+}
+
+function setFormError(id, message) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (message) {
+        el.textContent = message;
+        el.hidden = false;
+    } else {
+        el.textContent = "";
+        el.hidden = true;
+    }
 }
 
 function setStatus(message, isError = false) {

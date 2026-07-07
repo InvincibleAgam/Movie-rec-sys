@@ -1,6 +1,7 @@
 package com.MovieRecSys.Movie;
 
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -12,6 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,7 @@ public class RecommendationEvaluationService {
     private final List<CandidateGenerator> candidateGenerators;
     private final RecommendationSnapshotService snapshotService;
     private final RecommendationProfileProjector profileProjector;
+    private final CollaborativeFilteringService collaborativeFilteringService;
 
     public RecommendationEvaluationService(
             RatingRepository ratingRepository,
@@ -52,7 +55,8 @@ public class RecommendationEvaluationService {
             RankingScorer rankingScorer,
             List<CandidateGenerator> candidateGenerators,
             RecommendationSnapshotService snapshotService,
-            RecommendationProfileProjector profileProjector
+            RecommendationProfileProjector profileProjector,
+            CollaborativeFilteringService collaborativeFilteringService
     ) {
         this.ratingRepository = ratingRepository;
         this.appUserRepository = appUserRepository;
@@ -62,6 +66,7 @@ public class RecommendationEvaluationService {
         this.candidateGenerators = candidateGenerators;
         this.snapshotService = snapshotService;
         this.profileProjector = profileProjector;
+        this.collaborativeFilteringService = collaborativeFilteringService;
     }
 
     /**
@@ -77,11 +82,33 @@ public class RecommendationEvaluationService {
         Map<String, Movie> allMovies = movieRepository.findAll().stream()
                 .collect(Collectors.toMap(Movie::getImdbId, Function.identity()));
 
-        // Define strategies to compare
+        // Sort each user's ratings once, and gather every user's TRAIN portion
+        // (first 70%) to build a train-only collaborative co-occurrence matrix.
+        // Using this instead of the globally-persisted signals keeps the held-out
+        // test ratings out of the collaborative feature entirely (no leakage).
+        Map<ObjectId, List<Rating>> sortedRatingsByUser = new LinkedHashMap<>();
+        List<Rating> allTrainRatings = new ArrayList<>();
+        for (AppUser user : users) {
+            List<Rating> userRatings = ratingRepository.findByUserId(user.getId()).stream()
+                    .sorted(Comparator.comparing(Rating::getUpdatedAt, Comparator.nullsFirst(Comparator.naturalOrder())))
+                    .toList();
+            sortedRatingsByUser.put(user.getId(), userRatings);
+            if (userRatings.size() >= MIN_RATINGS_FOR_EVAL) {
+                allTrainRatings.addAll(userRatings.subList(0, (int) (userRatings.size() * 0.7)));
+            }
+        }
+        Map<String, Map<String, Double>> trainCoOccurrence =
+                collaborativeFilteringService.computeCoOccurrenceFromRatings(allTrainRatings);
+
+        // Define strategies to compare. The full pipeline uses the TRAIN-ONLY
+        // collaborative matrix and disables stochastic exploration, so the
+        // evaluation is both leakage-free and deterministic.
         List<EvaluationStrategy> strategies = List.of(
                 new EvaluationStrategy("content-only", this::contentOnlyScore),
                 new EvaluationStrategy("content+engagement", this::contentEngagementScore),
-                new EvaluationStrategy("full-pipeline (content+collab+ranking)", this::fullPipelineScore)
+                new EvaluationStrategy("full-pipeline (content+collab+ranking)",
+                        (anchors, movies, excludeIds, cutoff) ->
+                                fullPipelineScore(anchors, movies, excludeIds, cutoff, trainCoOccurrence))
         );
 
         Map<String, StrategyMetrics> results = new LinkedHashMap<>();
@@ -92,9 +119,7 @@ public class RecommendationEvaluationService {
         int evaluatedUsers = 0;
 
         for (AppUser user : users) {
-            List<Rating> userRatings = ratingRepository.findByUserId(user.getId()).stream()
-                    .sorted(Comparator.comparing(Rating::getUpdatedAt, Comparator.nullsFirst(Comparator.naturalOrder())))
-                    .toList();
+            List<Rating> userRatings = sortedRatingsByUser.get(user.getId());
 
             if (userRatings.size() < MIN_RATINGS_FOR_EVAL) {
                 continue;
@@ -192,7 +217,8 @@ public class RecommendationEvaluationService {
     }
 
     private List<String> fullPipelineScore(List<Movie> anchors, Map<String, Movie> allMovies,
-                                           Set<String> excludeIds, int k) {
+                                           Set<String> excludeIds, int k,
+                                           Map<String, Map<String, Double>> trainCoOccurrence) {
         // Build a mock profile from anchors
         UserPreferenceProfile mockProfile = new UserPreferenceProfile();
         mockProfile.setAnchorImdbIds(anchors.stream().map(Movie::getImdbId).toList());
@@ -216,9 +242,13 @@ public class RecommendationEvaluationService {
         mockProfile.setKeywordWeights(keywordWeights);
         mockProfile.setDirectorWeights(directorWeights);
 
+        // Leakage-free, deterministic scoring: train-only collaborative signal, no exploration.
+        java.util.function.ToDoubleBiFunction<String, String> collab =
+                (source, cand) -> collaborativeFilteringService.signalStrength(trainCoOccurrence, source, cand);
+
         return allMovies.values().stream()
                 .filter(m -> !excludeIds.contains(m.getImdbId()))
-                .map(m -> rankingScorer.scoreForUser(mockProfile, anchors, m))
+                .map(m -> rankingScorer.scoreForUser(mockProfile, anchors, m, collab, false))
                 .sorted(Comparator.comparingDouble(RankingFeatures::totalScore).reversed())
                 .limit(k)
                 .map(RankingFeatures::imdbId)

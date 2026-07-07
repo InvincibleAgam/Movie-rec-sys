@@ -118,10 +118,14 @@ Use case: profile computation logic changes, disaster recovery, or schema migrat
 | Personalized recommendations | 3 min | On new user interaction event |
 | User preference profile view | 3 min | On new user interaction event |
 
-All cache operations are wrapped in a circuit breaker. When Redis is down:
-- Reads return `Optional.empty()` (cache miss)
-- Writes are silently dropped
-- Application continues serving from MongoDB
+Cache operations degrade gracefully. When Redis is unavailable or a cache call fails:
+- Reads catch the error and return `Optional.empty()` (treated as a cache miss)
+- Writes are dropped
+- The application continues serving by recomputing from MongoDB
+
+> Note: a Resilience4j circuit breaker is wired around the cache, but because the
+> cache layer already catches Redis exceptions internally, the breaker rarely trips;
+> the effective behaviour is the graceful catch-and-fall-back-to-MongoDB described above.
 
 ## Consistency Model
 
@@ -137,7 +141,7 @@ All cache operations are wrapped in a circuit breaker. When Redis is down:
 
 | Failure | Impact | Mitigation |
 |---------|--------|-----------|
-| Redis down | Higher latency, no cache | Circuit breaker opens, serves from DB |
+| Redis down | Higher latency, no cache | Cache errors are caught; serves by recomputing from DB |
 | RabbitMQ down | Delayed profile updates | Falls back to scheduled polling |
 | MongoDB slow | Degraded all operations | Event PENDING backlog, eventual processing |
 | Profile stale | Slightly outdated recs | Scheduled projector catches up within seconds |

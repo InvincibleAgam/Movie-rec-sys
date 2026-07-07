@@ -21,6 +21,7 @@ public class RecommendationProfileProjector {
     private final RatingRepository ratingRepository;
     private final MovieRepository movieRepository;
     private final UserPreferenceProfileRepository userPreferenceProfileRepository;
+    private final RecommendationCacheService recommendationCacheService;
     private final int batchSize;
     private final boolean projectorEnabled;
 
@@ -30,6 +31,7 @@ public class RecommendationProfileProjector {
             RatingRepository ratingRepository,
             MovieRepository movieRepository,
             UserPreferenceProfileRepository userPreferenceProfileRepository,
+            RecommendationCacheService recommendationCacheService,
             @Value("${app.recommendations.projector.batch-size:100}") int batchSize,
             @Value("${app.recommendations.projector.enabled:true}") boolean projectorEnabled
     ) {
@@ -38,6 +40,7 @@ public class RecommendationProfileProjector {
         this.ratingRepository = ratingRepository;
         this.movieRepository = movieRepository;
         this.userPreferenceProfileRepository = userPreferenceProfileRepository;
+        this.recommendationCacheService = recommendationCacheService;
         this.batchSize = batchSize;
         this.projectorEnabled = projectorEnabled;
     }
@@ -65,6 +68,9 @@ public class RecommendationProfileProjector {
 
         for (ObjectId userId : affectedUsers) {
             rebuildProfile(userId);
+            // The profile changed, so any cached recommendations/profile for this
+            // user are now stale — evict them so the next request recomputes.
+            recommendationCacheService.invalidateUserCaches(userId);
         }
 
         Instant processedAt = Instant.now();

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,19 +17,36 @@ public class UserExperienceService {
     private final MovieRepository movieRepository;
     private final RatingRepository ratingRepository;
     private final InteractionEventPublisher interactionEventPublisher;
+    private final RecommendationProfileProjector recommendationProfileProjector;
+    private final RecommendationCacheService recommendationCacheService;
 
     public UserExperienceService(
             AuthService authService,
             AppUserRepository appUserRepository,
             MovieRepository movieRepository,
             RatingRepository ratingRepository,
-            InteractionEventPublisher interactionEventPublisher
+            InteractionEventPublisher interactionEventPublisher,
+            RecommendationProfileProjector recommendationProfileProjector,
+            RecommendationCacheService recommendationCacheService
     ) {
         this.authService = authService;
         this.appUserRepository = appUserRepository;
         this.movieRepository = movieRepository;
         this.ratingRepository = ratingRepository;
         this.interactionEventPublisher = interactionEventPublisher;
+        this.recommendationProfileProjector = recommendationProfileProjector;
+        this.recommendationCacheService = recommendationCacheService;
+    }
+
+    /**
+     * Rebuild the user's preference profile from their now-current ratings and
+     * watchlist, then evict their cached recommendations. Done synchronously on
+     * each interaction so personalized recommendations update immediately (the
+     * scheduled projector still runs as the durable, replayable path).
+     */
+    private void refreshRecommendations(ObjectId userId) {
+        recommendationProfileProjector.rebuildProfile(userId);
+        recommendationCacheService.invalidateUserCaches(userId);
     }
 
     public WatchlistResponse getWatchlist(String authorizationHeader) {
@@ -48,6 +66,7 @@ public class UserExperienceService {
             user.setWatchlistImdbIds(watchlist);
             user = appUserRepository.save(user);
             interactionEventPublisher.publishWatchlistAdded(user.getId(), movie.getImdbId());
+            refreshRecommendations(user.getId());
         }
 
         return AuthResponse.UserProfile.from(user);
@@ -60,6 +79,7 @@ public class UserExperienceService {
             user.setWatchlistImdbIds(watchlist);
             user = appUserRepository.save(user);
             interactionEventPublisher.publishWatchlistRemoved(user.getId(), imdbId);
+            refreshRecommendations(user.getId());
         }
         return AuthResponse.UserProfile.from(user);
     }
@@ -79,6 +99,7 @@ public class UserExperienceService {
         Rating savedRating = ratingRepository.save(rating);
         refreshMovieRatingStats(movie.getImdbId());
         interactionEventPublisher.publishRatingSet(user.getId(), movie.getImdbId(), request.rating());
+        refreshRecommendations(user.getId());
         return savedRating;
     }
 

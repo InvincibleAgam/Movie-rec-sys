@@ -21,6 +21,7 @@ class RecommendationProfileProjectorTests {
     private final RatingRepository ratingRepository = mock(RatingRepository.class);
     private final MovieRepository movieRepository = mock(MovieRepository.class);
     private final UserPreferenceProfileRepository userPreferenceProfileRepository = mock(UserPreferenceProfileRepository.class);
+    private final RecommendationCacheService recommendationCacheService = mock(RecommendationCacheService.class);
 
     private final RecommendationProfileProjector projector = new RecommendationProfileProjector(
             interactionEventRepository,
@@ -28,6 +29,7 @@ class RecommendationProfileProjectorTests {
             ratingRepository,
             movieRepository,
             userPreferenceProfileRepository,
+            recommendationCacheService,
             100,
             true
     );
@@ -77,6 +79,9 @@ class RecommendationProfileProjectorTests {
         ArgumentCaptor<List<InteractionEvent>> eventsCaptor = ArgumentCaptor.forClass(List.class);
         Mockito.verify(interactionEventRepository).saveAll(eventsCaptor.capture());
         assertEquals(InteractionEventStatus.PROCESSED, eventsCaptor.getValue().get(0).getStatus());
+
+        // After rebuilding the profile, the user's cached recommendations must be evicted.
+        Mockito.verify(recommendationCacheService).invalidateUserCaches(userId);
     }
 
     private Movie movie(String imdbId, List<String> genres, List<String> keywords, String director) {
